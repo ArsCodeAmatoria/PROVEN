@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FingerprintPattern } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -11,9 +12,7 @@ export function Logo({ className }: { className?: string }) {
         className,
       )}
     >
-      <span className="flex h-7 w-7 items-center justify-center rounded-md bg-foreground text-xs font-bold text-background">
-        P
-      </span>
+      <FingerprintPattern className="h-7 w-7 shrink-0" aria-hidden strokeWidth={1.75} />
       <span className="text-[15px]">Proven</span>
     </Link>
   );
