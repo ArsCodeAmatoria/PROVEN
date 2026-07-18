@@ -1,8 +1,10 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { COMPANY_COOKIE } from "@/lib/auth/company-cookie";
 import { getCurrentProfile, requireAuth } from "@/lib/auth/session";
 import type { UserRole } from "@/types/roles";
 import { hasDatabaseConfig } from "@/lib/env";
@@ -313,4 +315,25 @@ export async function touchLastLoginAction() {
     where: { id: profile.id },
     data: { lastLoginAt: new Date() },
   });
+}
+
+export async function switchCompanyAction(companyId: string) {
+  const profile = await requireAuth();
+  const allowed = profile.memberships.some(
+    (membership) => membership.companyId === companyId,
+  );
+
+  if (!allowed && profile.role !== "SUPER_ADMIN") {
+    return { error: "You do not have access to that company." };
+  }
+
+  const cookieStore = await cookies();
+  cookieStore.set(COMPANY_COOKIE, companyId, {
+    path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365,
+  });
+
+  revalidatePath("/", "layout");
+  return { error: null };
 }

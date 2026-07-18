@@ -43,7 +43,7 @@ export function PageHeader({
 interface StatCardProps {
   label: string;
   value: string | number;
-  description?: string;
+  description?: React.ReactNode;
   className?: string;
 }
 
@@ -63,7 +63,7 @@ export function StatCard({
       </CardHeader>
       {description ? (
         <CardContent>
-          <p className="text-xs text-muted-foreground">{description}</p>
+          <div className="text-xs text-muted-foreground">{description}</div>
         </CardContent>
       ) : null}
     </Card>

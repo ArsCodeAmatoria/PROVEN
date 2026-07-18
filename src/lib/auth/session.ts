@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import type {
@@ -8,6 +9,7 @@ import type {
   User,
   UserSettings,
 } from "@/generated/prisma/client";
+import { COMPANY_COOKIE } from "@/lib/auth/company-cookie";
 import {
   getDefaultRouteForRole,
   getPermissionForPath,
@@ -19,7 +21,15 @@ import { prisma } from "@/lib/prisma";
 import { tryCreateClient } from "@/lib/supabase/server";
 import type { UserRole } from "@/types/roles";
 
-/** Session shape used by UI — maps User + primary Employee. */
+export type CompanyMembership = {
+  employeeId: string;
+  companyId: string;
+  companyName: string;
+  companySlug: string;
+  role: UserRole;
+};
+
+/** Session shape used by UI — maps User + selected Employee. */
 export type SessionProfile = {
   id: string;
   employeeId: string | null;
@@ -38,6 +48,7 @@ export type SessionProfile = {
   createdAt: Date;
   user: User;
   employee: (Employee & { company: Company }) | null;
+  memberships: CompanyMembership[];
 };
 
 function toSessionProfile(
@@ -45,27 +56,44 @@ function toSessionProfile(
     settings: UserSettings | null;
     employees: (Employee & { company: Company })[];
   },
+  preferredCompanyId?: string | null,
 ): SessionProfile {
-  const employee = user.employees[0] ?? null;
+  const activeEmployees = user.employees.filter(
+    (item) => item.company.deletedAt === null,
+  );
+
+  const preferred =
+    (preferredCompanyId
+      ? activeEmployees.find((item) => item.companyId === preferredCompanyId)
+      : null) ?? activeEmployees[0] ?? null;
+
+  const memberships: CompanyMembership[] = activeEmployees.map((item) => ({
+    employeeId: item.id,
+    companyId: item.companyId,
+    companyName: item.company.name,
+    companySlug: item.company.slug,
+    role: item.role as UserRole,
+  }));
 
   return {
     id: user.id,
-    employeeId: employee?.id ?? null,
+    employeeId: preferred?.id ?? null,
     authUserId: user.authUserId,
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
     phone: user.phone,
-    title: employee?.title ?? null,
+    title: preferred?.title ?? null,
     avatarUrl: user.avatarUrl,
-    role: (employee?.role ?? "READ_ONLY") as UserRole,
-    isActive: user.isActive && (!employee || employee.status === "ACTIVE"),
-    companyId: employee?.companyId ?? null,
-    company: employee?.company ?? null,
+    role: (preferred?.role ?? "READ_ONLY") as UserRole,
+    isActive: user.isActive && (!preferred || preferred.status === "ACTIVE"),
+    companyId: preferred?.companyId ?? null,
+    company: preferred?.company ?? null,
     settings: user.settings,
     createdAt: user.createdAt,
     user,
-    employee,
+    employee: preferred,
+    memberships,
   };
 }
 
@@ -92,6 +120,9 @@ export async function getCurrentProfile(): Promise<SessionProfile | null> {
   }
 
   try {
+    const cookieStore = await cookies();
+    const preferredCompanyId = cookieStore.get(COMPANY_COOKIE)?.value;
+
     const user = await prisma.user.findFirst({
       where: { authUserId: authUser.id, deletedAt: null },
       include: {
@@ -100,13 +131,12 @@ export async function getCurrentProfile(): Promise<SessionProfile | null> {
           where: { deletedAt: null },
           include: { company: true },
           orderBy: { createdAt: "asc" },
-          take: 1,
         },
       },
     });
 
     if (!user) return null;
-    return toSessionProfile(user);
+    return toSessionProfile(user, preferredCompanyId);
   } catch {
     return null;
   }

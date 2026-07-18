@@ -2,15 +2,21 @@ import type { Metadata } from "next";
 
 import { DashboardOverview } from "@/features/dashboard/overview";
 import { requireCompanyId } from "@/lib/auth/session";
-import { getDashboardMetrics } from "@/services/dashboard.service";
+import { getDashboardData } from "@/services/dashboard.service";
 
 export const metadata: Metadata = {
-  title: "Overview",
+  title: "Dashboard",
 };
 
 export default async function DashboardPage() {
-  const { companyId } = await requireCompanyId();
-  const result = await getDashboardMetrics(companyId);
+  const { profile, companyId } = await requireCompanyId();
+  const result = await getDashboardData(companyId, profile.employeeId);
 
-  return <DashboardOverview metrics={result.data} error={result.error} />;
+  return (
+    <DashboardOverview
+      data={result.data}
+      error={result.error}
+      companyName={profile.company?.name}
+    />
+  );
 }
