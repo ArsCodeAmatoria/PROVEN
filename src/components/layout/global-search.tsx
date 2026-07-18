@@ -3,6 +3,7 @@
 import {
   Award,
   BadgeCheck,
+  ChartColumn,
   ClipboardCheck,
   Clock3,
   Eye,
@@ -62,6 +63,12 @@ const NAV_SEARCH = [
     title: "Reports",
     href: "/reports",
     icon: FileBarChart,
+    group: "Navigate",
+  },
+  {
+    title: "Analytics",
+    href: "/analytics",
+    icon: ChartColumn,
     group: "Navigate",
   },
   {

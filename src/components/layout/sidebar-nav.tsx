@@ -3,6 +3,7 @@
 import {
   Award,
   BadgeCheck,
+  ChartColumn,
   ClipboardCheck,
   Clock3,
   Eye,
@@ -40,6 +41,7 @@ const ICONS: Record<string, LucideIcon> = {
   Hammer,
   Grid3x3,
   FileBarChart,
+  ChartColumn,
   Clock3,
   FileText,
   Forklift,

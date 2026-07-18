@@ -27,6 +27,7 @@ export type Permission =
   | "demonstrations"
   | "training-matrix"
   | "reports"
+  | "analytics"
   | "experience-log"
   | "equipment-qualifications"
   | "exams"
@@ -46,6 +47,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "exams",
@@ -64,6 +66,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "exams",
@@ -82,6 +85,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "exams",
@@ -98,6 +102,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "apprenticeships",
@@ -125,6 +130,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "observations",
@@ -139,6 +145,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "analytics",
     "experience-log",
     "equipment-qualifications",
     "exams",
@@ -156,6 +163,7 @@ export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
   { prefix: "/demonstrations", permission: "demonstrations" },
   { prefix: "/training-matrix", permission: "training-matrix" },
   { prefix: "/reports", permission: "reports" },
+  { prefix: "/analytics", permission: "analytics" },
   { prefix: "/experience-log", permission: "experience-log" },
   {
     prefix: "/equipment-qualifications",
