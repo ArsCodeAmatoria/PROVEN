@@ -1,9 +1,17 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-import { hasSupabaseConfig } from "@/lib/env";
-
 const REMEMBER_COOKIE = "proven_remember_me";
 const REMEMBER_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+function getBrowserSupabaseConfig() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  return {
+    url,
+    anonKey,
+    configured: Boolean(url && anonKey),
+  };
+}
 
 export function getRememberMePreference(): boolean {
   if (typeof document === "undefined") return true;
@@ -24,9 +32,10 @@ export function setRememberMePreference(remember: boolean) {
 }
 
 export function createClient(options?: { rememberMe?: boolean }) {
-  if (!hasSupabaseConfig()) {
+  const { url, anonKey, configured } = getBrowserSupabaseConfig();
+  if (!configured || !url || !anonKey) {
     throw new Error(
-      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in the Vercel project (Production).",
     );
   }
 
@@ -35,20 +44,15 @@ export function createClient(options?: { rememberMe?: boolean }) {
     setRememberMePreference(options.rememberMe);
   }
 
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookieOptions: {
-        // Persistent cookies when remember-me is on; session cookie otherwise.
-        ...(rememberMe
-          ? { maxAge: REMEMBER_MAX_AGE }
-          : { maxAge: undefined }),
-        path: "/",
-        sameSite: "lax",
-      },
+  return createBrowserClient(url, anonKey, {
+    cookieOptions: {
+      ...(rememberMe
+        ? { maxAge: REMEMBER_MAX_AGE }
+        : { maxAge: undefined }),
+      path: "/",
+      sameSite: "lax",
     },
-  );
+  });
 }
 
 export { REMEMBER_COOKIE, REMEMBER_MAX_AGE };
