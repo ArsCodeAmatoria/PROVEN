@@ -480,6 +480,7 @@ model Competency {
   asmeReference           String?              @map("asme_reference")
   workSafeBcReference     String?              @map("worksafe_bc_reference")
   requiredDemonstrations  String?              @map("required_demonstrations")
+  requiredDemonstrationCount Int?              @map("required_demonstration_count")
   requiredScore           Int?                 @map("required_score")
   difficulty              CompetencyDifficulty @default(INTERMEDIATE)
   estimatedTimeMinutes    Int?                 @map("estimated_time_minutes")

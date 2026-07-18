@@ -7,6 +7,7 @@ import {
   Eye,
   FileText,
   GraduationCap,
+  Hammer,
   LayoutDashboard,
   Search,
   Settings,
@@ -41,6 +42,12 @@ const NAV_SEARCH = [
     icon: ClipboardCheck,
     group: "Navigate",
   },
+  {
+    title: "Practical Demonstrations",
+    href: "/demonstrations",
+    icon: Hammer,
+    group: "Navigate",
+  },
   { title: "Written Exams", href: "/exams", icon: FileText, group: "Navigate" },
   {
     title: "Projects",
@@ -70,6 +77,11 @@ const ACTIONS = [
     title: "New assessment",
     href: "/assessments/new",
     icon: ClipboardCheck,
+  },
+  {
+    title: "New demonstration",
+    href: "/demonstrations/new",
+    icon: Hammer,
   },
   {
     title: "Record observation",

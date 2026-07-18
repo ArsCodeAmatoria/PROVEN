@@ -71,6 +71,8 @@ export default async function EditCompetencyPage({
           asmeReference: competency.asmeReference ?? "",
           workSafeBcReference: competency.workSafeBcReference ?? "",
           requiredDemonstrations: competency.requiredDemonstrations ?? "",
+          requiredDemonstrationCount:
+            competency.requiredDemonstrationCount ?? undefined,
           requiredScore: competency.requiredScore ?? undefined,
           difficulty: competency.difficulty,
           estimatedTimeMinutes: competency.estimatedTimeMinutes ?? undefined,

@@ -563,6 +563,7 @@ export async function createCompetency(
         workSafeBcReference: emptyToNull(input.workSafeBcReference) ?? null,
         requiredDemonstrations:
           emptyToNull(input.requiredDemonstrations) ?? null,
+        requiredDemonstrationCount: input.requiredDemonstrationCount ?? null,
         requiredScore: input.requiredScore ?? null,
         difficulty: input.difficulty,
         estimatedTimeMinutes: input.estimatedTimeMinutes ?? null,
@@ -635,6 +636,7 @@ export async function updateCompetency(
         workSafeBcReference: emptyToNull(input.workSafeBcReference) ?? null,
         requiredDemonstrations:
           emptyToNull(input.requiredDemonstrations) ?? null,
+        requiredDemonstrationCount: input.requiredDemonstrationCount ?? null,
         requiredScore: input.requiredScore ?? null,
         difficulty: input.difficulty,
         estimatedTimeMinutes: input.estimatedTimeMinutes ?? null,

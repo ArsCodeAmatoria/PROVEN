@@ -39,6 +39,11 @@ export const createCompetencySchema = z.object({
   asmeReference: optionalText(240),
   workSafeBcReference: optionalText(240),
   requiredDemonstrations: optionalText(5000),
+  requiredDemonstrationCount: z.preprocess(
+    (value) =>
+      value === "" || value === null || value === undefined ? undefined : value,
+    z.coerce.number().int().min(1).max(100).optional(),
+  ),
   requiredScore: z.preprocess(
     (value) =>
       value === "" || value === null || value === undefined ? undefined : value,

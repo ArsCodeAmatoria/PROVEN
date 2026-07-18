@@ -11,6 +11,7 @@ export const EMPLOYEE_TABS = [
   { value: "overview", label: "Overview" },
   { value: "competencies", label: "Competencies" },
   { value: "assessments", label: "Assessments" },
+  { value: "demonstrations", label: "Demonstrations" },
   { value: "observations", label: "Observations" },
   { value: "exams", label: "Written Exams" },
   { value: "hours", label: "Hours" },

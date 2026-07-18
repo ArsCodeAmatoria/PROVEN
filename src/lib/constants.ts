@@ -22,6 +22,12 @@ export const NAV_ITEMS = [
     permission: "assessments" as const,
   },
   {
+    title: "Practical Demos",
+    href: "/demonstrations",
+    icon: "Hammer",
+    permission: "demonstrations" as const,
+  },
+  {
     title: "Written Exams",
     href: "/exams",
     icon: "FileText",

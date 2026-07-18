@@ -4,6 +4,7 @@ import {
   BadgeCheck,
   ClipboardCheck,
   Eye,
+  Hammer,
   Plus,
   Users,
 } from "lucide-react";
@@ -23,6 +24,12 @@ const ACTIONS = [
     description: "Schedule a competency evaluation",
     href: "/assessments/new",
     icon: ClipboardCheck,
+  },
+  {
+    title: "Practical demo",
+    description: "Evaluate a worker on a competency",
+    href: "/demonstrations/new",
+    icon: Hammer,
   },
   {
     title: "Record observation",

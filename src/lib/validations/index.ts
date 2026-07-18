@@ -145,6 +145,14 @@ export {
 } from "./assessment";
 
 export {
+  createDemonstrationSchema,
+  demonstrationListFiltersSchema,
+  demonstrationRatingSchema,
+  type CreateDemonstrationInput,
+  type DemonstrationListFiltersInput,
+} from "./demonstration";
+
+export {
   createObservationSchema,
   updateObservationFollowUpSchema,
   observationListFiltersSchema,

@@ -145,6 +145,10 @@ export function CompetencyDetailView({
                   value={COMPETENCY_DIFFICULTY_LABELS[competency.difficulty]}
                 />
                 <DetailRow
+                  label="Required successful demos"
+                  value={competency.requiredDemonstrationCount}
+                />
+                <DetailRow
                   label="Required score"
                   value={
                     competency.requiredScore != null

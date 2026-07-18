@@ -46,6 +46,7 @@ const EMPTY_VALUES: CreateCompetencyInput = {
   asmeReference: "",
   workSafeBcReference: "",
   requiredDemonstrations: "",
+  requiredDemonstrationCount: undefined,
   requiredScore: undefined,
   difficulty: "INTERMEDIATE",
   estimatedTimeMinutes: undefined,
@@ -190,6 +191,18 @@ export function CompetencyForm({
                   </SelectContent>
                 </Select>
               )}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="requiredDemonstrationCount">
+              Required successful demos
+            </Label>
+            <Input
+              id="requiredDemonstrationCount"
+              type="number"
+              min={1}
+              max={100}
+              {...register("requiredDemonstrationCount")}
             />
           </div>
           <div className="space-y-2">

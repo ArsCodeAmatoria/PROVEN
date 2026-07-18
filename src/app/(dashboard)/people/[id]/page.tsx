@@ -8,6 +8,7 @@ import {
   requireCompanyId,
   requirePermission,
 } from "@/lib/auth/session";
+import { listWorkerDemonstrationProgress } from "@/services/demonstrations.service";
 import { getEmployeeById } from "@/services/people.service";
 
 interface EmployeePageProps {
@@ -38,11 +39,14 @@ export default async function EmployeeDetailPage({
     notFound();
   }
 
+  const progression = await listWorkerDemonstrationProgress(companyId, id);
+
   return (
     <EmployeeDetailView
       employee={result.data}
       canManage={isAdminRole(profile.role)}
       defaultTab={tab}
+      demonstrationProgress={progression.data ?? []}
     />
   );
 }

@@ -8,6 +8,7 @@ import {
   Clock3,
   Eye,
   FileText,
+  Hammer,
   History,
   Pencil,
   Trash2,
@@ -42,14 +43,29 @@ import {
   OBSERVATION_FOLLOW_UP_LABELS,
   OBSERVATION_TYPE_LABELS,
 } from "@/features/observations/constants";
+import { DEMONSTRATION_RATING_LABELS } from "@/features/demonstrations/constants";
 import { ROLE_LABELS } from "@/lib/auth/permissions";
 import type { EmployeeDetail } from "@/services/people.service";
 import { formatDate, formatRelative, fullName } from "@/utils/format";
+
+interface DemonstrationProgressItem {
+  competencyId: string;
+  competencyTitle: string;
+  competencyCode: string;
+  requiredCount: number | null;
+  successfulCount: number;
+  totalCount: number;
+  remainingCount: number | null;
+  isComplete: boolean;
+  latestRating: string | null;
+  latestAssessedAt: Date | null;
+}
 
 interface EmployeeDetailViewProps {
   employee: EmployeeDetail;
   canManage: boolean;
   defaultTab?: string;
+  demonstrationProgress?: DemonstrationProgressItem[];
 }
 
 function DetailRow({
@@ -91,6 +107,7 @@ export function EmployeeDetailView({
   employee,
   canManage,
   defaultTab = "overview",
+  demonstrationProgress = [],
 }: EmployeeDetailViewProps) {
   const [pending, startTransition] = useTransition();
   const photo = employeePhotoUrl(employee);
@@ -312,6 +329,66 @@ export function EmployeeDetailView({
                       </p>
                     </div>
                     <Badge variant="outline">{result.outcome}</Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ListCard>
+        </TabsContent>
+
+        <TabsContent value="demonstrations">
+          <ListCard
+            title="Practical demonstrations"
+            description="Successful demonstrations completed versus required count"
+          >
+            {demonstrationProgress.length === 0 ? (
+              <EmptyState
+                icon={Hammer}
+                title="No demonstrations yet"
+                description="Practical demonstrations for this worker will track progression here."
+              />
+            ) : (
+              <ul className="space-y-3">
+                {demonstrationProgress.map((item) => (
+                  <li
+                    key={item.competencyId}
+                    className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3 last:border-0 last:pb-0"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">
+                        {item.competencyCode} · {item.competencyTitle}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {[
+                          `${item.successfulCount}${item.requiredCount != null ? ` / ${item.requiredCount}` : ""} successful`,
+                          `${item.totalCount} total`,
+                          item.latestAssessedAt
+                            ? `Latest ${formatDate(item.latestAssessedAt)}`
+                            : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {item.isComplete ? (
+                        <Badge>Complete</Badge>
+                      ) : item.remainingCount != null ? (
+                        <Badge variant="outline">
+                          {item.remainingCount} remaining
+                        </Badge>
+                      ) : null}
+                      {item.latestRating &&
+                      item.latestRating in DEMONSTRATION_RATING_LABELS ? (
+                        <Badge variant="secondary">
+                          {
+                            DEMONSTRATION_RATING_LABELS[
+                              item.latestRating as keyof typeof DEMONSTRATION_RATING_LABELS
+                            ]
+                          }
+                        </Badge>
+                      ) : null}
+                    </div>
                   </li>
                 ))}
               </ul>
