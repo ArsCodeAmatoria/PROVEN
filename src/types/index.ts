@@ -43,6 +43,8 @@ export {
   AssessmentRating,
   AssessmentSignerRole,
   ObservationRating,
+  ObservationType,
+  ObservationFollowUpStatus,
   ExamStatus,
   ExamResultStatus,
   CertificateStatus,

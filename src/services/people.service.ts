@@ -64,6 +64,8 @@ export type EmployeeDetail = Employee & {
   observationsReceived: (Observation & {
     observer: Employee & { user: User };
     competency: { id: string; title: string } | null;
+    project: { id: string; name: string; code: string } | null;
+    category: { id: string; name: string } | null;
   })[];
   auditLogs: AuditLog[];
   timeline: EmployeeTimelineItem[];
@@ -307,9 +309,11 @@ export async function getEmployeeById(
           include: {
             observer: { include: { user: true } },
             competency: { select: { id: true, title: true } },
+            project: { select: { id: true, name: true, code: true } },
+            category: { select: { id: true, name: true } },
           },
           orderBy: { observedAt: "desc" },
-          take: 50,
+          take: 100,
         },
       },
     });
@@ -374,7 +378,7 @@ export async function getEmployeeById(
         id: `observation-${item.id}`,
         type: "observation" as const,
         title: item.context,
-        summary: item.rating,
+        summary: item.observationType,
         occurredAt: item.observedAt,
       })),
       ...auditLogs.map((item) => ({

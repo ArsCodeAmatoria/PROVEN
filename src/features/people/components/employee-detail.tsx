@@ -6,6 +6,7 @@ import {
   Award,
   ClipboardCheck,
   Clock3,
+  Eye,
   FileText,
   History,
   Pencil,
@@ -37,6 +38,10 @@ import {
   EMPLOYEE_TABS,
   employeePhotoUrl,
 } from "@/features/people/constants";
+import {
+  OBSERVATION_FOLLOW_UP_LABELS,
+  OBSERVATION_TYPE_LABELS,
+} from "@/features/observations/constants";
 import { ROLE_LABELS } from "@/lib/auth/permissions";
 import type { EmployeeDetail } from "@/services/people.service";
 import { formatDate, formatRelative, fullName } from "@/utils/format";
@@ -307,6 +312,69 @@ export function EmployeeDetailView({
                       </p>
                     </div>
                     <Badge variant="outline">{result.outcome}</Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ListCard>
+        </TabsContent>
+
+        <TabsContent value="observations">
+          <ListCard
+            title="Field observations"
+            description="Chronological competency history from normal work"
+          >
+            {employee.observationsReceived.length === 0 ? (
+              <EmptyState
+                icon={Eye}
+                title="No observations"
+                description="Field observations recorded for this worker will appear here in chronological order."
+              />
+            ) : (
+              <ul className="space-y-3">
+                {employee.observationsReceived.map((observation) => (
+                  <li
+                    key={observation.id}
+                    className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3 last:border-0 last:pb-0"
+                  >
+                    <div className="min-w-0">
+                      <Link
+                        href={`/observations/${observation.id}`}
+                        className="text-sm font-medium underline-offset-4 hover:underline"
+                      >
+                        {observation.context}
+                      </Link>
+                      <p className="text-xs text-muted-foreground">
+                        {[
+                          formatDate(observation.observedAt, "MMM d, yyyy p"),
+                          observation.project?.name,
+                          observation.location,
+                          observation.competency?.title,
+                          `By ${fullName(
+                            observation.observer.user.firstName,
+                            observation.observer.user.lastName,
+                          )}`,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary">
+                        {
+                          OBSERVATION_TYPE_LABELS[
+                            observation.observationType
+                          ]
+                        }
+                      </Badge>
+                      <Badge variant="outline">
+                        {
+                          OBSERVATION_FOLLOW_UP_LABELS[
+                            observation.followUpStatus
+                          ]
+                        }
+                      </Badge>
+                    </div>
                   </li>
                 ))}
               </ul>

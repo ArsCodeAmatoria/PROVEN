@@ -24,18 +24,6 @@ export type CreateApprenticeshipInput = z.infer<
   typeof createApprenticeshipSchema
 >;
 
-export const createObservationSchema = z.object({
-  observedId: z.string().cuid(),
-  observerId: z.string().cuid(),
-  apprenticeshipId: z.string().cuid().optional(),
-  context: z.string().min(3).max(160),
-  rating: z.enum(["EXCEEDS", "MEETS", "DEVELOPING", "DOES_NOT_MEET"]),
-  notes: z.string().min(10).max(5000),
-  observedAt: z.coerce.date().optional(),
-});
-
-export type CreateObservationInput = z.infer<typeof createObservationSchema>;
-
 export const createCertificationSchema = z.object({
   profileId: z.string().cuid(),
   name: z.string().min(3).max(160),
@@ -155,3 +143,14 @@ export {
   type CreateAssessmentEngineInput,
   type AssessmentListFiltersInput,
 } from "./assessment";
+
+export {
+  createObservationSchema,
+  updateObservationFollowUpSchema,
+  observationListFiltersSchema,
+  observationTypeSchema,
+  observationFollowUpStatusSchema,
+  type CreateObservationInput,
+  type UpdateObservationFollowUpInput,
+  type ObservationListFiltersInput,
+} from "./observation";

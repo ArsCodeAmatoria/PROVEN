@@ -49,7 +49,7 @@ const NAV_SEARCH = [
     group: "Navigate",
   },
   {
-    title: "Observations",
+    title: "Field Observations",
     href: "/observations",
     icon: Eye,
     group: "Navigate",
@@ -73,7 +73,7 @@ const ACTIONS = [
   },
   {
     title: "Record observation",
-    href: "/observations",
+    href: "/observations/new",
     icon: Eye,
   },
   {

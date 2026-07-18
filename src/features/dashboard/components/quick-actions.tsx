@@ -27,7 +27,7 @@ const ACTIONS = [
   {
     title: "Record observation",
     description: "Capture instructor field notes",
-    href: "/observations",
+    href: "/observations/new",
     icon: Eye,
   },
   {

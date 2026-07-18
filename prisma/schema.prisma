@@ -95,6 +95,24 @@ enum ObservationRating {
   DOES_NOT_MEET
 }
 
+enum ObservationType {
+  POSITIVE_OBSERVATION
+  COACHING_OPPORTUNITY
+  COMPETENT_DEMONSTRATION
+  UNSAFE_ACT
+  UNSAFE_CONDITION
+  NEAR_MISS
+  FOLLOW_UP_REQUIRED
+}
+
+enum ObservationFollowUpStatus {
+  NONE
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CLOSED
+}
+
 enum ExamStatus {
   DRAFT
   PUBLISHED
@@ -442,6 +460,7 @@ model CompetencyCategory {
   parent       CompetencyCategory?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children     CompetencyCategory[] @relation("CategoryTree")
   competencies Competency[]
+  observations Observation[]
 
   @@unique([companyId, code])
   @@index([companyId, parentId])
@@ -608,31 +627,43 @@ model AssessmentSignature {
 // =============================================================================
 
 model Observation {
-  id           String            @id @default(uuid()) @db.Uuid
-  companyId    String            @map("company_id") @db.Uuid
-  projectId    String?           @map("project_id") @db.Uuid
-  competencyId String?           @map("competency_id") @db.Uuid
-  employeeId   String            @map("employee_id") @db.Uuid
-  observerId   String            @map("observer_id") @db.Uuid
-  context      String
-  rating       ObservationRating
-  notes        String
-  observedAt   DateTime          @default(now()) @map("observed_at") @db.Timestamptz(6)
-  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById  String?           @map("created_by") @db.Uuid
-  deletedAt    DateTime?         @map("deleted_at") @db.Timestamptz(6)
+  id                 String                     @id @default(uuid()) @db.Uuid
+  companyId          String                     @map("company_id") @db.Uuid
+  projectId          String?                    @map("project_id") @db.Uuid
+  categoryId         String?                    @map("category_id") @db.Uuid
+  competencyId       String?                    @map("competency_id") @db.Uuid
+  employeeId         String                     @map("employee_id") @db.Uuid
+  observerId         String                     @map("observer_id") @db.Uuid
+  observationType    ObservationType            @map("observation_type")
+  context            String
+  location           String?
+  rating             ObservationRating?
+  comments           String?
+  notes              String                     @default("")
+  correctiveActions  String?                    @map("corrective_actions")
+  dueDate            DateTime?                  @map("due_date") @db.Date
+  followUpStatus     ObservationFollowUpStatus  @default(NONE) @map("follow_up_status")
+  observedAt         DateTime                   @default(now()) @map("observed_at") @db.Timestamptz(6)
+  createdAt          DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById        String?                    @map("created_by") @db.Uuid
+  deletedAt          DateTime?                  @map("deleted_at") @db.Timestamptz(6)
 
-  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  project    Project?    @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  competency Competency? @relation(fields: [competencyId], references: [id], onDelete: SetNull)
-  employee   Employee    @relation("ObservationSubject", fields: [employeeId], references: [id], onDelete: Cascade)
-  observer   Employee    @relation("ObservationObserver", fields: [observerId], references: [id], onDelete: Restrict)
+  company    Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project    Project?            @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  category   CompetencyCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  competency Competency?         @relation(fields: [competencyId], references: [id], onDelete: SetNull)
+  employee   Employee            @relation("ObservationSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  observer   Employee            @relation("ObservationObserver", fields: [observerId], references: [id], onDelete: Restrict)
 
   @@index([companyId, observedAt])
-  @@index([employeeId])
+  @@index([companyId, observationType])
+  @@index([companyId, followUpStatus])
+  @@index([employeeId, observedAt])
   @@index([observerId])
   @@index([projectId])
+  @@index([categoryId])
+  @@index([competencyId])
   @@index([deletedAt])
   @@map("observations")
 }

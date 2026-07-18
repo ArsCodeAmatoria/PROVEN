@@ -269,7 +269,7 @@ export async function getDashboardData(
         orderBy: { level: "asc" },
       }),
       prisma.observation.groupBy({
-        by: ["rating"],
+        by: ["observationType"],
         where: { companyId, ...notDeleted },
         _count: { _all: true },
       }),
@@ -326,7 +326,7 @@ export async function getDashboardData(
         ) => ({
           id: item.id,
           context: item.context,
-          rating: item.rating,
+          rating: item.observationType,
           employeeName: fullName(
             item.employee.user.firstName,
             item.employee.user.lastName,
@@ -352,7 +352,7 @@ export async function getDashboardData(
         value: group._count._all,
       })),
       observationsByRating: observationGroups.map((group) => ({
-        label: group.rating,
+        label: group.observationType,
         value: group._count._all,
       })),
     };

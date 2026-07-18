@@ -123,7 +123,7 @@ export function DashboardCharts({
 
       <Card className="shadow-none lg:col-span-1">
         <CardHeader>
-          <CardTitle className="text-base">Observation ratings</CardTitle>
+          <CardTitle className="text-base">Observation types</CardTitle>
           <CardDescription>Field observation outcomes</CardDescription>
         </CardHeader>
         <CardContent className="h-56">
