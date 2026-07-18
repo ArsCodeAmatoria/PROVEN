@@ -34,6 +34,12 @@ export const NAV_ITEMS = [
     permission: "training-matrix" as const,
   },
   {
+    title: "Reports",
+    href: "/reports",
+    icon: "FileBarChart",
+    permission: "reports" as const,
+  },
+  {
     title: "Written Exams",
     href: "/exams",
     icon: "FileText",

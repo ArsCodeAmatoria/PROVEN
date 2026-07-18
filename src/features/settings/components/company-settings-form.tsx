@@ -70,6 +70,20 @@ export function CompanySettingsForm({
         <Label htmlFor="address">Address</Label>
         <Input id="address" {...register("address")} />
       </div>
+      <div className="space-y-2">
+        <Label htmlFor="logoUrl">Logo URL</Label>
+        <Input
+          id="logoUrl"
+          placeholder="https://…"
+          {...register("logoUrl")}
+        />
+        {errors.logoUrl ? (
+          <p className="text-xs text-destructive">{errors.logoUrl.message}</p>
+        ) : null}
+        <p className="text-xs text-muted-foreground">
+          Used on professional PDF reports.
+        </p>
+      </div>
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
       {message ? (

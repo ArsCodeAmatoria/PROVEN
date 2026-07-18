@@ -283,6 +283,7 @@ export async function updateCompanyAction(input: {
   phone?: string;
   website?: string;
   address?: string;
+  logoUrl?: string;
 }) {
   const profile = await requireAuth();
 
@@ -301,10 +302,12 @@ export async function updateCompanyAction(input: {
       phone: input.phone || null,
       website: input.website || null,
       address: input.address || null,
+      logoUrl: input.logoUrl || null,
     },
   });
 
   revalidatePath("/settings");
+  revalidatePath("/reports");
   return { error: null };
 }
 

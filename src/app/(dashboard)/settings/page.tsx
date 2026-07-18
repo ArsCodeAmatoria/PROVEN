@@ -65,6 +65,7 @@ export default async function SettingsPage() {
                   phone: profile.company.phone ?? "",
                   website: profile.company.website ?? "",
                   address: profile.company.address ?? "",
+                  logoUrl: profile.company.logoUrl ?? "",
                 }}
               />
             </CardContent>

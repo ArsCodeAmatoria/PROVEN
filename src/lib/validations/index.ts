@@ -104,6 +104,7 @@ export const companyUpdateSchema = z.object({
   phone: z.string().max(40).optional().or(z.literal("")),
   website: z.string().url().optional().or(z.literal("")),
   address: z.string().max(240).optional().or(z.literal("")),
+  logoUrl: z.string().url().optional().or(z.literal("")),
 });
 
 export type CompanyUpdateInput = z.infer<typeof companyUpdateSchema>;
@@ -160,6 +161,13 @@ export {
   type TrainingMatrixFiltersInput,
   type TrainingMatrixExportFormat,
 } from "./training-matrix";
+
+export {
+  reportTypeSchema,
+  generateReportSchema,
+  type ReportType,
+  type GenerateReportInput,
+} from "./report";
 
 export {
   createObservationSchema,

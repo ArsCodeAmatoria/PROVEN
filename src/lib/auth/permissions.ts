@@ -26,6 +26,7 @@ export type Permission =
   | "assessments"
   | "demonstrations"
   | "training-matrix"
+  | "reports"
   | "exams"
   | "apprenticeships"
   | "observations"
@@ -42,6 +43,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "exams",
     "apprenticeships",
     "observations",
@@ -57,6 +59,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "exams",
     "apprenticeships",
     "observations",
@@ -72,6 +75,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "exams",
     "apprenticeships",
     "observations",
@@ -85,6 +89,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "apprenticeships",
     "observations",
     "certifications",
@@ -107,6 +112,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "observations",
     "certifications",
     "profile",
@@ -118,6 +124,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "training-matrix",
+    "reports",
     "exams",
     "apprenticeships",
     "observations",
@@ -132,6 +139,7 @@ export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
   { prefix: "/competencies", permission: "competencies" },
   { prefix: "/demonstrations", permission: "demonstrations" },
   { prefix: "/training-matrix", permission: "training-matrix" },
+  { prefix: "/reports", permission: "reports" },
   { prefix: "/assessments", permission: "assessments" },
   { prefix: "/exams", permission: "exams" },
   { prefix: "/apprenticeships", permission: "apprenticeships" },
