@@ -9,6 +9,7 @@ import {
   requirePermission,
 } from "@/lib/auth/session";
 import { listWorkerDemonstrationProgress } from "@/services/demonstrations.service";
+import { listActiveEquipmentEndorsements } from "@/services/equipment-qualifications.service";
 import { getEmployeeById } from "@/services/people.service";
 
 interface EmployeePageProps {
@@ -39,7 +40,10 @@ export default async function EmployeeDetailPage({
     notFound();
   }
 
-  const progression = await listWorkerDemonstrationProgress(companyId, id);
+  const [progression, endorsements] = await Promise.all([
+    listWorkerDemonstrationProgress(companyId, id),
+    listActiveEquipmentEndorsements(companyId, id),
+  ]);
 
   return (
     <EmployeeDetailView
@@ -47,6 +51,7 @@ export default async function EmployeeDetailPage({
       canManage={isAdminRole(profile.role)}
       defaultTab={tab}
       demonstrationProgress={progression.data ?? []}
+      equipmentEndorsements={endorsements.data ?? []}
     />
   );
 }

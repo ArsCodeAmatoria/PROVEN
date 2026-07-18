@@ -46,6 +46,12 @@ export const NAV_ITEMS = [
     permission: "experience-log" as const,
   },
   {
+    title: "Equipment Quals",
+    href: "/equipment-qualifications",
+    icon: "Forklift",
+    permission: "equipment-qualifications" as const,
+  },
+  {
     title: "Written Exams",
     href: "/exams",
     icon: "FileText",

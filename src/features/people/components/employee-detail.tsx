@@ -8,6 +8,7 @@ import {
   Clock3,
   Eye,
   FileText,
+  Forklift,
   Hammer,
   History,
   Pencil,
@@ -66,11 +67,22 @@ interface DemonstrationProgressItem {
   latestAssessedAt: Date | null;
 }
 
+interface EquipmentEndorsementItem {
+  id: string;
+  equipmentTypeName: string;
+  make: string;
+  model: string;
+  capacity: string | null;
+  qualifiedAt: Date;
+  expiresAt: Date | null;
+}
+
 interface EmployeeDetailViewProps {
   employee: EmployeeDetail;
   canManage: boolean;
   defaultTab?: string;
   demonstrationProgress?: DemonstrationProgressItem[];
+  equipmentEndorsements?: EquipmentEndorsementItem[];
 }
 
 function DetailRow({
@@ -113,6 +125,7 @@ export function EmployeeDetailView({
   canManage,
   defaultTab = "overview",
   demonstrationProgress = [],
+  equipmentEndorsements = [],
 }: EmployeeDetailViewProps) {
   const [pending, startTransition] = useTransition();
   const photo = employeePhotoUrl(employee);
@@ -263,6 +276,38 @@ export function EmployeeDetailView({
               </ul>
             </ListCard>
           ) : null}
+
+          {equipmentEndorsements.length > 0 ? (
+            <ListCard title="Active equipment endorsements">
+              <ul className="space-y-3">
+                {equipmentEndorsements.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3 last:border-0 last:pb-0"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">
+                        {item.equipmentTypeName}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {[
+                          `${item.make} ${item.model}`,
+                          item.capacity,
+                          `Qualified ${formatDate(item.qualifiedAt)}`,
+                          item.expiresAt
+                            ? `Expires ${formatDate(item.expiresAt)}`
+                            : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                    <Badge variant="success">Active</Badge>
+                  </li>
+                ))}
+              </ul>
+            </ListCard>
+          ) : null}
         </TabsContent>
 
         <TabsContent value="competencies">
@@ -404,6 +449,56 @@ export function EmployeeDetailView({
                           }
                         </Badge>
                       ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ListCard>
+        </TabsContent>
+
+        <TabsContent value="equipment">
+          <ListCard
+            title="Active equipment endorsements"
+            description="Current qualifications on specific equipment classes"
+          >
+            {equipmentEndorsements.length === 0 ? (
+              <EmptyState
+                icon={Forklift}
+                title="No active endorsements"
+                description="Equipment qualifications for this worker will appear here when active."
+              />
+            ) : (
+              <ul className="space-y-3">
+                {equipmentEndorsements.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3 last:border-0 last:pb-0"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">
+                        {item.equipmentTypeName}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {[
+                          `${item.make} ${item.model}`,
+                          item.capacity,
+                          `Qualified ${formatDate(item.qualifiedAt)}`,
+                          item.expiresAt
+                            ? `Expires ${formatDate(item.expiresAt)}`
+                            : "No expiry",
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge variant="success">Active</Badge>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={`/equipment-qualifications/${item.id}`}>
+                          View
+                        </Link>
+                      </Button>
                     </div>
                   </li>
                 ))}

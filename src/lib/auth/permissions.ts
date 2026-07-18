@@ -28,6 +28,7 @@ export type Permission =
   | "training-matrix"
   | "reports"
   | "experience-log"
+  | "equipment-qualifications"
   | "exams"
   | "apprenticeships"
   | "observations"
@@ -46,6 +47,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "exams",
     "apprenticeships",
     "observations",
@@ -63,6 +65,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "exams",
     "apprenticeships",
     "observations",
@@ -80,6 +83,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "exams",
     "apprenticeships",
     "observations",
@@ -95,6 +99,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "apprenticeships",
     "observations",
     "certifications",
@@ -106,6 +111,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "assessments",
     "demonstrations",
     "experience-log",
+    "equipment-qualifications",
     "exams",
     "apprenticeships",
     "certifications",
@@ -120,6 +126,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "observations",
     "certifications",
     "profile",
@@ -133,6 +140,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "training-matrix",
     "reports",
     "experience-log",
+    "equipment-qualifications",
     "exams",
     "apprenticeships",
     "observations",
@@ -149,6 +157,10 @@ export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
   { prefix: "/training-matrix", permission: "training-matrix" },
   { prefix: "/reports", permission: "reports" },
   { prefix: "/experience-log", permission: "experience-log" },
+  {
+    prefix: "/equipment-qualifications",
+    permission: "equipment-qualifications",
+  },
   { prefix: "/assessments", permission: "assessments" },
   { prefix: "/exams", permission: "exams" },
   { prefix: "/apprenticeships", permission: "apprenticeships" },

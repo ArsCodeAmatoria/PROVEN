@@ -141,6 +141,13 @@ enum EquipmentStatus {
   LOST
 }
 
+enum EquipmentQualificationStatus {
+  ACTIVE
+  EXPIRED
+  SUSPENDED
+  REVOKED
+}
+
 enum MediaEntityType {
   COMPANY
   EMPLOYEE
@@ -261,6 +268,7 @@ model Company {
   employeeHours          EmployeeHour[]
   equipmentTypes         EquipmentType[]
   equipment              Equipment[]
+  equipmentQualifications EquipmentQualification[]
   experienceLogEntries   ExperienceLogEntry[]
   experienceMilestones   ExperienceMilestone[]
   photos                 Photo[]
@@ -351,6 +359,8 @@ model Employee {
   assessmentSignatures   AssessmentSignature[]    @relation("AssessmentSigner")
   experienceLogs         ExperienceLogEntry[]     @relation("ExperienceSubject")
   experienceSupervised   ExperienceLogEntry[]     @relation("ExperienceSupervisor")
+  equipmentQualifications EquipmentQualification[] @relation("EquipmentQualificationSubject")
+  equipmentQualificationsGiven EquipmentQualification[] @relation("EquipmentQualificationAssessor")
 
   @@unique([companyId, userId])
   @@unique([companyId, employeeNumber])
@@ -585,6 +595,7 @@ model Assessment {
   competency Competency?        @relation(fields: [competencyId], references: [id], onDelete: SetNull)
   assessor   Employee?          @relation("AssessmentAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
   results    AssessmentResult[]
+  equipmentQualificationLinks EquipmentQualificationAssessment[]
 
   @@index([companyId, status])
   @@index([projectId])
@@ -871,6 +882,7 @@ model EquipmentType {
 
   company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
   equipment Equipment[]
+  qualifications EquipmentQualification[]
 
   @@unique([companyId, code])
   @@index([deletedAt])
@@ -899,6 +911,7 @@ model Equipment {
   project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
   assignedTo    Employee?     @relation("EquipmentAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
   experienceLogs ExperienceLogEntry[]
+  qualifications EquipmentQualification[]
 
   @@unique([companyId, assetTag])
   @@index([companyId, status])
@@ -907,6 +920,60 @@ model Equipment {
   @@index([assignedToId])
   @@index([deletedAt])
   @@map("equipment")
+}
+
+model EquipmentQualification {
+  id              String                       @id @default(uuid()) @db.Uuid
+  companyId       String                       @map("company_id") @db.Uuid
+  employeeId      String                       @map("employee_id") @db.Uuid
+  equipmentTypeId String                       @map("equipment_type_id") @db.Uuid
+  equipmentId     String?                      @map("equipment_id") @db.Uuid
+  assessorId      String?                      @map("assessor_id") @db.Uuid
+  make            String
+  model           String
+  capacity        String?
+  qualifiedAt     DateTime                     @map("qualified_at") @db.Date
+  expiresAt       DateTime?                    @map("expires_at") @db.Date
+  status          EquipmentQualificationStatus @default(ACTIVE)
+  notes           String?
+  createdAt       DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById     String?                      @map("created_by") @db.Uuid
+  deletedAt       DateTime?                    @map("deleted_at") @db.Timestamptz(6)
+
+  company       Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee      Employee             @relation("EquipmentQualificationSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  equipmentType EquipmentType        @relation(fields: [equipmentTypeId], references: [id], onDelete: Restrict)
+  equipment     Equipment?           @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  assessor      Employee?            @relation("EquipmentQualificationAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
+  assessments   EquipmentQualificationAssessment[]
+
+  @@index([companyId, status])
+  @@index([employeeId, status])
+  @@index([equipmentTypeId])
+  @@index([equipmentId])
+  @@index([assessorId])
+  @@index([expiresAt])
+  @@index([deletedAt])
+  @@map("equipment_qualifications")
+}
+
+model EquipmentQualificationAssessment {
+  id               String    @id @default(uuid()) @db.Uuid
+  qualificationId  String    @map("qualification_id") @db.Uuid
+  assessmentId     String    @map("assessment_id") @db.Uuid
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById      String?   @map("created_by") @db.Uuid
+  deletedAt        DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  qualification EquipmentQualification @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+  assessment    Assessment             @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@unique([qualificationId, assessmentId])
+  @@index([assessmentId])
+  @@index([deletedAt])
+  @@map("equipment_qualification_assessments")
 }
 
 // =============================================================================

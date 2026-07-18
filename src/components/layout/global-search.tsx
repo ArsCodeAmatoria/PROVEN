@@ -8,6 +8,7 @@ import {
   Eye,
   FileBarChart,
   FileText,
+  Forklift,
   GraduationCap,
   Grid3x3,
   Hammer,
@@ -69,6 +70,12 @@ const NAV_SEARCH = [
     icon: Clock3,
     group: "Navigate",
   },
+  {
+    title: "Equipment Qualifications",
+    href: "/equipment-qualifications",
+    icon: Forklift,
+    group: "Navigate",
+  },
   { title: "Written Exams", href: "/exams", icon: FileText, group: "Navigate" },
   {
     title: "Projects",
@@ -108,6 +115,11 @@ const ACTIONS = [
     title: "Log experience",
     href: "/experience-log/new",
     icon: Clock3,
+  },
+  {
+    title: "Add equipment qualification",
+    href: "/equipment-qualifications/new",
+    icon: Forklift,
   },
   {
     title: "Record observation",
