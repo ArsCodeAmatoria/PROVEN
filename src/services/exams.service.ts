@@ -18,7 +18,7 @@ import {
 } from "./base";
 
 export async function listExams(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<WrittenExam>>> {
   const configError = getDatabaseConfigError();
@@ -29,12 +29,12 @@ export async function listExams(
 
     const [items, total] = await Promise.all([
       prisma.writtenExam.findMany({
-        where: { organizationId },
+        where: { companyId },
         orderBy: { updatedAt: "desc" },
         skip,
         take: pageSize,
       }),
-      prisma.writtenExam.count({ where: { organizationId } }),
+      prisma.writtenExam.count({ where: { companyId } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

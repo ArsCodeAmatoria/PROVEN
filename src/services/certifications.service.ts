@@ -18,7 +18,7 @@ import {
 } from "./base";
 
 export async function listCertifications(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<Certification>>> {
   const configError = getDatabaseConfigError();
@@ -29,12 +29,12 @@ export async function listCertifications(
 
     const [items, total] = await Promise.all([
       prisma.certification.findMany({
-        where: { organizationId },
+        where: { companyId },
         orderBy: { expiresAt: "asc" },
         skip,
         take: pageSize,
       }),
-      prisma.certification.count({ where: { organizationId } }),
+      prisma.certification.count({ where: { companyId } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

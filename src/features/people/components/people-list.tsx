@@ -1,7 +1,7 @@
 import { Users } from "lucide-react";
 
 import { EmptyState } from "@/components/shared/empty-state";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ROLE_LABELS } from "@/lib/auth/permissions";
 import type { Profile } from "@/types";
 import { fullName, getInitials } from "@/utils/format";
 
@@ -33,8 +34,8 @@ export function PeopleList({ items, error }: PeopleListProps) {
     return (
       <EmptyState
         icon={Users}
-        title="No people in this organization"
-        description="Profiles link Supabase Auth users to roles such as instructor, assessor, supervisor, and apprentice."
+        title="No people in this company"
+        description="Profiles link Supabase Auth users to roles such as instructor, supervisor, apprentice, and operator. Companies can have unlimited employees."
       />
     );
   }
@@ -45,6 +46,9 @@ export function PeopleList({ items, error }: PeopleListProps) {
         <Card key={person.id} className="shadow-none">
           <CardHeader className="flex-row items-center gap-3 space-y-0">
             <Avatar>
+              {person.avatarUrl ? (
+                <AvatarImage src={person.avatarUrl} alt="" />
+              ) : null}
               <AvatarFallback>
                 {getInitials(person.firstName, person.lastName)}
               </AvatarFallback>
@@ -54,7 +58,7 @@ export function PeopleList({ items, error }: PeopleListProps) {
                 <CardTitle className="text-base">
                   {fullName(person.firstName, person.lastName)}
                 </CardTitle>
-                <Badge variant="secondary">{person.role}</Badge>
+                <Badge variant="secondary">{ROLE_LABELS[person.role]}</Badge>
               </div>
               <CardDescription className="truncate">
                 {person.email}

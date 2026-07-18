@@ -64,9 +64,7 @@ export function DashboardOverview({ metrics, error }: DashboardOverviewProps) {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Copy <code className="rounded bg-muted px-1.5 py-0.5 text-xs">.env.example</code>{" "}
-              to <code className="rounded bg-muted px-1.5 py-0.5 text-xs">.env.local</code> and
-              provide your Supabase Postgres and API credentials.
+Connect Supabase Auth and Postgres, then apply the RLS migration in `supabase/migrations`.
             </p>
           </CardContent>
         </Card>

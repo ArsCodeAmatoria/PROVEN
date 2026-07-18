@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -31,17 +32,19 @@ export default function LoginPage() {
               Sign in to Proven
             </CardTitle>
             <CardDescription>
-              Competency management for construction teams — verify skills,
-              exams, apprenticeships, and certifications.
+              Competency management for construction teams.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <LoginForm />
+            <Suspense fallback={<div className="h-40 animate-pulse rounded-md bg-muted" />}>
+              <LoginForm />
+            </Suspense>
             <p className="text-center text-xs text-muted-foreground">
-              Need access? Contact your organization administrator.{" "}
-              <Link href="/" className="underline underline-offset-4">
-                Back to app
+              Need access? Ask your company admin, or{" "}
+              <Link href="/signup" className="underline underline-offset-4">
+                register a company
               </Link>
+              .
             </p>
           </CardContent>
         </Card>

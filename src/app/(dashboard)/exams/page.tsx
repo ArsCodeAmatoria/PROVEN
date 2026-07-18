@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/shared/page-header";
-import { DEFAULT_ORGANIZATION_ID } from "@/features/competencies/api";
 import { ExamList } from "@/features/exams/components/exam-list";
+import { requireCompanyId } from "@/lib/auth/session";
 import { listExams } from "@/services/exams.service";
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ExamsPage() {
-  const result = await listExams(DEFAULT_ORGANIZATION_ID);
+  const { companyId } = await requireCompanyId();
+  const result = await listExams(companyId);
 
   return (
     <div className="space-y-6">

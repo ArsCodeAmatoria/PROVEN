@@ -19,7 +19,7 @@ import {
 } from "./base";
 
 export async function listCompetencies(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<Competency>>> {
   const configError = getDatabaseConfigError();
@@ -30,12 +30,12 @@ export async function listCompetencies(
 
     const [items, total] = await Promise.all([
       prisma.competency.findMany({
-        where: { organizationId },
+        where: { companyId },
         orderBy: [{ trade: "asc" }, { code: "asc" }],
         skip,
         take: pageSize,
       }),
-      prisma.competency.count({ where: { organizationId } }),
+      prisma.competency.count({ where: { companyId } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));
@@ -45,7 +45,7 @@ export async function listCompetencies(
 }
 
 export async function createCompetency(
-  organizationId: string,
+  companyId: string,
   input: CreateCompetencyInput,
 ): Promise<ServiceResult<Competency>> {
   const configError = getDatabaseConfigError();
@@ -54,7 +54,7 @@ export async function createCompetency(
   try {
     const competency = await prisma.competency.create({
       data: {
-        organizationId,
+        companyId,
         code: input.code,
         title: input.title,
         description: input.description,

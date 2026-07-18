@@ -8,51 +8,84 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CompanySettingsForm } from "@/features/settings/components/company-settings-form";
+import { UserSettingsForm } from "@/features/settings/components/user-settings-form";
+import { isAdminRole } from "@/lib/auth/permissions";
+import { requireAuth } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
   title: "Settings",
 };
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const profile = await requireAuth();
+  const settings = profile.settings;
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Settings"
-        description="Workspace configuration for your organization."
+        description="User preferences and company configuration."
       />
-      <div className="grid gap-4 md:grid-cols-2">
+
+      <div className="grid gap-6 lg:grid-cols-2">
         <Card className="shadow-none">
           <CardHeader>
-            <CardTitle className="text-base">Organization</CardTitle>
+            <CardTitle className="text-base">User preferences</CardTitle>
             <CardDescription>
-              Name, branding, and default trade programs.
+              Notifications, locale, and sign-in defaults.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Connect Supabase Auth and set{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
-                PROVEN_DEFAULT_ORG_ID
-              </code>{" "}
-              to scope data to your organization.
-            </p>
+            <UserSettingsForm
+              defaultValues={{
+                emailNotifications: settings?.emailNotifications ?? true,
+                assessmentReminders: settings?.assessmentReminders ?? true,
+                rememberMeDefault: settings?.rememberMeDefault ?? true,
+                timezone: settings?.timezone ?? "America/New_York",
+                locale: settings?.locale ?? "en-US",
+              }}
+            />
           </CardContent>
         </Card>
-        <Card className="shadow-none">
-          <CardHeader>
-            <CardTitle className="text-base">Integrations</CardTitle>
-            <CardDescription>
-              Database and authentication providers.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Supabase Auth + Postgres</li>
-              <li>Prisma ORM</li>
-              <li>TanStack Query (client cache)</li>
-            </ul>
-          </CardContent>
-        </Card>
+
+        {isAdminRole(profile.role) && profile.company ? (
+          <Card className="shadow-none">
+            <CardHeader>
+              <CardTitle className="text-base">Company</CardTitle>
+              <CardDescription>
+                Workspace details for {profile.company.name}. Employees can be
+                unlimited.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CompanySettingsForm
+                defaultValues={{
+                  name: profile.company.name,
+                  phone: profile.company.phone ?? "",
+                  website: profile.company.website ?? "",
+                  address: profile.company.address ?? "",
+                }}
+              />
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="shadow-none">
+            <CardHeader>
+              <CardTitle className="text-base">Company</CardTitle>
+              <CardDescription>
+                {profile.company?.name
+                  ? `You belong to ${profile.company.name}.`
+                  : "No company is linked to this account."}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Company settings are managed by Super Admins and Company Admins.
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { CertificationList } from "@/features/certifications/components/certification-list";
-import { DEFAULT_ORGANIZATION_ID } from "@/features/competencies/api";
+import { requireCompanyId } from "@/lib/auth/session";
 import { listCertifications } from "@/services/certifications.service";
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CertificationsPage() {
-  const result = await listCertifications(DEFAULT_ORGANIZATION_ID);
+  const { companyId } = await requireCompanyId();
+  const result = await listCertifications(companyId);
 
   return (
     <div className="space-y-6">

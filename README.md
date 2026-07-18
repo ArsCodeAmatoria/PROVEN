@@ -49,14 +49,39 @@ src/
 prisma/          # Schema and migrations
 ```
 
+## Authentication
+
+Supabase Auth with company-scoped profiles and RBAC:
+
+| Role | Access |
+|------|--------|
+| Super Admin | Full platform |
+| Company Admin | Company management + all modules |
+| Instructor | Assessments, exams, observations, apprenticeships |
+| Supervisor | Progress oversight + observations |
+| Apprentice | Own progress, assessments, exams, certifications |
+| Operator | Operational entry on competencies/assessments |
+| Read Only | View-only across modules |
+
+Protected routes are enforced in middleware (session + role) and again in server layouts/pages. Session cookies persist when **Remember me** is enabled (30 days).
+
+After pushing the Prisma schema, apply RLS + auth triggers:
+
+```bash
+npm run db:push
+# Then run supabase/migrations/20260718000000_auth_rls.sql in the Supabase SQL editor
+```
+
+Auth routes: `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/callback`  
+Account routes: `/profile`, `/settings`
+
 ## Environment
 
 See `.env.example` for required variables:
 
 - `DATABASE_URL` — Supabase Postgres connection string
 - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY` (server only)
-- `PROVEN_DEFAULT_ORG_ID` — organization scope until session wiring is complete
+- `SUPABASE_SERVICE_ROLE_KEY` (server only; company signup / admin APIs)
 
 ## Scripts
 

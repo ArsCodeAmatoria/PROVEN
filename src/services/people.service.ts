@@ -18,7 +18,7 @@ import {
 } from "./base";
 
 export async function listPeople(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<Profile>>> {
   const configError = getDatabaseConfigError();
@@ -29,12 +29,12 @@ export async function listPeople(
 
     const [items, total] = await Promise.all([
       prisma.profile.findMany({
-        where: { organizationId, isActive: true },
+        where: { companyId, isActive: true },
         orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
         skip,
         take: pageSize,
       }),
-      prisma.profile.count({ where: { organizationId, isActive: true } }),
+      prisma.profile.count({ where: { companyId, isActive: true } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

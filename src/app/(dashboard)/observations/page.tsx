@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/shared/page-header";
-import { DEFAULT_ORGANIZATION_ID } from "@/features/competencies/api";
 import { ObservationList } from "@/features/observations/components/observation-list";
+import { requireCompanyId } from "@/lib/auth/session";
 import { listObservations } from "@/services/observations.service";
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ObservationsPage() {
-  const result = await listObservations(DEFAULT_ORGANIZATION_ID);
+  const { companyId } = await requireCompanyId();
+  const result = await listObservations(companyId);
 
   return (
     <div className="space-y-6">

@@ -73,6 +73,69 @@ export type CreateCertificationInput = z.infer<
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  rememberMe: z.boolean(),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
+
+export const signupSchema = z
+  .object({
+    companyName: z.string().min(2).max(120),
+    firstName: z.string().min(1).max(80),
+    lastName: z.string().min(1).max(80),
+    email: z.string().email(),
+    password: z.string().min(8).max(128),
+    confirmPassword: z.string().min(8).max(128),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type SignupInput = z.infer<typeof signupSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8).max(128),
+    confirmPassword: z.string().min(8).max(128),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+
+export const profileUpdateSchema = z.object({
+  firstName: z.string().min(1).max(80),
+  lastName: z.string().min(1).max(80),
+  phone: z.string().max(40).optional().or(z.literal("")),
+  title: z.string().max(120).optional().or(z.literal("")),
+});
+
+export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;
+
+export const userSettingsSchema = z.object({
+  emailNotifications: z.boolean(),
+  assessmentReminders: z.boolean(),
+  rememberMeDefault: z.boolean(),
+  timezone: z.string().min(2).max(80),
+  locale: z.string().min(2).max(16),
+});
+
+export type UserSettingsInput = z.infer<typeof userSettingsSchema>;
+
+export const companyUpdateSchema = z.object({
+  name: z.string().min(2).max(120),
+  phone: z.string().max(40).optional().or(z.literal("")),
+  website: z.string().url().optional().or(z.literal("")),
+  address: z.string().max(240).optional().or(z.literal("")),
+});
+
+export type CompanyUpdateInput = z.infer<typeof companyUpdateSchema>;

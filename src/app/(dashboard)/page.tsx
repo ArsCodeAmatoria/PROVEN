@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { DashboardOverview } from "@/features/dashboard/overview";
-import { DEFAULT_ORGANIZATION_ID } from "@/features/competencies/api";
+import { requireCompanyId } from "@/lib/auth/session";
 import { getDashboardMetrics } from "@/services/dashboard.service";
 
 export const metadata: Metadata = {
@@ -9,9 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const result = await getDashboardMetrics(DEFAULT_ORGANIZATION_ID);
+  const { companyId } = await requireCompanyId();
+  const result = await getDashboardMetrics(companyId);
 
-  return (
-    <DashboardOverview metrics={result.data} error={result.error} />
-  );
+  return <DashboardOverview metrics={result.data} error={result.error} />;
 }

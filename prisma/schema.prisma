@@ -7,14 +7,15 @@ datasource db {
   provider = "postgresql"
 }
 
+/// Application roles for Proven CMS RBAC.
 enum UserRole {
   SUPER_ADMIN
-  ORG_ADMIN
+  COMPANY_ADMIN
   INSTRUCTOR
-  ASSESSOR
   SUPERVISOR
   APPRENTICE
-  LEARNER
+  OPERATOR
+  READ_ONLY
 }
 
 enum CompetencyStatus {
@@ -73,89 +74,147 @@ enum ContinuousAssessmentType {
   ORAL
 }
 
-model Organization {
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+  EXPIRED
+}
+
+/// A construction company / employer account.
+/// A company can have unlimited employee profiles.
+model Company {
   id        String   @id @default(cuid())
   name      String
   slug      String   @unique
   logoUrl   String?
+  website   String?
+  phone     String?
+  address   String?
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   profiles         Profile[]
+  invites          CompanyInvite[]
   competencies     Competency[]
   exams            WrittenExam[]
   apprenticeships  Apprenticeship[]
   certifications   Certification[]
   assessments      ContinuousAssessment[]
 
-  @@map("organizations")
+  @@map("companies")
 }
 
+/// App user profile linked 1:1 to Supabase Auth (`auth.users`).
 model Profile {
-  id             String   @id @default(cuid())
-  authUserId     String   @unique
-  organizationId String
-  email          String
-  firstName      String
-  lastName       String
-  role           UserRole @default(LEARNER)
-  title          String?
-  avatarUrl      String?
-  phone          String?
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id          String    @id @default(cuid())
+  authUserId  String    @unique
+  companyId   String?
+  email       String
+  firstName   String
+  lastName    String
+  role        UserRole  @default(READ_ONLY)
+  title       String?
+  avatarUrl   String?
+  phone       String?
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  organization            Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  competencyAssessments   CompetencyAssessment[] @relation("Assessee")
-  assessmentsConducted    CompetencyAssessment[] @relation("Assessor")
+  company                 Company?                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  settings                UserSettings?
+  invitesSent             CompanyInvite[]         @relation("InviteSender")
+  competencyAssessments   CompetencyAssessment[]  @relation("Assessee")
+  assessmentsConducted    CompetencyAssessment[]  @relation("Assessor")
   examAttempts            ExamAttempt[]
-  apprenticeships         Apprenticeship[]       @relation("Apprentice")
-  supervisedApprentices   Apprenticeship[]       @relation("Mentor")
+  apprenticeships         Apprenticeship[]        @relation("Apprentice")
+  supervisedApprentices   Apprenticeship[]        @relation("Mentor")
   observationsReceived    InstructorObservation[] @relation("Observed")
   observationsGiven       InstructorObservation[] @relation("Observer")
   certifications          Certification[]
-  continuousAssessments   ContinuousAssessment[] @relation("Assessee")
-  continuousAssessedBy    ContinuousAssessment[] @relation("Assessor")
+  continuousAssessments   ContinuousAssessment[]  @relation("Assessee")
+  continuousAssessedBy    ContinuousAssessment[]  @relation("Assessor")
 
-  @@index([organizationId])
+  @@index([companyId])
   @@index([email])
   @@index([role])
   @@map("profiles")
 }
 
+/// Per-user preferences (notifications, locale, defaults).
+model UserSettings {
+  id                  String   @id @default(cuid())
+  profileId           String   @unique
+  emailNotifications  Boolean  @default(true)
+  assessmentReminders Boolean  @default(true)
+  rememberMeDefault   Boolean  @default(true)
+  timezone            String   @default("America/New_York")
+  locale              String   @default("en-US")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+/// Invite an employee into a company with a predetermined role.
+model CompanyInvite {
+  id          String      @id @default(cuid())
+  companyId   String
+  email       String
+  role        UserRole    @default(OPERATOR)
+  token       String      @unique @default(cuid())
+  status      InviteStatus @default(PENDING)
+  invitedById String
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  invitedBy Profile @relation("InviteSender", fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, email, status])
+  @@index([token])
+  @@index([companyId])
+  @@map("company_invites")
+}
+
 model Competency {
-  id             String           @id @default(cuid())
-  organizationId String
-  code           String
-  title          String
-  description    String
-  category       String
-  trade          String
-  level          Int              @default(1)
-  status         CompetencyStatus @default(DRAFT)
-  version        Int              @default(1)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  id          String           @id @default(cuid())
+  companyId   String
+  code        String
+  title       String
+  description String
+  category    String
+  trade       String
+  level       Int              @default(1)
+  status      CompetencyStatus @default(DRAFT)
+  version     Int              @default(1)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
-  organization Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  criteria     CompetencyCriterion[]
-  assessments  CompetencyAssessment[]
-  examLinks    ExamCompetency[]
-  progress     ApprenticeshipProgress[]
+  company     Company                 @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  criteria    CompetencyCriterion[]
+  assessments CompetencyAssessment[]
+  examLinks   ExamCompetency[]
+  progress    ApprenticeshipProgress[]
 
-  @@unique([organizationId, code, version])
-  @@index([organizationId, status])
+  @@unique([companyId, code, version])
+  @@index([companyId, status])
   @@index([trade, category])
   @@map("competencies")
 }
 
 model CompetencyCriterion {
-  id            String @id @default(cuid())
-  competencyId  String
-  description   String
-  sortOrder     Int    @default(0)
-  isCritical    Boolean @default(false)
+  id           String  @id @default(cuid())
+  competencyId String
+  description  String
+  sortOrder    Int     @default(0)
+  isCritical   Boolean @default(false)
 
   competency Competency @relation(fields: [competencyId], references: [id], onDelete: Cascade)
 
@@ -187,25 +246,25 @@ model CompetencyAssessment {
 }
 
 model WrittenExam {
-  id             String     @id @default(cuid())
-  organizationId String
-  code           String
-  title          String
-  description    String?
-  status         ExamStatus @default(DRAFT)
-  passingScore   Int        @default(70)
-  timeLimitMin   Int?
-  version        Int        @default(1)
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  id           String     @id @default(cuid())
+  companyId    String
+  code         String
+  title        String
+  description  String?
+  status       ExamStatus @default(DRAFT)
+  passingScore Int        @default(70)
+  timeLimitMin Int?
+  version      Int        @default(1)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
-  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  company      Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
   questions    ExamQuestion[]
   attempts     ExamAttempt[]
   competencies ExamCompetency[]
 
-  @@unique([organizationId, code, version])
-  @@index([organizationId, status])
+  @@unique([companyId, code, version])
+  @@index([companyId, status])
   @@map("written_exams")
 }
 
@@ -257,7 +316,7 @@ model ExamAttempt {
 
 model Apprenticeship {
   id             String               @id @default(cuid())
-  organizationId String
+  companyId      String
   apprenticeId   String
   mentorId       String?
   programName    String
@@ -270,13 +329,13 @@ model Apprenticeship {
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
 
-  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  company      Company                  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   apprentice   Profile                 @relation("Apprentice", fields: [apprenticeId], references: [id], onDelete: Cascade)
   mentor       Profile?                @relation("Mentor", fields: [mentorId], references: [id], onDelete: SetNull)
   progress     ApprenticeshipProgress[]
   observations InstructorObservation[]
 
-  @@index([organizationId])
+  @@index([companyId])
   @@index([apprenticeId])
   @@index([status])
   @@map("apprenticeships")
@@ -323,23 +382,23 @@ model InstructorObservation {
 }
 
 model Certification {
-  id               String              @id @default(cuid())
-  organizationId   String
-  profileId        String
-  name             String
-  issuer           String
-  credentialId     String?
-  status           CertificationStatus @default(PENDING)
-  issuedAt         DateTime?
-  expiresAt        DateTime?
-  documentUrl      String?
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
+  id           String              @id @default(cuid())
+  companyId    String
+  profileId    String
+  name         String
+  issuer       String
+  credentialId String?
+  status       CertificationStatus @default(PENDING)
+  issuedAt     DateTime?
+  expiresAt    DateTime?
+  documentUrl  String?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  profile      Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@index([organizationId])
+  @@index([companyId])
   @@index([profileId])
   @@index([status])
   @@index([expiresAt])
@@ -347,26 +406,26 @@ model Certification {
 }
 
 model ContinuousAssessment {
-  id             String                   @id @default(cuid())
-  organizationId String
-  assesseeId     String
-  assessorId     String
-  type           ContinuousAssessmentType
-  title          String
-  description    String?
-  outcome        AssessmentOutcome        @default(NOT_STARTED)
-  score          Int?
-  maxScore       Int?
-  feedback       String?
-  assessedAt     DateTime?
-  createdAt      DateTime                 @default(now())
-  updatedAt      DateTime                 @updatedAt
+  id          String                   @id @default(cuid())
+  companyId   String
+  assesseeId  String
+  assessorId  String
+  type        ContinuousAssessmentType
+  title       String
+  description String?
+  outcome     AssessmentOutcome        @default(NOT_STARTED)
+  score       Int?
+  maxScore    Int?
+  feedback    String?
+  assessedAt  DateTime?
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  assessee     Profile      @relation("Assessee", fields: [assesseeId], references: [id], onDelete: Cascade)
-  assessor     Profile      @relation("Assessor", fields: [assessorId], references: [id], onDelete: Restrict)
+  company  Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assessee Profile @relation("Assessee", fields: [assesseeId], references: [id], onDelete: Cascade)
+  assessor Profile @relation("Assessor", fields: [assessorId], references: [id], onDelete: Restrict)
 
-  @@index([organizationId])
+  @@index([companyId])
   @@index([assesseeId])
   @@index([type])
   @@map("continuous_assessments")

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { AssessmentList } from "@/features/assessments/components/assessment-list";
-import { DEFAULT_ORGANIZATION_ID } from "@/features/competencies/api";
+import { requireCompanyId } from "@/lib/auth/session";
 import { listContinuousAssessments } from "@/services/assessments.service";
 
 export const metadata: Metadata = {
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AssessmentsPage() {
-  const result = await listContinuousAssessments(DEFAULT_ORGANIZATION_ID);
+  const { companyId } = await requireCompanyId();
+  const result = await listContinuousAssessments(companyId);
 
   return (
     <div className="space-y-6">

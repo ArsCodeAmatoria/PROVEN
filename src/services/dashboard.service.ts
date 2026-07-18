@@ -13,7 +13,7 @@ import type { DashboardMetrics, ServiceResult } from "@/types";
 import { failure, getDatabaseConfigError, success, unavailable } from "./base";
 
 export async function getDashboardMetrics(
-  organizationId: string,
+  companyId: string,
 ): Promise<ServiceResult<DashboardMetrics>> {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
@@ -34,34 +34,34 @@ export async function getDashboardMetrics(
       publishedExams,
     ] = await Promise.all([
       prisma.competency.count({
-        where: { organizationId, status: CompetencyStatus.ACTIVE },
+        where: { companyId, status: CompetencyStatus.ACTIVE },
       }),
       prisma.competencyAssessment.count({
         where: {
-          competency: { organizationId },
+          competency: { companyId },
           outcome: {
             in: [AssessmentOutcome.NOT_STARTED, AssessmentOutcome.IN_PROGRESS],
           },
         },
       }),
       prisma.apprenticeship.count({
-        where: { organizationId, status: ApprenticeshipStatus.ACTIVE },
+        where: { companyId, status: ApprenticeshipStatus.ACTIVE },
       }),
       prisma.certification.count({
         where: {
-          organizationId,
+          companyId,
           status: CertificationStatus.ACTIVE,
           expiresAt: { lte: thirtyDaysFromNow, gte: new Date() },
         },
       }),
       prisma.instructorObservation.count({
         where: {
-          observed: { organizationId },
+          observed: { companyId },
           observedAt: { gte: sevenDaysAgo },
         },
       }),
       prisma.writtenExam.count({
-        where: { organizationId, status: ExamStatus.PUBLISHED },
+        where: { companyId, status: ExamStatus.PUBLISHED },
       }),
     ]);
 

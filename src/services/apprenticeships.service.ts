@@ -18,7 +18,7 @@ import {
 } from "./base";
 
 export async function listApprenticeships(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<Apprenticeship>>> {
   const configError = getDatabaseConfigError();
@@ -29,12 +29,12 @@ export async function listApprenticeships(
 
     const [items, total] = await Promise.all([
       prisma.apprenticeship.findMany({
-        where: { organizationId },
+        where: { companyId },
         orderBy: { startDate: "desc" },
         skip,
         take: pageSize,
       }),
-      prisma.apprenticeship.count({ where: { organizationId } }),
+      prisma.apprenticeship.count({ where: { companyId } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

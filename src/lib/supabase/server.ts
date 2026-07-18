@@ -34,3 +34,10 @@ export async function createClient() {
     },
   );
 }
+
+export async function tryCreateClient() {
+  if (!hasSupabaseConfig()) {
+    return null;
+  }
+  return createClient();
+}

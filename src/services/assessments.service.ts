@@ -21,7 +21,7 @@ import {
 } from "./base";
 
 export async function listContinuousAssessments(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<ContinuousAssessment>>> {
   const configError = getDatabaseConfigError();
@@ -32,12 +32,12 @@ export async function listContinuousAssessments(
 
     const [items, total] = await Promise.all([
       prisma.continuousAssessment.findMany({
-        where: { organizationId },
+        where: { companyId },
         orderBy: { createdAt: "desc" },
         skip,
         take: pageSize,
       }),
-      prisma.continuousAssessment.count({ where: { organizationId } }),
+      prisma.continuousAssessment.count({ where: { companyId } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));
@@ -47,7 +47,7 @@ export async function listContinuousAssessments(
 }
 
 export async function countOpenAssessments(
-  organizationId: string,
+  companyId: string,
 ): Promise<ServiceResult<number>> {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
@@ -55,7 +55,7 @@ export async function countOpenAssessments(
   try {
     const count = await prisma.continuousAssessment.count({
       where: {
-        organizationId,
+        companyId,
         outcome: {
           in: [AssessmentOutcome.NOT_STARTED, AssessmentOutcome.IN_PROGRESS],
         },

@@ -1,6 +1,8 @@
 export type {
-  Organization,
+  Company,
   Profile,
+  UserSettings,
+  CompanyInvite,
   Competency,
   CompetencyCriterion,
   CompetencyAssessment,
@@ -14,8 +16,10 @@ export type {
   ContinuousAssessment,
 } from "@/generated/prisma/client";
 
+export type { UserRole } from "@/types/roles";
+export { USER_ROLES, isUserRole } from "@/types/roles";
+
 export {
-  UserRole,
   CompetencyStatus,
   AssessmentOutcome,
   ExamStatus,
@@ -24,6 +28,7 @@ export {
   ObservationRating,
   CertificationStatus,
   ContinuousAssessmentType,
+  InviteStatus,
 } from "@/generated/prisma/client";
 
 export interface DashboardMetrics {

@@ -18,7 +18,7 @@ import {
 } from "./base";
 
 export async function listObservations(
-  organizationId: string,
+  companyId: string,
   params: PaginationParams = {},
 ): Promise<ServiceResult<PaginatedResult<InstructorObservation>>> {
   const configError = getDatabaseConfigError();
@@ -29,13 +29,13 @@ export async function listObservations(
 
     const [items, total] = await Promise.all([
       prisma.instructorObservation.findMany({
-        where: { observed: { organizationId } },
+        where: { observed: { companyId } },
         orderBy: { observedAt: "desc" },
         skip,
         take: pageSize,
       }),
       prisma.instructorObservation.count({
-        where: { observed: { organizationId } },
+        where: { observed: { companyId } },
       }),
     ]);
 
