@@ -1,16 +1,5 @@
 import { z } from "zod";
 
-export const createCompetencySchema = z.object({
-  code: z.string().min(2).max(32),
-  title: z.string().min(3).max(160),
-  description: z.string().min(10).max(2000),
-  category: z.string().min(2).max(80).optional(),
-  trade: z.string().min(2).max(80),
-  level: z.coerce.number().int().min(1).max(5),
-});
-
-export type CreateCompetencyInput = z.infer<typeof createCompetencySchema>;
-
 export const createAssessmentSchema = z.object({
   competencyId: z.string().cuid(),
   assesseeId: z.string().cuid(),
@@ -150,3 +139,18 @@ export {
   type UpdateEmployeeInput,
   type EmployeeListFiltersInput,
 } from "./employee";
+
+export {
+  createCompetencySchema,
+  updateCompetencySchema,
+  competencyListFiltersSchema,
+  competencyStatusSchema,
+  competencyDifficultySchema,
+  createCompetencyCategorySchema,
+  updateCompetencyCategorySchema,
+  type CreateCompetencyInput,
+  type UpdateCompetencyInput,
+  type CompetencyListFiltersInput,
+  type CreateCompetencyCategoryInput,
+  type UpdateCompetencyCategoryInput,
+} from "./competency";

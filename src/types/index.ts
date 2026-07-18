@@ -35,6 +35,7 @@ export {
   EmployeeStatus,
   ProjectStatus,
   CompetencyStatus,
+  CompetencyDifficulty,
   AssessmentType,
   AssessmentStatus,
   AssessmentOutcome,

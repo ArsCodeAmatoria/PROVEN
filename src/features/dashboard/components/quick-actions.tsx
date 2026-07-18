@@ -33,7 +33,7 @@ const ACTIONS = [
   {
     title: "Add competency",
     description: "Define a trade standard",
-    href: "/competencies",
+    href: "/competencies/new",
     icon: BadgeCheck,
   },
   {

@@ -10,7 +10,7 @@ export const NAV_ITEMS = [
     permission: "dashboard" as const,
   },
   {
-    title: "Competencies",
+    title: "Competency Library",
     href: "/competencies",
     icon: "BadgeCheck",
     permission: "competencies" as const,

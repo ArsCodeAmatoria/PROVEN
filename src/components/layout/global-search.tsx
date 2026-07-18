@@ -30,7 +30,7 @@ import {
 const NAV_SEARCH = [
   { title: "Overview", href: "/", icon: LayoutDashboard, group: "Navigate" },
   {
-    title: "Competencies",
+    title: "Competency Library",
     href: "/competencies",
     icon: BadgeCheck,
     group: "Navigate",
@@ -78,7 +78,7 @@ const ACTIONS = [
   },
   {
     title: "Add competency",
-    href: "/competencies",
+    href: "/competencies/new",
     icon: BadgeCheck,
   },
 ] as const;

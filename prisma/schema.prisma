@@ -42,6 +42,13 @@ enum CompetencyStatus {
   ARCHIVED
 }
 
+enum CompetencyDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
 enum AssessmentType {
   PRACTICAL
   WRITTEN
@@ -428,20 +435,28 @@ model CompetencyCategory {
 }
 
 model Competency {
-  id          String           @id @default(uuid()) @db.Uuid
-  companyId   String           @map("company_id") @db.Uuid
-  categoryId  String?          @map("category_id") @db.Uuid
-  code        String
-  title       String
-  description String
-  trade       String?
-  level       Int              @default(1)
-  status      CompetencyStatus @default(DRAFT)
-  version     Int              @default(1)
-  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById String?          @map("created_by") @db.Uuid
-  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz(6)
+  id                      String               @id @default(uuid()) @db.Uuid
+  companyId               String               @map("company_id") @db.Uuid
+  categoryId              String?              @map("category_id") @db.Uuid
+  code                    String
+  title                   String
+  description             String
+  reference               String?
+  csaReference            String?              @map("csa_reference")
+  asmeReference           String?              @map("asme_reference")
+  workSafeBcReference     String?              @map("worksafe_bc_reference")
+  requiredDemonstrations  String?              @map("required_demonstrations")
+  requiredScore           Int?                 @map("required_score")
+  difficulty              CompetencyDifficulty @default(INTERMEDIATE)
+  estimatedTimeMinutes    Int?                 @map("estimated_time_minutes")
+  trade                   String?
+  level                   Int                  @default(1)
+  status                  CompetencyStatus     @default(DRAFT)
+  version                 Int                  @default(1)
+  createdAt               DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById             String?              @map("created_by") @db.Uuid
+  deletedAt               DateTime?            @map("deleted_at") @db.Timestamptz(6)
 
   company               Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
   category              CompetencyCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
@@ -454,6 +469,7 @@ model Competency {
 
   @@unique([companyId, code, version])
   @@index([companyId, status])
+  @@index([companyId, difficulty])
   @@index([categoryId])
   @@index([trade])
   @@index([deletedAt])
