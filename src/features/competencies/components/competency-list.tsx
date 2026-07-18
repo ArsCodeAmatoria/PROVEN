@@ -50,8 +50,8 @@ export function CompetencyList({ items, error }: CompetencyListProps) {
                 <Badge variant="outline">{competency.status}</Badge>
               </div>
               <CardDescription>
-                {competency.trade} · {competency.category} · Level{" "}
-                {competency.level}
+                {competency.trade ?? "General"} · Level {competency.level} · v
+                {competency.version}
               </CardDescription>
             </div>
           </CardHeader>

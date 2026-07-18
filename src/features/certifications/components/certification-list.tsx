@@ -8,11 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { Certification } from "@/types";
+import type { Certificate } from "@/types";
 import { formatDate } from "@/utils/format";
 
 interface CertificationListProps {
-  items: Certification[];
+  items: Certificate[];
   error?: string | null;
 }
 
@@ -21,7 +21,7 @@ export function CertificationList({ items, error }: CertificationListProps) {
     return (
       <Card className="shadow-none">
         <CardHeader>
-          <CardTitle>Unable to load certifications</CardTitle>
+          <CardTitle>Unable to load certificates</CardTitle>
           <CardDescription>{error}</CardDescription>
         </CardHeader>
       </Card>
@@ -32,7 +32,7 @@ export function CertificationList({ items, error }: CertificationListProps) {
     return (
       <EmptyState
         icon={Award}
-        title="No certifications"
+        title="No certificates"
         description="Store issued credentials, issuers, credential IDs, and expiration dates for compliance tracking."
       />
     );

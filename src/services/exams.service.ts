@@ -7,6 +7,7 @@ import type {
   PaginationParams,
   ServiceResult,
 } from "@/types";
+import { notDeleted } from "@/types";
 
 import {
   failure,
@@ -29,12 +30,12 @@ export async function listExams(
 
     const [items, total] = await Promise.all([
       prisma.writtenExam.findMany({
-        where: { companyId },
+        where: { companyId, ...notDeleted },
         orderBy: { updatedAt: "desc" },
         skip,
         take: pageSize,
       }),
-      prisma.writtenExam.count({ where: { companyId } }),
+      prisma.writtenExam.count({ where: { companyId, ...notDeleted } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

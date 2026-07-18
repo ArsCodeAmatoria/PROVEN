@@ -8,11 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { InstructorObservation } from "@/types";
+import type { Observation } from "@/types";
 import { formatDate } from "@/utils/format";
 
 interface ObservationListProps {
-  items: InstructorObservation[];
+  items: Observation[];
   error?: string | null;
 }
 

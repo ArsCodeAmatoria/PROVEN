@@ -65,12 +65,23 @@ Supabase Auth with company-scoped profiles and RBAC:
 
 Protected routes are enforced in middleware (session + role) and again in server layouts/pages. Session cookies persist when **Remember me** is enabled (30 days).
 
-After pushing the Prisma schema, apply RLS + auth triggers:
+## Database
+
+Complete PostgreSQL schema (Prisma + SQL):
+
+- `prisma/schema.prisma` — application models
+- `supabase/migrations/20260718010000_complete_schema.sql` — DDL (enums, tables, FKs, indexes, updated_at triggers)
+- `supabase/migrations/20260718010001_auth_user_triggers.sql` — auth.users → users/employees sync
+
+Core entities: companies, users, employees, projects, competencies (+ categories), assessments (+ results), observations, written exams (+ questions/results), certificates, employee hours, equipment (+ types), photos/videos/documents, training matrix, notifications, audit logs.
+
+Every table includes: `id` (UUID), `created_at`, `updated_at`, `created_by`, `deleted_at` (soft delete).
 
 ```bash
 npm run db:push
-# Then run supabase/migrations/20260718000000_auth_rls.sql in the Supabase SQL editor
+# Then apply SQL migrations in Supabase (schema + auth triggers + prior RLS as needed)
 ```
+
 
 Auth routes: `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/callback`  
 Account routes: `/profile`, `/settings`

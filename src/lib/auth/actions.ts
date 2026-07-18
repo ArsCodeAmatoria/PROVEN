@@ -51,7 +51,11 @@ export async function signupCompanyAction(input: SignupInput) {
   let slug = baseSlug || "company";
   let attempt = 0;
 
-  while (await prisma.company.findUnique({ where: { slug } })) {
+  while (
+    await prisma.company.findFirst({
+      where: { slug, deletedAt: null },
+    })
+  ) {
     attempt += 1;
     slug = `${baseSlug}-${attempt}`;
   }
@@ -63,47 +67,77 @@ export async function signupCompanyAction(input: SignupInput) {
     },
   });
 
-  const { data: authData, error: authError } = await admin.auth.admin.createUser({
-    email: data.email,
-    password: data.password,
-    email_confirm: true,
-    user_metadata: {
-      first_name: data.firstName,
-      last_name: data.lastName,
-      role: "COMPANY_ADMIN" satisfies UserRole,
-      company_id: company.id,
+  const { data: authData, error: authError } = await admin.auth.admin.createUser(
+    {
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        role: "COMPANY_ADMIN" satisfies UserRole,
+        company_id: company.id,
+      },
+      app_metadata: {
+        role: "COMPANY_ADMIN" satisfies UserRole,
+        company_id: company.id,
+      },
     },
-    app_metadata: {
-      role: "COMPANY_ADMIN" satisfies UserRole,
-      company_id: company.id,
-    },
-  });
+  );
 
   if (authError || !authData.user) {
-    await prisma.company.delete({ where: { id: company.id } });
+    await prisma.company.update({
+      where: { id: company.id },
+      data: { deletedAt: new Date() },
+    });
     return { error: authError?.message ?? "Unable to create account" };
   }
 
-  // Ensure profile is linked to the company (trigger may race)
-  await prisma.profile.upsert({
+  const user = await prisma.user.upsert({
     where: { authUserId: authData.user.id },
     create: {
       authUserId: authData.user.id,
-      companyId: company.id,
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      role: "COMPANY_ADMIN",
       settings: { create: {} },
+      employees: {
+        create: {
+          companyId: company.id,
+          role: "COMPANY_ADMIN",
+          status: "ACTIVE",
+          title: "Company Admin",
+        },
+      },
     },
     update: {
-      companyId: company.id,
+      email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      role: "COMPANY_ADMIN",
       isActive: true,
+      deletedAt: null,
     },
   });
+
+  const existingEmployee = await prisma.employee.findFirst({
+    where: {
+      userId: user.id,
+      companyId: company.id,
+      deletedAt: null,
+    },
+  });
+
+  if (!existingEmployee) {
+    await prisma.employee.create({
+      data: {
+        userId: user.id,
+        companyId: company.id,
+        role: "COMPANY_ADMIN",
+        status: "ACTIVE",
+        title: "Company Admin",
+      },
+    });
+  }
 
   const { error: signInError } = await supabase.auth.signInWithPassword({
     email: data.email,
@@ -127,15 +161,23 @@ export async function updateProfileAction(input: ProfileUpdateInput) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
 
-  await prisma.profile.update({
+  await prisma.user.update({
     where: { id: profile.id },
     data: {
       firstName: parsed.data.firstName,
       lastName: parsed.data.lastName,
       phone: parsed.data.phone || null,
-      title: parsed.data.title || null,
     },
   });
+
+  if (profile.employeeId) {
+    await prisma.employee.update({
+      where: { id: profile.employeeId },
+      data: {
+        title: parsed.data.title || null,
+      },
+    });
+  }
 
   revalidatePath("/profile");
   revalidatePath("/settings");
@@ -150,9 +192,9 @@ export async function updateUserSettingsAction(input: UserSettingsInput) {
   }
 
   await prisma.userSettings.upsert({
-    where: { profileId: profile.id },
+    where: { userId: profile.id },
     create: {
-      profileId: profile.id,
+      userId: profile.id,
       ...parsed.data,
     },
     update: parsed.data,
@@ -199,7 +241,7 @@ export async function updateAvatarAction(formData: FormData) {
 
   const avatarUrl = `${publicUrl}?v=${Date.now()}`;
 
-  await prisma.profile.update({
+  await prisma.user.update({
     where: { id: profile.id },
     data: { avatarUrl },
   });
@@ -225,7 +267,7 @@ export async function removeAvatarAction() {
     }
   }
 
-  await prisma.profile.update({
+  await prisma.user.update({
     where: { id: profile.id },
     data: { avatarUrl: null },
   });
@@ -267,7 +309,7 @@ export async function updateCompanyAction(input: {
 export async function touchLastLoginAction() {
   const profile = await getCurrentProfile();
   if (!profile) return;
-  await prisma.profile.update({
+  await prisma.user.update({
     where: { id: profile.id },
     data: { lastLoginAt: new Date() },
   });

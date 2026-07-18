@@ -1,12 +1,13 @@
 import "server-only";
 
-import { type Profile } from "@/generated/prisma/client";
+import type { Employee, User } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import type {
   PaginatedResult,
   PaginationParams,
   ServiceResult,
 } from "@/types";
+import { notDeleted } from "@/types";
 
 import {
   failure,
@@ -17,10 +18,12 @@ import {
   toPaginatedResult,
 } from "./base";
 
+export type EmployeeWithUser = Employee & { user: User };
+
 export async function listPeople(
   companyId: string,
   params: PaginationParams = {},
-): Promise<ServiceResult<PaginatedResult<Profile>>> {
+): Promise<ServiceResult<PaginatedResult<EmployeeWithUser>>> {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -28,13 +31,26 @@ export async function listPeople(
     const { page, pageSize, skip } = normalizePagination(params);
 
     const [items, total] = await Promise.all([
-      prisma.profile.findMany({
-        where: { companyId, isActive: true },
-        orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+      prisma.employee.findMany({
+        where: {
+          companyId,
+          status: "ACTIVE",
+          ...notDeleted,
+          user: { ...notDeleted, isActive: true },
+        },
+        include: { user: true },
+        orderBy: [{ user: { lastName: "asc" } }, { user: { firstName: "asc" } }],
         skip,
         take: pageSize,
       }),
-      prisma.profile.count({ where: { companyId, isActive: true } }),
+      prisma.employee.count({
+        where: {
+          companyId,
+          status: "ACTIVE",
+          ...notDeleted,
+          user: { ...notDeleted, isActive: true },
+        },
+      }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));

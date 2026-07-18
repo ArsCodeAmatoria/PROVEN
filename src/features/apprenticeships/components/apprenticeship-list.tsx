@@ -8,14 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { Apprenticeship } from "@/types";
-import { formatHours } from "@/utils/format";
+import type { Project } from "@/types";
+import { formatDate } from "@/utils/format";
 
 interface ApprenticeshipListProps {
-  items: Apprenticeship[];
+  items: Project[];
   error?: string | null;
 }
 
+/** Lists company projects (replaces legacy apprenticeship list UI). */
 export function ApprenticeshipList({
   items,
   error,
@@ -24,7 +25,7 @@ export function ApprenticeshipList({
     return (
       <Card className="shadow-none">
         <CardHeader>
-          <CardTitle>Unable to load apprenticeships</CardTitle>
+          <CardTitle>Unable to load projects</CardTitle>
           <CardDescription>{error}</CardDescription>
         </CardHeader>
       </Card>
@@ -35,8 +36,8 @@ export function ApprenticeshipList({
     return (
       <EmptyState
         icon={GraduationCap}
-        title="No apprenticeships"
-        description="Track apprenticeship programs, mentor assignments, required hours, and competency progress."
+        title="No projects"
+        description="Create projects to assign employees, track hours, and scope training matrices and assessments."
       />
     );
   }
@@ -47,9 +48,11 @@ export function ApprenticeshipList({
         <Card key={item.id} className="shadow-none">
           <CardHeader className="flex-row items-start justify-between gap-4 space-y-0">
             <div className="space-y-1">
-              <CardTitle className="text-base">{item.programName}</CardTitle>
+              <CardTitle className="text-base">{item.name}</CardTitle>
               <CardDescription>
-                {item.trade} · {formatHours(item.hoursCompleted, item.hoursRequired)}
+                {item.code}
+                {item.location ? ` · ${item.location}` : ""}
+                {item.startDate ? ` · ${formatDate(item.startDate)}` : ""}
               </CardDescription>
             </div>
             <Badge variant="outline">{item.status}</Badge>

@@ -16,8 +16,8 @@ export default async function ApprenticeshipsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Apprenticeships"
-        description="Monitor apprenticeship programs, mentor assignments, hours, and competency progress."
+        title="Projects"
+        description="Jobsites and work programs used to scope assessments, hours, and training matrices."
       />
       <ApprenticeshipList
         items={result.data?.items ?? []}

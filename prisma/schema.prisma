@@ -7,7 +7,10 @@ datasource db {
   provider = "postgresql"
 }
 
-/// Application roles for Proven CMS RBAC.
+// =============================================================================
+// Enums
+// =============================================================================
+
 enum UserRole {
   SUPER_ADMIN
   COMPANY_ADMIN
@@ -18,10 +21,42 @@ enum UserRole {
   READ_ONLY
 }
 
+enum EmployeeStatus {
+  ACTIVE
+  ON_LEAVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum ProjectStatus {
+  PLANNED
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
 enum CompetencyStatus {
   DRAFT
   ACTIVE
   ARCHIVED
+}
+
+enum AssessmentType {
+  PRACTICAL
+  WRITTEN
+  OBSERVATION
+  PORTFOLIO
+  ORAL
+  CONTINUOUS
+}
+
+enum AssessmentStatus {
+  DRAFT
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }
 
 enum AssessmentOutcome {
@@ -32,26 +67,6 @@ enum AssessmentOutcome {
   REQUIRES_REVIEW
 }
 
-enum ExamStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
-
-enum ExamAttemptStatus {
-  IN_PROGRESS
-  SUBMITTED
-  GRADED
-  VOIDED
-}
-
-enum ApprenticeshipStatus {
-  ACTIVE
-  PAUSED
-  COMPLETED
-  WITHDRAWN
-}
-
 enum ObservationRating {
   EXCEEDS
   MEETS
@@ -59,19 +74,86 @@ enum ObservationRating {
   DOES_NOT_MEET
 }
 
-enum CertificationStatus {
+enum ExamStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ExamResultStatus {
+  IN_PROGRESS
+  SUBMITTED
+  GRADED
+  VOIDED
+}
+
+enum CertificateStatus {
+  PENDING
   ACTIVE
   EXPIRED
   REVOKED
-  PENDING
 }
 
-enum ContinuousAssessmentType {
-  PRACTICAL
-  WRITTEN
+enum EquipmentStatus {
+  AVAILABLE
+  IN_USE
+  MAINTENANCE
+  RETIRED
+  LOST
+}
+
+enum MediaEntityType {
+  COMPANY
+  EMPLOYEE
+  PROJECT
+  COMPETENCY
+  ASSESSMENT
+  ASSESSMENT_RESULT
   OBSERVATION
-  PORTFOLIO
-  ORAL
+  EXAM
+  EXAM_RESULT
+  CERTIFICATE
+  EQUIPMENT
+  TRAINING_MATRIX
+  OTHER
+}
+
+enum TrainingRequirementLevel {
+  REQUIRED
+  RECOMMENDED
+  OPTIONAL
+}
+
+enum TrainingMatrixCellStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPETENT
+  EXPIRED
+  EXEMPT
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ALERT
+  ASSESSMENT
+  EXAM
+  CERTIFICATE
+  SYSTEM
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  RESTORE
+  LOGIN
+  LOGOUT
+  EXPORT
+  IMPORT
+  ASSIGN
+  COMPLETE
 }
 
 enum InviteStatus {
@@ -81,352 +163,801 @@ enum InviteStatus {
   EXPIRED
 }
 
-/// A construction company / employer account.
-/// A company can have unlimited employee profiles.
+enum HourEntryType {
+  REGULAR
+  OVERTIME
+  TRAINING
+  TRAVEL
+  OTHER
+}
+
+// =============================================================================
+// Identity & tenancy
+// =============================================================================
+
+/// Tenant / employer organization.
 model Company {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  logoUrl   String?
-  website   String?
-  phone     String?
-  address   String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String    @unique
+  logoUrl     String?   @map("logo_url")
+  website     String?
+  phone       String?
+  address     String?
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  profiles         Profile[]
-  invites          CompanyInvite[]
-  competencies     Competency[]
-  exams            WrittenExam[]
-  apprenticeships  Apprenticeship[]
-  certifications   Certification[]
-  assessments      ContinuousAssessment[]
+  employees              Employee[]
+  projects               Project[]
+  competencyCategories   CompetencyCategory[]
+  competencies           Competency[]
+  assessments            Assessment[]
+  observations           Observation[]
+  writtenExams           WrittenExam[]
+  certificates           Certificate[]
+  employeeHours          EmployeeHour[]
+  equipmentTypes         EquipmentType[]
+  equipment              Equipment[]
+  photos                 Photo[]
+  videos                 Video[]
+  documents              Document[]
+  trainingMatrices       TrainingMatrix[]
+  notifications          Notification[]
+  auditLogs              AuditLog[]
+  invites                CompanyInvite[]
 
+  @@index([deletedAt])
+  @@index([isActive])
+  @@index([createdById])
   @@map("companies")
 }
 
-/// App user profile linked 1:1 to Supabase Auth (`auth.users`).
-model Profile {
-  id          String    @id @default(cuid())
-  authUserId  String    @unique
-  companyId   String?
+/// Auth-linked identity (1:1 with Supabase auth.users).
+model User {
+  id          String    @id @default(uuid()) @db.Uuid
+  authUserId  String    @unique @map("auth_user_id")
   email       String
-  firstName   String
-  lastName    String
-  role        UserRole  @default(READ_ONLY)
-  title       String?
-  avatarUrl   String?
+  firstName   String    @map("first_name")
+  lastName    String    @map("last_name")
+  avatarUrl   String?   @map("avatar_url")
   phone       String?
-  isActive    Boolean   @default(true)
-  lastLoginAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  isActive    Boolean   @default(true) @map("is_active")
+  lastLoginAt DateTime? @map("last_login_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  company                 Company?                @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  settings                UserSettings?
-  invitesSent             CompanyInvite[]         @relation("InviteSender")
-  competencyAssessments   CompetencyAssessment[]  @relation("Assessee")
-  assessmentsConducted    CompetencyAssessment[]  @relation("Assessor")
-  examAttempts            ExamAttempt[]
-  apprenticeships         Apprenticeship[]        @relation("Apprentice")
-  supervisedApprentices   Apprenticeship[]        @relation("Mentor")
-  observationsReceived    InstructorObservation[] @relation("Observed")
-  observationsGiven       InstructorObservation[] @relation("Observer")
-  certifications          Certification[]
-  continuousAssessments   ContinuousAssessment[]  @relation("Assessee")
-  continuousAssessedBy    ContinuousAssessment[]  @relation("Assessor")
+  settings   UserSettings?
+  employees  Employee[]
+  invitesSent CompanyInvite[] @relation("InviteSender")
 
-  @@index([companyId])
   @@index([email])
-  @@index([role])
-  @@map("profiles")
+  @@index([deletedAt])
+  @@index([createdById])
+  @@map("users")
 }
 
-/// Per-user preferences (notifications, locale, defaults).
+/// Company employment record. Users belong to companies as employees.
+model Employee {
+  id             String         @id @default(uuid()) @db.Uuid
+  userId         String         @map("user_id") @db.Uuid
+  companyId      String         @map("company_id") @db.Uuid
+  role           UserRole       @default(READ_ONLY)
+  status         EmployeeStatus @default(ACTIVE)
+  employeeNumber String?        @map("employee_number")
+  title          String?
+  department     String?
+  hireDate       DateTime?      @map("hire_date") @db.Date
+  terminationDate DateTime?     @map("termination_date") @db.Date
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById    String?        @map("created_by") @db.Uuid
+  deletedAt      DateTime?      @map("deleted_at") @db.Timestamptz(6)
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  projectAssignments     ProjectAssignment[]
+  assessmentsAssigned    Assessment[]             @relation("AssessmentAssessor")
+  assessmentResults      AssessmentResult[]       @relation("AssessmentSubject")
+  assessmentResultsGiven AssessmentResult[]       @relation("AssessmentResultAssessor")
+  observationsReceived   Observation[]            @relation("ObservationSubject")
+  observationsGiven      Observation[]            @relation("ObservationObserver")
+  examResults            ExamResult[]
+  certificates           Certificate[]
+  employeeHours          EmployeeHour[]
+  mediaPhotos            Photo[]                  @relation("PhotoUploader")
+  mediaVideos            Video[]                  @relation("VideoUploader")
+  mediaDocuments         Document[]               @relation("DocumentUploader")
+  trainingMatrixEntries  TrainingMatrixEntry[]
+  notifications          Notification[]
+  equipmentAssigned      Equipment[]              @relation("EquipmentAssignee")
+
+  @@unique([companyId, userId])
+  @@unique([companyId, employeeNumber])
+  @@index([companyId, role])
+  @@index([companyId, status])
+  @@index([userId])
+  @@index([deletedAt])
+  @@index([createdById])
+  @@map("employees")
+}
+
 model UserSettings {
-  id                  String   @id @default(cuid())
-  profileId           String   @unique
-  emailNotifications  Boolean  @default(true)
-  assessmentReminders Boolean  @default(true)
-  rememberMeDefault   Boolean  @default(true)
-  timezone            String   @default("America/New_York")
-  locale              String   @default("en-US")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                  String    @id @default(uuid()) @db.Uuid
+  userId              String    @unique @map("user_id") @db.Uuid
+  emailNotifications  Boolean   @default(true) @map("email_notifications")
+  assessmentReminders Boolean   @default(true) @map("assessment_reminders")
+  rememberMeDefault   Boolean   @default(true) @map("remember_me_default")
+  timezone            String    @default("America/New_York")
+  locale              String    @default("en-US")
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById         String?   @map("created_by") @db.Uuid
+  deletedAt           DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([deletedAt])
   @@map("user_settings")
 }
 
-/// Invite an employee into a company with a predetermined role.
 model CompanyInvite {
-  id          String      @id @default(cuid())
-  companyId   String
+  id          String       @id @default(uuid()) @db.Uuid
+  companyId   String       @map("company_id") @db.Uuid
   email       String
-  role        UserRole    @default(OPERATOR)
-  token       String      @unique @default(cuid())
+  role        UserRole     @default(OPERATOR)
+  token       String       @unique @default(uuid())
   status      InviteStatus @default(PENDING)
-  invitedById String
-  expiresAt   DateTime
-  acceptedAt  DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  invitedById String       @map("invited_by") @db.Uuid
+  expiresAt   DateTime     @map("expires_at") @db.Timestamptz(6)
+  acceptedAt  DateTime?    @map("accepted_at") @db.Timestamptz(6)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?      @map("created_by") @db.Uuid
+  deletedAt   DateTime?    @map("deleted_at") @db.Timestamptz(6)
 
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  invitedBy Profile @relation("InviteSender", fields: [invitedById], references: [id], onDelete: Cascade)
+  invitedBy User    @relation("InviteSender", fields: [invitedById], references: [id], onDelete: Cascade)
 
-  @@unique([companyId, email, status])
+  @@index([companyId, email])
   @@index([token])
-  @@index([companyId])
+  @@index([status])
+  @@index([deletedAt])
   @@map("company_invites")
 }
 
+// =============================================================================
+// Projects
+// =============================================================================
+
+model Project {
+  id          String        @id @default(uuid()) @db.Uuid
+  companyId   String        @map("company_id") @db.Uuid
+  code        String
+  name        String
+  description String?
+  status      ProjectStatus @default(PLANNED)
+  location    String?
+  startDate   DateTime?     @map("start_date") @db.Date
+  endDate     DateTime?     @map("end_date") @db.Date
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?       @map("created_by") @db.Uuid
+  deletedAt   DateTime?     @map("deleted_at") @db.Timestamptz(6)
+
+  company            Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignments        ProjectAssignment[]
+  assessments        Assessment[]
+  observations       Observation[]
+  employeeHours      EmployeeHour[]
+  equipment          Equipment[]
+  trainingMatrices   TrainingMatrix[]
+
+  @@unique([companyId, code])
+  @@index([companyId, status])
+  @@index([deletedAt])
+  @@index([createdById])
+  @@map("projects")
+}
+
+model ProjectAssignment {
+  id          String    @id @default(uuid()) @db.Uuid
+  projectId   String    @map("project_id") @db.Uuid
+  employeeId  String    @map("employee_id") @db.Uuid
+  roleLabel   String?   @map("role_label")
+  startsAt    DateTime? @map("starts_at") @db.Date
+  endsAt      DateTime? @map("ends_at") @db.Date
+  isPrimary   Boolean   @default(false) @map("is_primary")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  project  Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, employeeId])
+  @@index([employeeId])
+  @@index([deletedAt])
+  @@map("project_assignments")
+}
+
+// =============================================================================
+// Competencies
+// =============================================================================
+
+model CompetencyCategory {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String    @map("company_id") @db.Uuid
+  parentId    String?   @map("parent_id") @db.Uuid
+  code        String
+  name        String
+  description String?
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company      Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent       CompetencyCategory?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children     CompetencyCategory[] @relation("CategoryTree")
+  competencies Competency[]
+
+  @@unique([companyId, code])
+  @@index([companyId, parentId])
+  @@index([deletedAt])
+  @@map("competency_categories")
+}
+
 model Competency {
-  id          String           @id @default(cuid())
-  companyId   String
+  id          String           @id @default(uuid()) @db.Uuid
+  companyId   String           @map("company_id") @db.Uuid
+  categoryId  String?          @map("category_id") @db.Uuid
   code        String
   title       String
   description String
-  category    String
-  trade       String
+  trade       String?
   level       Int              @default(1)
   status      CompetencyStatus @default(DRAFT)
   version     Int              @default(1)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?          @map("created_by") @db.Uuid
+  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz(6)
 
-  company     Company                 @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  criteria    CompetencyCriterion[]
-  assessments CompetencyAssessment[]
-  examLinks   ExamCompetency[]
-  progress    ApprenticeshipProgress[]
+  company               Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category              CompetencyCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  criteria              CompetencyCriterion[]
+  assessments           Assessment[]
+  observations          Observation[]
+  examLinks             ExamCompetency[]
+  certificates          Certificate[]
+  trainingMatrixEntries TrainingMatrixEntry[]
 
   @@unique([companyId, code, version])
   @@index([companyId, status])
-  @@index([trade, category])
+  @@index([categoryId])
+  @@index([trade])
+  @@index([deletedAt])
   @@map("competencies")
 }
 
 model CompetencyCriterion {
-  id           String  @id @default(cuid())
-  competencyId String
+  id           String    @id @default(uuid()) @db.Uuid
+  competencyId String    @map("competency_id") @db.Uuid
   description  String
-  sortOrder    Int     @default(0)
-  isCritical   Boolean @default(false)
+  sortOrder    Int       @default(0) @map("sort_order")
+  isCritical   Boolean   @default(false) @map("is_critical")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?   @map("created_by") @db.Uuid
+  deletedAt    DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   competency Competency @relation(fields: [competencyId], references: [id], onDelete: Cascade)
 
   @@index([competencyId])
+  @@index([deletedAt])
   @@map("competency_criteria")
 }
 
-model CompetencyAssessment {
-  id            String            @id @default(cuid())
-  competencyId  String
-  assesseeId    String
-  assessorId    String
-  outcome       AssessmentOutcome @default(NOT_STARTED)
-  evidenceNotes String?
-  assessedAt    DateTime?
-  validUntil    DateTime?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+// =============================================================================
+// Assessments & results
+// =============================================================================
 
-  competency Competency @relation(fields: [competencyId], references: [id], onDelete: Cascade)
-  assessee   Profile    @relation("Assessee", fields: [assesseeId], references: [id], onDelete: Cascade)
-  assessor   Profile    @relation("Assessor", fields: [assessorId], references: [id], onDelete: Restrict)
+model Assessment {
+  id           String           @id @default(uuid()) @db.Uuid
+  companyId    String           @map("company_id") @db.Uuid
+  projectId    String?          @map("project_id") @db.Uuid
+  competencyId String?          @map("competency_id") @db.Uuid
+  assessorId   String?          @map("assessor_id") @db.Uuid
+  type         AssessmentType
+  title        String
+  description  String?
+  status       AssessmentStatus @default(DRAFT)
+  scheduledAt  DateTime?        @map("scheduled_at") @db.Timestamptz(6)
+  completedAt  DateTime?        @map("completed_at") @db.Timestamptz(6)
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?          @map("created_by") @db.Uuid
+  deletedAt    DateTime?        @map("deleted_at") @db.Timestamptz(6)
 
+  company    Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project    Project?           @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  competency Competency?        @relation(fields: [competencyId], references: [id], onDelete: SetNull)
+  assessor   Employee?          @relation("AssessmentAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
+  results    AssessmentResult[]
+
+  @@index([companyId, status])
+  @@index([projectId])
   @@index([competencyId])
-  @@index([assesseeId])
   @@index([assessorId])
-  @@index([outcome])
-  @@map("competency_assessments")
+  @@index([deletedAt])
+  @@map("assessments")
 }
 
+model AssessmentResult {
+  id           String            @id @default(uuid()) @db.Uuid
+  assessmentId String            @map("assessment_id") @db.Uuid
+  employeeId   String            @map("employee_id") @db.Uuid
+  assessorId   String?           @map("assessor_id") @db.Uuid
+  outcome      AssessmentOutcome @default(NOT_STARTED)
+  score        Int?
+  maxScore     Int?              @map("max_score")
+  feedback     String?
+  evidenceNotes String?          @map("evidence_notes")
+  assessedAt   DateTime?         @map("assessed_at") @db.Timestamptz(6)
+  validUntil   DateTime?         @map("valid_until") @db.Timestamptz(6)
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?           @map("created_by") @db.Uuid
+  deletedAt    DateTime?         @map("deleted_at") @db.Timestamptz(6)
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  employee   Employee   @relation("AssessmentSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  assessor   Employee?  @relation("AssessmentResultAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
+
+  @@unique([assessmentId, employeeId])
+  @@index([employeeId, outcome])
+  @@index([assessorId])
+  @@index([deletedAt])
+  @@map("assessment_results")
+}
+
+// =============================================================================
+// Observations
+// =============================================================================
+
+model Observation {
+  id           String            @id @default(uuid()) @db.Uuid
+  companyId    String            @map("company_id") @db.Uuid
+  projectId    String?           @map("project_id") @db.Uuid
+  competencyId String?           @map("competency_id") @db.Uuid
+  employeeId   String            @map("employee_id") @db.Uuid
+  observerId   String            @map("observer_id") @db.Uuid
+  context      String
+  rating       ObservationRating
+  notes        String
+  observedAt   DateTime          @default(now()) @map("observed_at") @db.Timestamptz(6)
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?           @map("created_by") @db.Uuid
+  deletedAt    DateTime?         @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project    Project?    @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  competency Competency? @relation(fields: [competencyId], references: [id], onDelete: SetNull)
+  employee   Employee    @relation("ObservationSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  observer   Employee    @relation("ObservationObserver", fields: [observerId], references: [id], onDelete: Restrict)
+
+  @@index([companyId, observedAt])
+  @@index([employeeId])
+  @@index([observerId])
+  @@index([projectId])
+  @@index([deletedAt])
+  @@map("observations")
+}
+
+// =============================================================================
+// Written exams
+// =============================================================================
+
 model WrittenExam {
-  id           String     @id @default(cuid())
-  companyId    String
+  id           String     @id @default(uuid()) @db.Uuid
+  companyId    String     @map("company_id") @db.Uuid
   code         String
   title        String
   description  String?
   status       ExamStatus @default(DRAFT)
-  passingScore Int        @default(70)
-  timeLimitMin Int?
+  passingScore Int        @default(70) @map("passing_score")
+  timeLimitMin Int?       @map("time_limit_min")
   version      Int        @default(1)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?    @map("created_by") @db.Uuid
+  deletedAt    DateTime?  @map("deleted_at") @db.Timestamptz(6)
 
   company      Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
   questions    ExamQuestion[]
-  attempts     ExamAttempt[]
+  results      ExamResult[]
   competencies ExamCompetency[]
 
   @@unique([companyId, code, version])
   @@index([companyId, status])
+  @@index([deletedAt])
   @@map("written_exams")
 }
 
 model ExamCompetency {
-  examId       String
-  competencyId String
+  id           String    @id @default(uuid()) @db.Uuid
+  examId       String    @map("exam_id") @db.Uuid
+  competencyId String    @map("competency_id") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?   @map("created_by") @db.Uuid
+  deletedAt    DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   exam       WrittenExam @relation(fields: [examId], references: [id], onDelete: Cascade)
   competency Competency  @relation(fields: [competencyId], references: [id], onDelete: Cascade)
 
-  @@id([examId, competencyId])
+  @@unique([examId, competencyId])
+  @@index([competencyId])
+  @@index([deletedAt])
   @@map("exam_competencies")
 }
 
 model ExamQuestion {
-  id           String @id @default(cuid())
-  examId       String
+  id           String    @id @default(uuid()) @db.Uuid
+  examId       String    @map("exam_id") @db.Uuid
   prompt       String
   options      Json
-  correctIndex Int
-  points       Int    @default(1)
-  sortOrder    Int    @default(0)
+  correctIndex Int       @map("correct_index")
+  points       Int       @default(1)
+  sortOrder    Int       @default(0) @map("sort_order")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?   @map("created_by") @db.Uuid
+  deletedAt    DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   exam WrittenExam @relation(fields: [examId], references: [id], onDelete: Cascade)
 
-  @@index([examId])
+  @@index([examId, sortOrder])
+  @@index([deletedAt])
   @@map("exam_questions")
 }
 
-model ExamAttempt {
-  id          String            @id @default(cuid())
-  examId      String
-  profileId   String
-  status      ExamAttemptStatus @default(IN_PROGRESS)
+model ExamResult {
+  id          String          @id @default(uuid()) @db.Uuid
+  examId      String          @map("exam_id") @db.Uuid
+  employeeId  String          @map("employee_id") @db.Uuid
+  status      ExamResultStatus @default(IN_PROGRESS)
   score       Int?
+  maxScore    Int?            @map("max_score")
+  passed      Boolean?
   answers     Json?
-  startedAt   DateTime          @default(now())
-  submittedAt DateTime?
-  gradedAt    DateTime?
+  startedAt   DateTime        @default(now()) @map("started_at") @db.Timestamptz(6)
+  submittedAt DateTime?       @map("submitted_at") @db.Timestamptz(6)
+  gradedAt    DateTime?       @map("graded_at") @db.Timestamptz(6)
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?         @map("created_by") @db.Uuid
+  deletedAt   DateTime?       @map("deleted_at") @db.Timestamptz(6)
 
-  exam    WrittenExam @relation(fields: [examId], references: [id], onDelete: Cascade)
-  profile Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  exam     WrittenExam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  employee Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
-  @@index([examId])
-  @@index([profileId])
-  @@index([status])
-  @@map("exam_attempts")
+  @@index([examId, status])
+  @@index([employeeId])
+  @@index([deletedAt])
+  @@map("exam_results")
 }
 
-model Apprenticeship {
-  id             String               @id @default(cuid())
-  companyId      String
-  apprenticeId   String
-  mentorId       String?
-  programName    String
-  trade          String
-  startDate      DateTime
-  targetEndDate  DateTime?
-  status         ApprenticeshipStatus @default(ACTIVE)
-  hoursRequired  Int                  @default(2000)
-  hoursCompleted Int                  @default(0)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+// =============================================================================
+// Certificates
+// =============================================================================
 
-  company      Company                  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  apprentice   Profile                 @relation("Apprentice", fields: [apprenticeId], references: [id], onDelete: Cascade)
-  mentor       Profile?                @relation("Mentor", fields: [mentorId], references: [id], onDelete: SetNull)
-  progress     ApprenticeshipProgress[]
-  observations InstructorObservation[]
-
-  @@index([companyId])
-  @@index([apprenticeId])
-  @@index([status])
-  @@map("apprenticeships")
-}
-
-model ApprenticeshipProgress {
-  id               String            @id @default(cuid())
-  apprenticeshipId String
-  competencyId     String
-  outcome          AssessmentOutcome @default(NOT_STARTED)
-  notes            String?
-  completedAt      DateTime?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-
-  apprenticeship Apprenticeship @relation(fields: [apprenticeshipId], references: [id], onDelete: Cascade)
-  competency     Competency     @relation(fields: [competencyId], references: [id], onDelete: Cascade)
-
-  @@unique([apprenticeshipId, competencyId])
-  @@index([apprenticeshipId])
-  @@map("apprenticeship_progress")
-}
-
-model InstructorObservation {
-  id               String            @id @default(cuid())
-  apprenticeshipId String?
-  observedId       String
-  observerId       String
-  context          String
-  rating           ObservationRating
-  notes            String
-  observedAt       DateTime          @default(now())
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-
-  apprenticeship Apprenticeship? @relation(fields: [apprenticeshipId], references: [id], onDelete: SetNull)
-  observed       Profile         @relation("Observed", fields: [observedId], references: [id], onDelete: Cascade)
-  observer       Profile         @relation("Observer", fields: [observerId], references: [id], onDelete: Restrict)
-
-  @@index([observedId])
-  @@index([observerId])
-  @@index([apprenticeshipId])
-  @@map("instructor_observations")
-}
-
-model Certification {
-  id           String              @id @default(cuid())
-  companyId    String
-  profileId    String
+model Certificate {
+  id           String            @id @default(uuid()) @db.Uuid
+  companyId    String            @map("company_id") @db.Uuid
+  employeeId   String            @map("employee_id") @db.Uuid
+  competencyId String?           @map("competency_id") @db.Uuid
   name         String
   issuer       String
-  credentialId String?
-  status       CertificationStatus @default(PENDING)
-  issuedAt     DateTime?
-  expiresAt    DateTime?
-  documentUrl  String?
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
+  credentialId String?           @map("credential_id")
+  status       CertificateStatus @default(PENDING)
+  issuedAt     DateTime?         @map("issued_at") @db.Timestamptz(6)
+  expiresAt    DateTime?         @map("expires_at") @db.Timestamptz(6)
+  documentUrl  String?           @map("document_url")
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?           @map("created_by") @db.Uuid
+  deletedAt    DateTime?         @map("deleted_at") @db.Timestamptz(6)
 
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee   Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  competency Competency? @relation(fields: [competencyId], references: [id], onDelete: SetNull)
 
-  @@index([companyId])
-  @@index([profileId])
-  @@index([status])
+  @@index([companyId, status])
+  @@index([employeeId])
   @@index([expiresAt])
-  @@map("certifications")
+  @@index([deletedAt])
+  @@map("certificates")
 }
 
-model ContinuousAssessment {
-  id          String                   @id @default(cuid())
-  companyId   String
-  assesseeId  String
-  assessorId  String
-  type        ContinuousAssessmentType
-  title       String
+// =============================================================================
+// Employee hours
+// =============================================================================
+
+model EmployeeHour {
+  id          String        @id @default(uuid()) @db.Uuid
+  companyId   String        @map("company_id") @db.Uuid
+  employeeId  String        @map("employee_id") @db.Uuid
+  projectId   String?       @map("project_id") @db.Uuid
+  entryType   HourEntryType @default(REGULAR) @map("entry_type")
+  workDate    DateTime      @map("work_date") @db.Date
+  hours       Decimal       @db.Decimal(6, 2)
   description String?
-  outcome     AssessmentOutcome        @default(NOT_STARTED)
-  score       Int?
-  maxScore    Int?
-  feedback    String?
-  assessedAt  DateTime?
-  createdAt   DateTime                 @default(now())
-  updatedAt   DateTime                 @updatedAt
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?       @map("created_by") @db.Uuid
+  deletedAt   DateTime?     @map("deleted_at") @db.Timestamptz(6)
 
-  company  Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  assessee Profile @relation("Assessee", fields: [assesseeId], references: [id], onDelete: Cascade)
-  assessor Profile @relation("Assessor", fields: [assessorId], references: [id], onDelete: Restrict)
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  project  Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
+  @@index([companyId, workDate])
+  @@index([employeeId, workDate])
+  @@index([projectId])
+  @@index([deletedAt])
+  @@map("employee_hours")
+}
+
+// =============================================================================
+// Equipment
+// =============================================================================
+
+model EquipmentType {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String    @map("company_id") @db.Uuid
+  code        String
+  name        String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  equipment Equipment[]
+
+  @@unique([companyId, code])
+  @@index([deletedAt])
+  @@map("equipment_types")
+}
+
+model Equipment {
+  id              String          @id @default(uuid()) @db.Uuid
+  companyId       String          @map("company_id") @db.Uuid
+  equipmentTypeId String          @map("equipment_type_id") @db.Uuid
+  projectId       String?         @map("project_id") @db.Uuid
+  assignedToId    String?         @map("assigned_to_id") @db.Uuid
+  assetTag        String          @map("asset_tag")
+  name            String
+  serialNumber    String?         @map("serial_number")
+  status          EquipmentStatus @default(AVAILABLE)
+  purchasedAt     DateTime?       @map("purchased_at") @db.Date
+  notes           String?
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById     String?         @map("created_by") @db.Uuid
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  company       Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  equipmentType EquipmentType @relation(fields: [equipmentTypeId], references: [id], onDelete: Restrict)
+  project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  assignedTo    Employee?     @relation("EquipmentAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, assetTag])
+  @@index([companyId, status])
+  @@index([equipmentTypeId])
+  @@index([projectId])
+  @@index([assignedToId])
+  @@index([deletedAt])
+  @@map("equipment")
+}
+
+// =============================================================================
+// Media
+// =============================================================================
+
+model Photo {
+  id           String          @id @default(uuid()) @db.Uuid
+  companyId    String          @map("company_id") @db.Uuid
+  uploadedById String?         @map("uploaded_by_id") @db.Uuid
+  entityType   MediaEntityType @map("entity_type")
+  entityId     String          @map("entity_id") @db.Uuid
+  storagePath  String          @map("storage_path")
+  url          String
+  caption      String?
+  mimeType     String?         @map("mime_type")
+  sizeBytes    Int?            @map("size_bytes")
+  width        Int?
+  height       Int?
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?         @map("created_by") @db.Uuid
+  deletedAt    DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  uploadedBy Employee? @relation("PhotoUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([companyId, entityType, entityId])
+  @@index([uploadedById])
+  @@index([deletedAt])
+  @@map("photos")
+}
+
+model Video {
+  id           String          @id @default(uuid()) @db.Uuid
+  companyId    String          @map("company_id") @db.Uuid
+  uploadedById String?         @map("uploaded_by_id") @db.Uuid
+  entityType   MediaEntityType @map("entity_type")
+  entityId     String          @map("entity_id") @db.Uuid
+  storagePath  String          @map("storage_path")
+  url          String
+  caption      String?
+  mimeType     String?         @map("mime_type")
+  sizeBytes    Int?            @map("size_bytes")
+  durationSec  Int?            @map("duration_sec")
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?         @map("created_by") @db.Uuid
+  deletedAt    DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  uploadedBy Employee? @relation("VideoUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([companyId, entityType, entityId])
+  @@index([uploadedById])
+  @@index([deletedAt])
+  @@map("videos")
+}
+
+model Document {
+  id           String          @id @default(uuid()) @db.Uuid
+  companyId    String          @map("company_id") @db.Uuid
+  uploadedById String?         @map("uploaded_by_id") @db.Uuid
+  entityType   MediaEntityType @map("entity_type")
+  entityId     String          @map("entity_id") @db.Uuid
+  storagePath  String          @map("storage_path")
+  url          String
+  title        String
+  description  String?
+  mimeType     String?         @map("mime_type")
+  sizeBytes    Int?            @map("size_bytes")
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?         @map("created_by") @db.Uuid
+  deletedAt    DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  uploadedBy Employee? @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([companyId, entityType, entityId])
+  @@index([uploadedById])
+  @@index([deletedAt])
+  @@map("documents")
+}
+
+// =============================================================================
+// Training matrix
+// =============================================================================
+
+model TrainingMatrix {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String    @map("company_id") @db.Uuid
+  projectId   String?   @map("project_id") @db.Uuid
+  name        String
+  description String?
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company  Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project  Project?              @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  entries  TrainingMatrixEntry[]
+
+  @@index([companyId, isActive])
+  @@index([projectId])
+  @@index([deletedAt])
+  @@map("training_matrices")
+}
+
+model TrainingMatrixEntry {
+  id                String                   @id @default(uuid()) @db.Uuid
+  matrixId          String                   @map("matrix_id") @db.Uuid
+  employeeId        String                   @map("employee_id") @db.Uuid
+  competencyId      String                   @map("competency_id") @db.Uuid
+  requirementLevel  TrainingRequirementLevel @default(REQUIRED) @map("requirement_level")
+  status            TrainingMatrixCellStatus @default(NOT_STARTED)
+  dueDate           DateTime?                @map("due_date") @db.Date
+  lastAssessedAt    DateTime?                @map("last_assessed_at") @db.Timestamptz(6)
+  notes             String?
+  createdAt         DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById       String?                  @map("created_by") @db.Uuid
+  deletedAt         DateTime?                @map("deleted_at") @db.Timestamptz(6)
+
+  matrix     TrainingMatrix @relation(fields: [matrixId], references: [id], onDelete: Cascade)
+  employee   Employee       @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  competency Competency     @relation(fields: [competencyId], references: [id], onDelete: Cascade)
+
+  @@unique([matrixId, employeeId, competencyId])
+  @@index([employeeId, status])
+  @@index([competencyId])
+  @@index([deletedAt])
+  @@map("training_matrix_entries")
+}
+
+// =============================================================================
+// Notifications & audit
+// =============================================================================
+
+model Notification {
+  id          String           @id @default(uuid()) @db.Uuid
+  companyId   String?          @map("company_id") @db.Uuid
+  employeeId  String           @map("employee_id") @db.Uuid
+  type        NotificationType @default(INFO)
+  title       String
+  body        String
+  linkUrl     String?          @map("link_url")
+  isRead      Boolean          @default(false) @map("is_read")
+  readAt      DateTime?        @map("read_at") @db.Timestamptz(6)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?          @map("created_by") @db.Uuid
+  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz(6)
+
+  company  Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, isRead, createdAt])
   @@index([companyId])
-  @@index([assesseeId])
-  @@index([type])
-  @@map("continuous_assessments")
+  @@index([deletedAt])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id          String        @id @default(uuid()) @db.Uuid
+  companyId   String?       @map("company_id") @db.Uuid
+  actorUserId String?       @map("actor_user_id") @db.Uuid
+  action      AuditAction
+  entityType  String        @map("entity_type")
+  entityId    String?       @map("entity_id") @db.Uuid
+  summary     String?
+  beforeData  Json?         @map("before_data")
+  afterData   Json?         @map("after_data")
+  ipAddress   String?       @map("ip_address")
+  userAgent   String?       @map("user_agent")
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?       @map("created_by") @db.Uuid
+  deletedAt   DateTime?     @map("deleted_at") @db.Timestamptz(6)
+
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@index([companyId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([deletedAt])
+  @@map("audit_logs")
 }

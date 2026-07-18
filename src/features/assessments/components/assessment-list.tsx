@@ -7,11 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { ContinuousAssessment } from "@/types";
+import type { Assessment } from "@/types";
 import { formatDate } from "@/utils/format";
 
 interface AssessmentListProps {
-  items: ContinuousAssessment[];
+  items: Assessment[];
   error?: string | null;
 }
 
@@ -31,8 +31,8 @@ export function AssessmentList({ items, error }: AssessmentListProps) {
     return (
       <EmptyState
         icon={ClipboardCheck}
-        title="No continuous assessments"
-        description="Record practical, written, observation, portfolio, and oral assessments against verified competencies."
+        title="No assessments"
+        description="Schedule practical, written, observation, portfolio, and oral assessments tied to verified competencies."
       />
     );
   }
@@ -44,8 +44,8 @@ export function AssessmentList({ items, error }: AssessmentListProps) {
           <CardHeader>
             <CardTitle className="text-base">{assessment.title}</CardTitle>
             <CardDescription>
-              {assessment.type} · {assessment.outcome} ·{" "}
-              {formatDate(assessment.assessedAt)}
+              {assessment.type} · {assessment.status} ·{" "}
+              {formatDate(assessment.scheduledAt ?? assessment.completedAt)}
             </CardDescription>
           </CardHeader>
         </Card>

@@ -8,6 +8,7 @@ import type {
   PaginationParams,
   ServiceResult,
 } from "@/types";
+import { notDeleted } from "@/types";
 
 import {
   failure,
@@ -30,12 +31,12 @@ export async function listCompetencies(
 
     const [items, total] = await Promise.all([
       prisma.competency.findMany({
-        where: { companyId },
+        where: { companyId, ...notDeleted },
         orderBy: [{ trade: "asc" }, { code: "asc" }],
         skip,
         take: pageSize,
       }),
-      prisma.competency.count({ where: { companyId } }),
+      prisma.competency.count({ where: { companyId, ...notDeleted } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));
@@ -58,7 +59,6 @@ export async function createCompetency(
         code: input.code,
         title: input.title,
         description: input.description,
-        category: input.category,
         trade: input.trade,
         level: input.level,
         status: CompetencyStatus.DRAFT,
@@ -78,7 +78,9 @@ export async function getCompetencyById(
   if (configError) return unavailable(configError);
 
   try {
-    const competency = await prisma.competency.findUnique({ where: { id } });
+    const competency = await prisma.competency.findFirst({
+      where: { id, ...notDeleted },
+    });
     if (!competency) {
       return { data: null, error: "Competency not found" };
     }

@@ -1,12 +1,13 @@
 import "server-only";
 
-import { type Apprenticeship } from "@/generated/prisma/client";
+import { type Project } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import type {
   PaginatedResult,
   PaginationParams,
   ServiceResult,
 } from "@/types";
+import { notDeleted } from "@/types";
 
 import {
   failure,
@@ -17,10 +18,10 @@ import {
   toPaginatedResult,
 } from "./base";
 
-export async function listApprenticeships(
+export async function listProjects(
   companyId: string,
   params: PaginationParams = {},
-): Promise<ServiceResult<PaginatedResult<Apprenticeship>>> {
+): Promise<ServiceResult<PaginatedResult<Project>>> {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -28,17 +29,25 @@ export async function listApprenticeships(
     const { page, pageSize, skip } = normalizePagination(params);
 
     const [items, total] = await Promise.all([
-      prisma.apprenticeship.findMany({
-        where: { companyId },
+      prisma.project.findMany({
+        where: { companyId, ...notDeleted },
         orderBy: { startDate: "desc" },
         skip,
         take: pageSize,
       }),
-      prisma.apprenticeship.count({ where: { companyId } }),
+      prisma.project.count({ where: { companyId, ...notDeleted } }),
     ]);
 
     return success(toPaginatedResult(items, total, page, pageSize));
   } catch (error) {
     return failure(error);
   }
+}
+
+/** @deprecated Prefer listProjects — apprenticeships replaced by projects + training matrix. */
+export async function listApprenticeships(
+  companyId: string,
+  params: PaginationParams = {},
+) {
+  return listProjects(companyId, params);
 }

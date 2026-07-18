@@ -10,11 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ROLE_LABELS } from "@/lib/auth/permissions";
-import type { Profile } from "@/types";
+import type { EmployeeWithUser } from "@/services/people.service";
 import { fullName, getInitials } from "@/utils/format";
 
 interface PeopleListProps {
-  items: Profile[];
+  items: EmployeeWithUser[];
   error?: string | null;
 }
 
@@ -34,35 +34,38 @@ export function PeopleList({ items, error }: PeopleListProps) {
     return (
       <EmptyState
         icon={Users}
-        title="No people in this company"
-        description="Profiles link Supabase Auth users to roles such as instructor, supervisor, apprentice, and operator. Companies can have unlimited employees."
+        title="No employees in this company"
+        description="Employees link authenticated users to a company with a role. Companies can have unlimited employees."
       />
     );
   }
 
   return (
     <div className="grid gap-3">
-      {items.map((person) => (
-        <Card key={person.id} className="shadow-none">
+      {items.map((employee) => (
+        <Card key={employee.id} className="shadow-none">
           <CardHeader className="flex-row items-center gap-3 space-y-0">
             <Avatar>
-              {person.avatarUrl ? (
-                <AvatarImage src={person.avatarUrl} alt="" />
+              {employee.user.avatarUrl ? (
+                <AvatarImage src={employee.user.avatarUrl} alt="" />
               ) : null}
               <AvatarFallback>
-                {getInitials(person.firstName, person.lastName)}
+                {getInitials(employee.user.firstName, employee.user.lastName)}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1 space-y-1">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-base">
-                  {fullName(person.firstName, person.lastName)}
+                  {fullName(employee.user.firstName, employee.user.lastName)}
                 </CardTitle>
-                <Badge variant="secondary">{ROLE_LABELS[person.role]}</Badge>
+                <Badge variant="secondary">{ROLE_LABELS[employee.role]}</Badge>
               </div>
               <CardDescription className="truncate">
-                {person.email}
-                {person.title ? ` · ${person.title}` : ""}
+                {employee.user.email}
+                {employee.title ? ` · ${employee.title}` : ""}
+                {employee.employeeNumber
+                  ? ` · #${employee.employeeNumber}`
+                  : ""}
               </CardDescription>
             </div>
           </CardHeader>

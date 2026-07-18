@@ -29,7 +29,7 @@ const QUICK_LINKS = [
   },
   {
     title: "Apprenticeships",
-    description: "Monitor hours, mentor progress, and milestone completion.",
+    description: "Monitor project assignments, hours, and training matrix progress.",
     href: "/apprenticeships",
   },
   {
@@ -43,8 +43,8 @@ export function DashboardOverview({ metrics, error }: DashboardOverviewProps) {
   const values = metrics ?? {
     activeCompetencies: 0,
     openAssessments: 0,
-    activeApprenticeships: 0,
-    expiringCertifications: 0,
+    activeProjects: 0,
+    expiringCertificates: 0,
     recentObservations: 0,
     publishedExams: 0,
   };
@@ -79,16 +79,16 @@ Connect Supabase Auth and Postgres, then apply the RLS migration in `supabase/mi
         <StatCard
           label="Open assessments"
           value={values.openAssessments}
-          description="Awaiting completion or review"
+          description="Scheduled or in progress"
         />
         <StatCard
-          label="Active apprenticeships"
-          value={values.activeApprenticeships}
-          description="In-progress apprenticeship programs"
+          label="Active projects"
+          value={values.activeProjects}
+          description="Jobsites with active work"
         />
         <StatCard
-          label="Expiring certifications"
-          value={values.expiringCertifications}
+          label="Expiring certificates"
+          value={values.expiringCertificates}
           description="Within the next 30 days"
         />
         <StatCard

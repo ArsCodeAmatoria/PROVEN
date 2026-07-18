@@ -1,41 +1,62 @@
 export type {
   Company,
-  Profile,
+  User,
+  Employee,
   UserSettings,
   CompanyInvite,
+  Project,
+  ProjectAssignment,
+  CompetencyCategory,
   Competency,
   CompetencyCriterion,
-  CompetencyAssessment,
+  Assessment,
+  AssessmentResult,
+  Observation,
   WrittenExam,
   ExamQuestion,
-  ExamAttempt,
-  Apprenticeship,
-  ApprenticeshipProgress,
-  InstructorObservation,
-  Certification,
-  ContinuousAssessment,
+  ExamResult,
+  Certificate,
+  EmployeeHour,
+  EquipmentType,
+  Equipment,
+  Photo,
+  Video,
+  Document,
+  TrainingMatrix,
+  TrainingMatrixEntry,
+  Notification,
+  AuditLog,
 } from "@/generated/prisma/client";
 
 export type { UserRole } from "@/types/roles";
 export { USER_ROLES, isUserRole } from "@/types/roles";
 
 export {
+  EmployeeStatus,
+  ProjectStatus,
   CompetencyStatus,
+  AssessmentType,
+  AssessmentStatus,
   AssessmentOutcome,
-  ExamStatus,
-  ExamAttemptStatus,
-  ApprenticeshipStatus,
   ObservationRating,
-  CertificationStatus,
-  ContinuousAssessmentType,
+  ExamStatus,
+  ExamResultStatus,
+  CertificateStatus,
+  EquipmentStatus,
+  MediaEntityType,
+  TrainingRequirementLevel,
+  TrainingMatrixCellStatus,
+  NotificationType,
+  AuditAction,
   InviteStatus,
+  HourEntryType,
 } from "@/generated/prisma/client";
 
 export interface DashboardMetrics {
   activeCompetencies: number;
   openAssessments: number;
-  activeApprenticeships: number;
-  expiringCertifications: number;
+  activeProjects: number;
+  expiringCertificates: number;
   recentObservations: number;
   publishedExams: number;
 }
@@ -57,3 +78,6 @@ export interface PaginatedResult<T> {
   pageSize: number;
   pageCount: number;
 }
+
+/** Active (non-soft-deleted) row filter for Prisma queries. */
+export const notDeleted = { deletedAt: null } as const;

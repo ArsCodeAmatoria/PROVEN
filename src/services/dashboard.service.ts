@@ -1,14 +1,15 @@
 import "server-only";
 
 import {
-  AssessmentOutcome,
-  ApprenticeshipStatus,
-  CertificationStatus,
+  AssessmentStatus,
+  CertificateStatus,
   CompetencyStatus,
   ExamStatus,
+  ProjectStatus,
 } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import type { DashboardMetrics, ServiceResult } from "@/types";
+import { notDeleted } from "@/types";
 
 import { failure, getDatabaseConfigError, success, unavailable } from "./base";
 
@@ -28,48 +29,51 @@ export async function getDashboardMetrics(
     const [
       activeCompetencies,
       openAssessments,
-      activeApprenticeships,
-      expiringCertifications,
+      activeProjects,
+      expiringCertificates,
       recentObservations,
       publishedExams,
     ] = await Promise.all([
       prisma.competency.count({
-        where: { companyId, status: CompetencyStatus.ACTIVE },
+        where: { companyId, status: CompetencyStatus.ACTIVE, ...notDeleted },
       }),
-      prisma.competencyAssessment.count({
-        where: {
-          competency: { companyId },
-          outcome: {
-            in: [AssessmentOutcome.NOT_STARTED, AssessmentOutcome.IN_PROGRESS],
-          },
-        },
-      }),
-      prisma.apprenticeship.count({
-        where: { companyId, status: ApprenticeshipStatus.ACTIVE },
-      }),
-      prisma.certification.count({
+      prisma.assessment.count({
         where: {
           companyId,
-          status: CertificationStatus.ACTIVE,
-          expiresAt: { lte: thirtyDaysFromNow, gte: new Date() },
+          status: {
+            in: [AssessmentStatus.SCHEDULED, AssessmentStatus.IN_PROGRESS],
+          },
+          ...notDeleted,
         },
       }),
-      prisma.instructorObservation.count({
+      prisma.project.count({
+        where: { companyId, status: ProjectStatus.ACTIVE, ...notDeleted },
+      }),
+      prisma.certificate.count({
         where: {
-          observed: { companyId },
+          companyId,
+          status: CertificateStatus.ACTIVE,
+          expiresAt: { lte: thirtyDaysFromNow, gte: new Date() },
+          ...notDeleted,
+        },
+      }),
+      prisma.observation.count({
+        where: {
+          companyId,
           observedAt: { gte: sevenDaysAgo },
+          ...notDeleted,
         },
       }),
       prisma.writtenExam.count({
-        where: { companyId, status: ExamStatus.PUBLISHED },
+        where: { companyId, status: ExamStatus.PUBLISHED, ...notDeleted },
       }),
     ]);
 
     return success({
       activeCompetencies,
       openAssessments,
-      activeApprenticeships,
-      expiringCertifications,
+      activeProjects,
+      expiringCertificates,
       recentObservations,
       publishedExams,
     });

@@ -4,7 +4,7 @@ export const createCompetencySchema = z.object({
   code: z.string().min(2).max(32),
   title: z.string().min(3).max(160),
   description: z.string().min(10).max(2000),
-  category: z.string().min(2).max(80),
+  category: z.string().min(2).max(80).optional(),
   trade: z.string().min(2).max(80),
   level: z.coerce.number().int().min(1).max(5),
 });

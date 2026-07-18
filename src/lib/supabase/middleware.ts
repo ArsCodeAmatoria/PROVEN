@@ -78,16 +78,30 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && !isAuthRoute(pathname)) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role, isActive")
-      .eq("authUserId", user.id)
+    const { data: appUser } = await supabase
+      .from("users")
+      .select("id, is_active")
+      .eq("auth_user_id", user.id)
+      .is("deleted_at", null)
       .maybeSingle();
 
+    const { data: employee } = appUser?.id
+      ? await supabase
+          .from("employees")
+          .select("role, status")
+          .eq("user_id", appUser.id)
+          .is("deleted_at", null)
+          .order("created_at", { ascending: true })
+          .limit(1)
+          .maybeSingle()
+      : { data: null };
+
     const role = parseUserRole(
-      profile?.role ?? user.app_metadata?.role ?? user.user_metadata?.role,
+      employee?.role ?? user.app_metadata?.role ?? user.user_metadata?.role,
     );
-    const isActive = profile?.isActive !== false;
+    const isActive =
+      appUser?.is_active !== false &&
+      (!employee || employee.status === "ACTIVE");
 
     if (!isActive) {
       await supabase.auth.signOut();
