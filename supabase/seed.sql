@@ -1,0 +1,1 @@
+-- Optional seed data for local resets. Kept empty for cloud bootstrap.

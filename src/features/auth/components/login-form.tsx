@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -14,9 +15,25 @@ import { touchLastLoginAction } from "@/lib/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { loginSchema, type LoginInput } from "@/lib/validations";
 
+const PLATFORM_ADMIN_ALIASES = new Set(["entopy", "entropy"]);
+const PLATFORM_ADMIN_EMAIL = "entopy@arscodeamatoria.com";
+
+function resolveLoginEmail(identifier: string): { email?: string; error?: string } {
+  const trimmed = identifier.trim();
+  if (!trimmed) return { error: "Enter your email." };
+  if (!trimmed.includes("@")) {
+    if (!PLATFORM_ADMIN_ALIASES.has(trimmed.toLowerCase())) {
+      return { error: "Enter a valid email address." };
+    }
+    return { email: PLATFORM_ADMIN_EMAIL };
+  }
+  return { email: trimmed.toLowerCase() };
+}
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<string | null>(() => {
     const error = searchParams.get("error");
     if (error === "inactive") {
@@ -42,7 +59,7 @@ export function LoginForm() {
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
       rememberMe: true,
     },
@@ -52,9 +69,15 @@ export function LoginForm() {
     setFormError(null);
 
     try {
+      const resolved = resolveLoginEmail(values.identifier);
+      if (resolved.error || !resolved.email) {
+        setFormError(resolved.error ?? "Unable to sign in.");
+        return;
+      }
+
       const supabase = createClient({ rememberMe: values.rememberMe });
       const { error } = await supabase.auth.signInWithPassword({
-        email: values.email,
+        email: resolved.email,
         password: values.password,
       });
 
@@ -63,7 +86,12 @@ export function LoginForm() {
         return;
       }
 
-      await touchLastLoginAction();
+      try {
+        await touchLastLoginAction();
+      } catch {
+        // Non-fatal — session is already established client-side.
+      }
+
       const next = searchParams.get("next") || "/";
       router.push(next);
       router.refresh();
@@ -77,18 +105,19 @@ export function LoginForm() {
   });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="identifier">Email</Label>
         <Input
-          id="email"
-          type="email"
-          autoComplete="email"
+          id="identifier"
+          type="text"
+          autoComplete="username"
+          inputMode="email"
           placeholder="you@company.com"
-          {...register("email")}
+          {...register("identifier")}
         />
-        {errors.email ? (
-          <p className="text-xs text-destructive">{errors.email.message}</p>
+        {errors.identifier ? (
+          <p className="text-xs text-destructive">{errors.identifier.message}</p>
         ) : null}
       </div>
 
@@ -102,12 +131,27 @@ export function LoginForm() {
             Forgot password?
           </Link>
         </div>
-        <Input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          {...register("password")}
-        />
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            className="pr-10"
+            {...register("password")}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((open) => !open)}
+            className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        </div>
         {errors.password ? (
           <p className="text-xs text-destructive">{errors.password.message}</p>
         ) : null}

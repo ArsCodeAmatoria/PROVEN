@@ -22,6 +22,10 @@ function createPrismaClient(): PrismaClient {
     new Pool({
       connectionString,
       max: 10,
+      // Supabase Postgres presents a cert chain that Node/pg rejects by default.
+      ssl: connectionString.includes("supabase.co")
+        ? { rejectUnauthorized: false }
+        : undefined,
     });
 
   if (process.env.NODE_ENV !== "production") {

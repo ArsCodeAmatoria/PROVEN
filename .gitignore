@@ -44,4 +44,6 @@ next-env.d.ts
 # prisma
 /src/generated/prisma
 
-/src/generated/prisma
+# supabase
+supabase/.temp
+supabase/.branches

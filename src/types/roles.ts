@@ -8,7 +8,9 @@ export const USER_ROLES = [
   "COMPANY_ADMIN",
   "INSTRUCTOR",
   "SUPERVISOR",
+  "ASSESSOR",
   "APPRENTICE",
+  "STUDENT",
   "OPERATOR",
   "READ_ONLY",
 ] as const;

@@ -20,6 +20,25 @@ import {
   type UserSettingsInput,
 } from "@/lib/validations";
 
+/** Resolve login identifier to Supabase Auth email. */
+export async function resolveLoginEmailAction(identifier: string) {
+  const trimmed = identifier.trim();
+  if (!trimmed) return { error: "Enter your email." };
+
+  // Platform admin may sign in with username (no @). Everyone else must use email.
+  const PLATFORM_ADMIN_ALIASES = new Set(["entopy", "entropy"]);
+  const PLATFORM_ADMIN_EMAIL = "entopy@arscodeamatoria.com";
+
+  if (!trimmed.includes("@")) {
+    if (!PLATFORM_ADMIN_ALIASES.has(trimmed.toLowerCase())) {
+      return { error: "Enter a valid email address." };
+    }
+    return { email: PLATFORM_ADMIN_EMAIL };
+  }
+
+  return { email: trimmed.toLowerCase() };
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()

@@ -71,7 +71,15 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && isAuthRoute(pathname) && pathname !== "/reset-password") {
+  // Only redirect signed-in users away from auth pages on normal navigations.
+  // Server Actions POST to the current route; redirecting those breaks the
+  // action with "An unexpected response was received from the server."
+  if (
+    user &&
+    isAuthRoute(pathname) &&
+    pathname !== "/reset-password" &&
+    request.method === "GET"
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
