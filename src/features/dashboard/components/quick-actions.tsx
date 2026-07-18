@@ -43,9 +43,9 @@ const ACTIONS = [
     icon: Award,
   },
   {
-    title: "View people",
-    description: "Browse company employees",
-    href: "/people",
+    title: "Add employee",
+    description: "Create a company employment record",
+    href: "/people/new",
     icon: Users,
   },
 ] as const;

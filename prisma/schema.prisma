@@ -243,23 +243,33 @@ model User {
 
 /// Company employment record. Users belong to companies as employees.
 model Employee {
-  id             String         @id @default(uuid()) @db.Uuid
-  userId         String         @map("user_id") @db.Uuid
-  companyId      String         @map("company_id") @db.Uuid
-  role           UserRole       @default(READ_ONLY)
-  status         EmployeeStatus @default(ACTIVE)
-  employeeNumber String?        @map("employee_number")
-  title          String?
-  department     String?
-  hireDate       DateTime?      @map("hire_date") @db.Date
-  terminationDate DateTime?     @map("termination_date") @db.Date
-  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById    String?        @map("created_by") @db.Uuid
-  deletedAt      DateTime?      @map("deleted_at") @db.Timestamptz(6)
+  id                      String         @id @default(uuid()) @db.Uuid
+  userId                  String         @map("user_id") @db.Uuid
+  companyId               String         @map("company_id") @db.Uuid
+  supervisorId            String?        @map("supervisor_id") @db.Uuid
+  role                    UserRole       @default(READ_ONLY)
+  status                  EmployeeStatus @default(ACTIVE)
+  employeeNumber          String?        @map("employee_number")
+  title                   String?
+  trade                   String?
+  level                   Int            @default(1)
+  department              String?
+  photoUrl                String?        @map("photo_url")
+  hireDate                DateTime?      @map("hire_date") @db.Date
+  terminationDate         DateTime?      @map("termination_date") @db.Date
+  notes                   String?
+  emergencyContactName    String?        @map("emergency_contact_name")
+  emergencyContactPhone   String?        @map("emergency_contact_phone")
+  emergencyContactRelation String?       @map("emergency_contact_relation")
+  createdAt               DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById             String?        @map("created_by") @db.Uuid
+  deletedAt               DateTime?      @map("deleted_at") @db.Timestamptz(6)
 
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supervisor Employee? @relation("EmployeeSupervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  reports    Employee[] @relation("EmployeeSupervisor")
 
   projectAssignments     ProjectAssignment[]
   assessmentsAssigned    Assessment[]             @relation("AssessmentAssessor")
@@ -281,6 +291,8 @@ model Employee {
   @@unique([companyId, employeeNumber])
   @@index([companyId, role])
   @@index([companyId, status])
+  @@index([companyId, trade])
+  @@index([supervisorId])
   @@index([userId])
   @@index([deletedAt])
   @@index([createdById])

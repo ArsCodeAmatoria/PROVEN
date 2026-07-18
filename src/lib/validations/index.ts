@@ -139,3 +139,14 @@ export const companyUpdateSchema = z.object({
 });
 
 export type CompanyUpdateInput = z.infer<typeof companyUpdateSchema>;
+
+export {
+  createEmployeeSchema,
+  updateEmployeeSchema,
+  employeeListFiltersSchema,
+  employeeStatusSchema,
+  employeeRoleSchema,
+  type CreateEmployeeInput,
+  type UpdateEmployeeInput,
+  type EmployeeListFiltersInput,
+} from "./employee";
