@@ -74,6 +74,20 @@ enum AssessmentOutcome {
   REQUIRES_REVIEW
 }
 
+enum AssessmentRating {
+  PASS
+  NEEDS_IMPROVEMENT
+  COMPETENT
+  EXCEEDS_STANDARD
+  NOT_OBSERVED
+}
+
+enum AssessmentSignerRole {
+  INSTRUCTOR
+  APPRENTICE
+  WITNESS
+}
+
 enum ObservationRating {
   EXCEEDS
   MEETS
@@ -293,6 +307,7 @@ model Employee {
   trainingMatrixEntries  TrainingMatrixEntry[]
   notifications          Notification[]
   equipmentAssigned      Equipment[]              @relation("EquipmentAssignee")
+  assessmentSignatures   AssessmentSignature[]    @relation("AssessmentSigner")
 
   @@unique([companyId, userId])
   @@unique([companyId, employeeNumber])
@@ -530,31 +545,62 @@ model Assessment {
 }
 
 model AssessmentResult {
-  id           String            @id @default(uuid()) @db.Uuid
-  assessmentId String            @map("assessment_id") @db.Uuid
-  employeeId   String            @map("employee_id") @db.Uuid
-  assessorId   String?           @map("assessor_id") @db.Uuid
-  outcome      AssessmentOutcome @default(NOT_STARTED)
-  score        Int?
-  maxScore     Int?              @map("max_score")
-  feedback     String?
-  evidenceNotes String?          @map("evidence_notes")
-  assessedAt   DateTime?         @map("assessed_at") @db.Timestamptz(6)
-  validUntil   DateTime?         @map("valid_until") @db.Timestamptz(6)
-  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById  String?           @map("created_by") @db.Uuid
-  deletedAt    DateTime?         @map("deleted_at") @db.Timestamptz(6)
+  id                 String             @id @default(uuid()) @db.Uuid
+  assessmentId       String             @map("assessment_id") @db.Uuid
+  employeeId         String             @map("employee_id") @db.Uuid
+  assessorId         String?            @map("assessor_id") @db.Uuid
+  outcome            AssessmentOutcome  @default(NOT_STARTED)
+  rating             AssessmentRating?
+  score              Int?
+  maxScore           Int?               @map("max_score")
+  comments           String?
+  instructorNotes    String?            @map("instructor_notes")
+  apprenticeComments String?            @map("apprentice_comments")
+  feedback           String?
+  evidenceNotes      String?            @map("evidence_notes")
+  assessedAt         DateTime?          @map("assessed_at") @db.Timestamptz(6)
+  validUntil         DateTime?          @map("valid_until") @db.Timestamptz(6)
+  lockedAt           DateTime?          @map("locked_at") @db.Timestamptz(6)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById        String?            @map("created_by") @db.Uuid
+  deletedAt          DateTime?          @map("deleted_at") @db.Timestamptz(6)
 
-  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  employee   Employee   @relation("AssessmentSubject", fields: [employeeId], references: [id], onDelete: Cascade)
-  assessor   Employee?  @relation("AssessmentResultAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
+  assessment Assessment            @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  employee   Employee              @relation("AssessmentSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  assessor   Employee?             @relation("AssessmentResultAssessor", fields: [assessorId], references: [id], onDelete: SetNull)
+  signatures AssessmentSignature[]
 
   @@unique([assessmentId, employeeId])
   @@index([employeeId, outcome])
+  @@index([employeeId, rating])
   @@index([assessorId])
+  @@index([assessedAt])
   @@index([deletedAt])
   @@map("assessment_results")
+}
+
+model AssessmentSignature {
+  id                 String               @id @default(uuid()) @db.Uuid
+  assessmentResultId String               @map("assessment_result_id") @db.Uuid
+  signerEmployeeId   String?              @map("signer_employee_id") @db.Uuid
+  role               AssessmentSignerRole
+  signerName         String               @map("signer_name")
+  signedAt           DateTime             @default(now()) @map("signed_at") @db.Timestamptz(6)
+  storagePath        String?              @map("storage_path")
+  signatureUrl       String?              @map("signature_url")
+  createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById        String?              @map("created_by") @db.Uuid
+  deletedAt          DateTime?            @map("deleted_at") @db.Timestamptz(6)
+
+  assessmentResult AssessmentResult @relation(fields: [assessmentResultId], references: [id], onDelete: Cascade)
+  signerEmployee   Employee?        @relation("AssessmentSigner", fields: [signerEmployeeId], references: [id], onDelete: SetNull)
+
+  @@index([assessmentResultId])
+  @@index([signerEmployeeId])
+  @@index([deletedAt])
+  @@map("assessment_signatures")
 }
 
 // =============================================================================

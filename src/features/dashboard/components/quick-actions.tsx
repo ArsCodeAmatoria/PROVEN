@@ -21,7 +21,7 @@ const ACTIONS = [
   {
     title: "New assessment",
     description: "Schedule a competency evaluation",
-    href: "/assessments",
+    href: "/assessments/new",
     icon: ClipboardCheck,
   },
   {

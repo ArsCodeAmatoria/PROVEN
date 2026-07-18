@@ -68,7 +68,7 @@ const NAV_SEARCH = [
 const ACTIONS = [
   {
     title: "New assessment",
-    href: "/assessments",
+    href: "/assessments/new",
     icon: ClipboardCheck,
   },
   {
