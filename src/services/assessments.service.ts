@@ -31,6 +31,7 @@ import {
   toPaginatedResult,
   unavailable,
 } from "./base";
+import { matrixStatusFromAssessment } from "@/lib/training-matrix-status";
 
 const RATING_SCORES: Record<AssessmentRating, number> = {
   NOT_OBSERVED: 0,
@@ -574,6 +575,12 @@ export async function createPermanentAssessment(
     });
 
     // Update training matrix if an entry exists — never overwrite historical assessments.
+    const matrixStatus = matrixStatusFromAssessment({
+      rating: input.rating,
+      hasInstructorSignature: true,
+      hasApprenticeSignature: Boolean(input.apprenticeSignatureName?.trim()),
+    });
+
     await prisma.trainingMatrixEntry.updateMany({
       where: {
         employeeId: employee.id,
@@ -581,11 +588,7 @@ export async function createPermanentAssessment(
         ...notDeleted,
       },
       data: {
-        status:
-          input.rating === "NEEDS_IMPROVEMENT" ||
-          input.rating === "NOT_OBSERVED"
-            ? "IN_PROGRESS"
-            : "COMPETENT",
+        status: matrixStatus,
         lastAssessedAt: now,
       },
     });

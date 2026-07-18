@@ -28,6 +28,12 @@ export const NAV_ITEMS = [
     permission: "demonstrations" as const,
   },
   {
+    title: "Training Matrix",
+    href: "/training-matrix",
+    icon: "Grid3x3",
+    permission: "training-matrix" as const,
+  },
+  {
     title: "Written Exams",
     href: "/exams",
     icon: "FileText",

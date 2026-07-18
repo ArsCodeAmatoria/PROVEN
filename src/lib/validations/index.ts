@@ -153,6 +153,15 @@ export {
 } from "./demonstration";
 
 export {
+  trainingMatrixDisplayStatusSchema,
+  trainingMatrixFiltersSchema,
+  trainingMatrixExportFormatSchema,
+  type TrainingMatrixDisplayStatus,
+  type TrainingMatrixFiltersInput,
+  type TrainingMatrixExportFormat,
+} from "./training-matrix";
+
+export {
   createObservationSchema,
   updateObservationFollowUpSchema,
   observationListFiltersSchema,

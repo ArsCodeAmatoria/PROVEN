@@ -25,6 +25,7 @@ export type Permission =
   | "competencies"
   | "assessments"
   | "demonstrations"
+  | "training-matrix"
   | "exams"
   | "apprenticeships"
   | "observations"
@@ -40,6 +41,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "exams",
     "apprenticeships",
     "observations",
@@ -54,6 +56,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "exams",
     "apprenticeships",
     "observations",
@@ -68,6 +71,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "exams",
     "apprenticeships",
     "observations",
@@ -80,6 +84,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "apprenticeships",
     "observations",
     "certifications",
@@ -101,6 +106,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "observations",
     "certifications",
     "profile",
@@ -111,6 +117,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "competencies",
     "assessments",
     "demonstrations",
+    "training-matrix",
     "exams",
     "apprenticeships",
     "observations",
@@ -124,6 +131,7 @@ export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
   { prefix: "/people", permission: "people" },
   { prefix: "/competencies", permission: "competencies" },
   { prefix: "/demonstrations", permission: "demonstrations" },
+  { prefix: "/training-matrix", permission: "training-matrix" },
   { prefix: "/assessments", permission: "assessments" },
   { prefix: "/exams", permission: "exams" },
   { prefix: "/apprenticeships", permission: "apprenticeships" },

@@ -44,6 +44,11 @@ import {
   OBSERVATION_TYPE_LABELS,
 } from "@/features/observations/constants";
 import { DEMONSTRATION_RATING_LABELS } from "@/features/demonstrations/constants";
+import {
+  TRAINING_MATRIX_STATUS_LABELS,
+  TRAINING_MATRIX_STATUS_STYLES,
+} from "@/features/training-matrix/constants";
+import { mapStoredStatusToDisplay } from "@/lib/training-matrix-status";
 import { ROLE_LABELS } from "@/lib/auth/permissions";
 import type { EmployeeDetail } from "@/services/people.service";
 import { formatDate, formatRelative, fullName } from "@/utils/format";
@@ -294,7 +299,18 @@ export function EmployeeDetailView({
                           .join(" · ")}
                       </p>
                     </div>
-                    <Badge variant="secondary">{entry.status}</Badge>
+                    <Badge
+                      variant="outline"
+                      className={TRAINING_MATRIX_STATUS_STYLES[
+                        mapStoredStatusToDisplay(entry.status)
+                      ]}
+                    >
+                      {
+                        TRAINING_MATRIX_STATUS_LABELS[
+                          mapStoredStatusToDisplay(entry.status)
+                        ]
+                      }
+                    </Badge>
                   </li>
                 ))}
               </ul>

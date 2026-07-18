@@ -214,10 +214,17 @@ export async function getDashboardData(
       prisma.trainingMatrixEntry.findMany({
         where: {
           ...notDeleted,
-          status: { in: ["NOT_STARTED", "IN_PROGRESS", "EXPIRED"] },
+          status: {
+            in: ["NOT_STARTED", "IN_PROGRESS", "EXPIRED", "NEEDS_REASSESSMENT"],
+          },
           OR: [
             { dueDate: { lte: fourteenDaysFromNow } },
-            { dueDate: null, status: { in: ["NOT_STARTED", "EXPIRED"] } },
+            {
+              dueDate: null,
+              status: {
+                in: ["NOT_STARTED", "EXPIRED", "NEEDS_REASSESSMENT"],
+              },
+            },
           ],
           employee: { companyId, ...notDeleted },
           competency: { companyId, ...notDeleted },
