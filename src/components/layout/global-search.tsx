@@ -4,6 +4,7 @@ import {
   Award,
   BadgeCheck,
   ClipboardCheck,
+  Clock3,
   Eye,
   FileBarChart,
   FileText,
@@ -62,6 +63,12 @@ const NAV_SEARCH = [
     icon: FileBarChart,
     group: "Navigate",
   },
+  {
+    title: "Experience Log",
+    href: "/experience-log",
+    icon: Clock3,
+    group: "Navigate",
+  },
   { title: "Written Exams", href: "/exams", icon: FileText, group: "Navigate" },
   {
     title: "Projects",
@@ -96,6 +103,11 @@ const ACTIONS = [
     title: "New demonstration",
     href: "/demonstrations/new",
     icon: Hammer,
+  },
+  {
+    title: "Log experience",
+    href: "/experience-log/new",
+    icon: Clock3,
   },
   {
     title: "Record observation",

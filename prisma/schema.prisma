@@ -212,6 +212,25 @@ enum HourEntryType {
   OTHER
 }
 
+enum LiftType {
+  NONE
+  MOBILE_CRANE
+  TOWER_CRANE
+  OVERHEAD_CRANE
+  BOOM_TRUCK
+  FORKLIFT
+  AERIAL_LIFT
+  OTHER
+}
+
+enum ExperienceMilestoneKind {
+  APPRENTICESHIP
+  EQUIPMENT
+  PROJECT
+  CATEGORY
+  GENERAL
+}
+
 // =============================================================================
 // Identity & tenancy
 // =============================================================================
@@ -242,6 +261,8 @@ model Company {
   employeeHours          EmployeeHour[]
   equipmentTypes         EquipmentType[]
   equipment              Equipment[]
+  experienceLogEntries   ExperienceLogEntry[]
+  experienceMilestones   ExperienceMilestone[]
   photos                 Photo[]
   videos                 Video[]
   documents              Document[]
@@ -328,6 +349,8 @@ model Employee {
   notifications          Notification[]
   equipmentAssigned      Equipment[]              @relation("EquipmentAssignee")
   assessmentSignatures   AssessmentSignature[]    @relation("AssessmentSigner")
+  experienceLogs         ExperienceLogEntry[]     @relation("ExperienceSubject")
+  experienceSupervised   ExperienceLogEntry[]     @relation("ExperienceSupervisor")
 
   @@unique([companyId, userId])
   @@unique([companyId, employeeNumber])
@@ -411,6 +434,7 @@ model Project {
   employeeHours      EmployeeHour[]
   equipment          Equipment[]
   trainingMatrices   TrainingMatrix[]
+  experienceLogs     ExperienceLogEntry[]
 
   @@unique([companyId, code])
   @@index([companyId, status])
@@ -463,6 +487,8 @@ model CompetencyCategory {
   children     CompetencyCategory[] @relation("CategoryTree")
   competencies Competency[]
   observations Observation[]
+  experienceLogs ExperienceLogEntry[]
+  experienceMilestones ExperienceMilestone[]
 
   @@unique([companyId, code])
   @@index([companyId, parentId])
@@ -503,6 +529,8 @@ model Competency {
   examLinks             ExamCompetency[]
   certificates          Certificate[]
   trainingMatrixEntries TrainingMatrixEntry[]
+  experienceLogs        ExperienceLogEntry[]
+  experienceMilestones  ExperienceMilestone[]
 
   @@unique([companyId, code, version])
   @@index([companyId, status])
@@ -870,6 +898,7 @@ model Equipment {
   equipmentType EquipmentType @relation(fields: [equipmentTypeId], references: [id], onDelete: Restrict)
   project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
   assignedTo    Employee?     @relation("EquipmentAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  experienceLogs ExperienceLogEntry[]
 
   @@unique([companyId, assetTag])
   @@index([companyId, status])
@@ -878,6 +907,79 @@ model Equipment {
   @@index([assignedToId])
   @@index([deletedAt])
   @@map("equipment")
+}
+
+// =============================================================================
+// Experience log
+// =============================================================================
+
+model ExperienceLogEntry {
+  id              String    @id @default(uuid()) @db.Uuid
+  companyId       String    @map("company_id") @db.Uuid
+  employeeId      String    @map("employee_id") @db.Uuid
+  projectId       String    @map("project_id") @db.Uuid
+  supervisorId    String?   @map("supervisor_id") @db.Uuid
+  equipmentId     String?   @map("equipment_id") @db.Uuid
+  categoryId      String?   @map("category_id") @db.Uuid
+  competencyId    String?   @map("competency_id") @db.Uuid
+  employerName    String    @map("employer_name")
+  liftType        LiftType  @default(NONE) @map("lift_type")
+  taskPerformed   String    @map("task_performed")
+  hours           Decimal   @db.Decimal(8, 2)
+  startDate       DateTime  @map("start_date") @db.Date
+  endDate         DateTime  @map("end_date") @db.Date
+  isApprenticeship Boolean  @default(true) @map("is_apprenticeship")
+  notes           String?
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById     String?   @map("created_by") @db.Uuid
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  employee   Employee            @relation("ExperienceSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  project    Project             @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  supervisor Employee?           @relation("ExperienceSupervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  equipment  Equipment?          @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  category   CompetencyCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  competency Competency?         @relation(fields: [competencyId], references: [id], onDelete: SetNull)
+
+  @@index([companyId, startDate])
+  @@index([employeeId, startDate])
+  @@index([projectId])
+  @@index([equipmentId])
+  @@index([categoryId])
+  @@index([supervisorId])
+  @@index([liftType])
+  @@index([deletedAt])
+  @@map("experience_log_entries")
+}
+
+model ExperienceMilestone {
+  id           String                  @id @default(uuid()) @db.Uuid
+  companyId    String                  @map("company_id") @db.Uuid
+  categoryId   String?                 @map("category_id") @db.Uuid
+  competencyId String?                 @map("competency_id") @db.Uuid
+  kind         ExperienceMilestoneKind @default(GENERAL)
+  name         String
+  description  String?
+  targetHours  Decimal                 @map("target_hours") @db.Decimal(10, 2)
+  sortOrder    Int                     @default(0) @map("sort_order")
+  isActive     Boolean                 @default(true) @map("is_active")
+  createdAt    DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime                @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById  String?                 @map("created_by") @db.Uuid
+  deletedAt    DateTime?               @map("deleted_at") @db.Timestamptz(6)
+
+  company    Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category   CompetencyCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  competency Competency?         @relation(fields: [competencyId], references: [id], onDelete: SetNull)
+
+  @@index([companyId, isActive])
+  @@index([categoryId])
+  @@index([competencyId])
+  @@index([kind])
+  @@index([deletedAt])
+  @@map("experience_milestones")
 }
 
 // =============================================================================

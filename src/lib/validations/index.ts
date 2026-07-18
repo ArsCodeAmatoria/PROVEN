@@ -170,6 +170,17 @@ export {
 } from "./report";
 
 export {
+  createExperienceLogSchema,
+  createExperienceMilestoneSchema,
+  experienceLogListFiltersSchema,
+  liftTypeSchema,
+  experienceMilestoneKindSchema,
+  type CreateExperienceLogInput,
+  type CreateExperienceMilestoneInput,
+  type ExperienceLogListFiltersInput,
+} from "./experience-log";
+
+export {
   createObservationSchema,
   updateObservationFollowUpSchema,
   observationListFiltersSchema,

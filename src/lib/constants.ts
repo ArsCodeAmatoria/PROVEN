@@ -40,6 +40,12 @@ export const NAV_ITEMS = [
     permission: "reports" as const,
   },
   {
+    title: "Experience Log",
+    href: "/experience-log",
+    icon: "Clock3",
+    permission: "experience-log" as const,
+  },
+  {
     title: "Written Exams",
     href: "/exams",
     icon: "FileText",

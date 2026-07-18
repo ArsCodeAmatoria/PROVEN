@@ -27,6 +27,7 @@ export type Permission =
   | "demonstrations"
   | "training-matrix"
   | "reports"
+  | "experience-log"
   | "exams"
   | "apprenticeships"
   | "observations"
@@ -44,6 +45,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "exams",
     "apprenticeships",
     "observations",
@@ -60,6 +62,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "exams",
     "apprenticeships",
     "observations",
@@ -76,6 +79,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "exams",
     "apprenticeships",
     "observations",
@@ -90,6 +94,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "apprenticeships",
     "observations",
     "certifications",
@@ -100,6 +105,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "dashboard",
     "assessments",
     "demonstrations",
+    "experience-log",
     "exams",
     "apprenticeships",
     "certifications",
@@ -113,6 +119,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "observations",
     "certifications",
     "profile",
@@ -125,6 +132,7 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "demonstrations",
     "training-matrix",
     "reports",
+    "experience-log",
     "exams",
     "apprenticeships",
     "observations",
@@ -140,6 +148,7 @@ export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
   { prefix: "/demonstrations", permission: "demonstrations" },
   { prefix: "/training-matrix", permission: "training-matrix" },
   { prefix: "/reports", permission: "reports" },
+  { prefix: "/experience-log", permission: "experience-log" },
   { prefix: "/assessments", permission: "assessments" },
   { prefix: "/exams", permission: "exams" },
   { prefix: "/apprenticeships", permission: "apprenticeships" },
