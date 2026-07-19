@@ -44,6 +44,9 @@ export function createClient(options?: { rememberMe?: boolean }) {
     setRememberMePreference(options.rememberMe);
   }
 
+  const secure =
+    typeof window !== "undefined" && window.location.protocol === "https:";
+
   return createBrowserClient(url, anonKey, {
     cookieOptions: {
       ...(rememberMe
@@ -51,6 +54,7 @@ export function createClient(options?: { rememberMe?: boolean }) {
         : { maxAge: undefined }),
       path: "/",
       sameSite: "lax",
+      secure,
     },
   });
 }

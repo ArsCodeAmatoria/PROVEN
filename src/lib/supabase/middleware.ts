@@ -15,10 +15,34 @@ function isAuthRoute(pathname: string) {
   );
 }
 
+function isPublicAsset(pathname: string) {
+  return (
+    pathname === "/sw.js" ||
+    pathname === "/manifest.webmanifest" ||
+    pathname === "/robots.txt" ||
+    pathname === "/favicon.ico"
+  );
+}
+
+/** Preserve Supabase cookie mutations when returning a redirect. */
+function redirectWithSession(url: URL, sessionResponse: NextResponse) {
+  const redirectResponse = NextResponse.redirect(url);
+  sessionResponse.cookies.getAll().forEach(({ name, value }) => {
+    redirectResponse.cookies.set(name, value);
+  });
+  return redirectResponse;
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+
+  const { pathname } = request.nextUrl;
+
+  if (isPublicAsset(pathname)) {
+    return supabaseResponse;
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -42,9 +66,11 @@ export async function updateSession(request: NextRequest) {
         cookiesToSet.forEach(({ name, value, options }) => {
           const remember = request.cookies.get("proven_remember_me")?.value;
           const maxAge =
-            remember === "0"
-              ? undefined
-              : (options?.maxAge ?? 60 * 60 * 24 * 30);
+            options?.maxAge === 0
+              ? 0
+              : remember === "0"
+                ? undefined
+                : (options?.maxAge ?? 60 * 60 * 24 * 30);
           supabaseResponse.cookies.set(name, value, {
             ...options,
             maxAge,
@@ -58,8 +84,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
-
   if (pathname.startsWith("/api/health") || pathname.startsWith("/callback")) {
     return supabaseResponse;
   }
@@ -68,7 +92,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", pathname);
-    return NextResponse.redirect(url);
+    return redirectWithSession(url, supabaseResponse);
   }
 
   // Only redirect signed-in users away from auth pages on normal navigations.
@@ -82,7 +106,7 @@ export async function updateSession(request: NextRequest) {
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
-    return NextResponse.redirect(url);
+    return redirectWithSession(url, supabaseResponse);
   }
 
   if (user && !isAuthRoute(pathname)) {
@@ -116,14 +140,14 @@ export async function updateSession(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       url.searchParams.set("error", "inactive");
-      return NextResponse.redirect(url);
+      return redirectWithSession(url, supabaseResponse);
     }
 
     const permission = getPermissionForPath(pathname);
     if (permission && !hasPermission(role, permission)) {
       const url = request.nextUrl.clone();
       url.pathname = getDefaultRouteForRole(role);
-      return NextResponse.redirect(url);
+      return redirectWithSession(url, supabaseResponse);
     }
   }
 
