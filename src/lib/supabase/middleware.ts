@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 
 import {
@@ -31,6 +32,36 @@ function redirectWithSession(url: URL, sessionResponse: NextResponse) {
     redirectResponse.cookies.set(name, value);
   });
   return redirectResponse;
+}
+
+async function resolveEmployeeViaServiceRole(authUserId: string) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) return null;
+
+  const admin = createSupabaseClient(url, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data: appUser } = await admin
+    .from("users")
+    .select("id, is_active")
+    .eq("auth_user_id", authUserId)
+    .is("deleted_at", null)
+    .maybeSingle();
+
+  if (!appUser?.id) return null;
+
+  const { data: employee } = await admin
+    .from("employees")
+    .select("role, status")
+    .eq("user_id", appUser.id)
+    .is("deleted_at", null)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  return { appUser, employee };
 }
 
 export async function updateSession(request: NextRequest) {
@@ -110,23 +141,37 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && !isAuthRoute(pathname)) {
-    const { data: appUser } = await supabase
+    let appUser: { id: string; is_active: boolean | null } | null = null;
+    let employee: { role: string | null; status: string | null } | null = null;
+
+    const { data: scopedUser } = await supabase
       .from("users")
       .select("id, is_active")
       .eq("auth_user_id", user.id)
       .is("deleted_at", null)
       .maybeSingle();
 
-    const { data: employee } = appUser?.id
-      ? await supabase
-          .from("employees")
-          .select("role, status")
-          .eq("user_id", appUser.id)
-          .is("deleted_at", null)
-          .order("created_at", { ascending: true })
-          .limit(1)
-          .maybeSingle()
-      : { data: null };
+    appUser = scopedUser;
+
+    if (appUser?.id) {
+      const { data: scopedEmployee } = await supabase
+        .from("employees")
+        .select("role, status")
+        .eq("user_id", appUser.id)
+        .is("deleted_at", null)
+        .order("created_at", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      employee = scopedEmployee;
+    }
+
+    if (!appUser) {
+      const viaAdmin = await resolveEmployeeViaServiceRole(user.id);
+      if (viaAdmin) {
+        appUser = viaAdmin.appUser;
+        employee = viaAdmin.employee;
+      }
+    }
 
     const role = parseUserRole(
       employee?.role ?? user.app_metadata?.role ?? user.user_metadata?.role,
