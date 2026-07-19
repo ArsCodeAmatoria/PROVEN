@@ -43,6 +43,13 @@ export function LoginForm() {
       return "No profile was found for this account. Contact support.";
     }
     if (error === "config") {
+      // Ignore stale ?error=config once keys are present in this build.
+      if (
+        process.env.NEXT_PUBLIC_SUPABASE_URL &&
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ) {
+        return null;
+      }
       return "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in the Vercel project (Production).";
     }
     if (error === "auth_callback") {
