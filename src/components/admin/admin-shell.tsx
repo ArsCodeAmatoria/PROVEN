@@ -28,8 +28,8 @@ export function AdminShell({ profile, children }: AdminShellProps) {
           <div className="flex items-center gap-2 lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" aria-label="Open menu">
-                  <Menu className="h-4 w-4" />
+                <Button variant="outline" size="icon" className="h-11 w-11" aria-label="Open menu">
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">

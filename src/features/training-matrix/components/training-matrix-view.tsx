@@ -258,11 +258,14 @@ export function TrainingMatrixView({
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-auto max-h-[70vh]">
+            <p className="border-b border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground md:hidden">
+              Swipe to scroll · worker names stay pinned on the left.
+            </p>
+            <div className="max-h-[70vh] overflow-auto overscroll-contain [-webkit-overflow-scrolling:touch]">
               <table className="min-w-full border-collapse text-xs">
                 <thead>
                   <tr>
-                    <th className="sticky left-0 top-0 z-30 bg-background border-b border-r px-3 py-2 text-left font-semibold min-w-44">
+                    <th className="sticky left-0 top-0 z-30 min-w-36 border-b border-r bg-background px-3 py-2 text-left font-semibold sm:min-w-44">
                       Worker
                     </th>
                     {data.competencies.map((competency) => (

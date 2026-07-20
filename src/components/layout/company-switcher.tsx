@@ -23,12 +23,19 @@ interface CompanySwitcherProps {
   companyId: string | null;
   companyName: string | null;
   memberships: CompanyMembership[];
+  /** dropdown = header control; panel = full-width list for mobile nav sheet */
+  variant?: "dropdown" | "panel";
+  className?: string;
+  onSwitched?: () => void;
 }
 
 export function CompanySwitcher({
   companyId,
   companyName,
   memberships,
+  variant = "dropdown",
+  className,
+  onSwitched,
 }: CompanySwitcherProps) {
   const router = useRouter();
   const hydrated = useHydrated();
@@ -44,13 +51,82 @@ export function CompanySwitcher({
         setError(result.error);
         return;
       }
+      onSwitched?.();
       router.refresh();
     });
   };
 
+  if (variant === "panel") {
+    if (memberships.length <= 1) {
+      return (
+        <div
+          className={cn(
+            "flex items-center gap-2 rounded-md border border-border bg-muted/30 px-3 py-2.5",
+            className,
+          )}
+        >
+          <Building2 className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <span className="truncate text-sm font-medium">
+            {companyName ?? "No company"}
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <div className={cn("space-y-2", className)}>
+        <p className="px-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Company
+        </p>
+        <div className="space-y-1">
+          {memberships.map((membership) => {
+            const active = membership.companyId === companyId;
+            return (
+              <button
+                key={membership.companyId}
+                type="button"
+                disabled={pending}
+                onClick={() => onSelect(membership.companyId)}
+                className={cn(
+                  "flex min-h-11 w-full items-start justify-between gap-2 rounded-md border px-3 py-2.5 text-left transition-colors",
+                  active
+                    ? "border-primary/40 bg-primary/5"
+                    : "border-transparent hover:bg-muted",
+                )}
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">
+                    {membership.companyName}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {ROLE_LABELS[membership.role]}
+                  </p>
+                </div>
+                <Check
+                  className={cn(
+                    "mt-0.5 h-4 w-4 shrink-0",
+                    active ? "opacity-100" : "opacity-0",
+                  )}
+                />
+              </button>
+            );
+          })}
+        </div>
+        {error ? (
+          <p className="px-1 text-xs text-destructive">{error}</p>
+        ) : null}
+      </div>
+    );
+  }
+
   if (memberships.length <= 1) {
     return (
-      <div className="hidden min-w-0 items-center gap-2 md:flex">
+      <div
+        className={cn(
+          "flex min-w-0 max-w-[10rem] items-center gap-2 sm:max-w-[14rem] md:max-w-[220px]",
+          className,
+        )}
+      >
         <Building2 className="h-4 w-4 shrink-0 text-muted-foreground" />
         <span className="truncate text-sm font-medium">
           {companyName ?? "No company"}
@@ -64,7 +140,10 @@ export function CompanySwitcher({
       <Button
         variant="outline"
         size="sm"
-        className="hidden h-9 max-w-[220px] gap-2 md:inline-flex"
+        className={cn(
+          "inline-flex h-11 max-w-[10rem] gap-2 sm:max-w-[14rem] md:max-w-[220px]",
+          className,
+        )}
         type="button"
         disabled
       >
@@ -81,7 +160,10 @@ export function CompanySwitcher({
         <Button
           variant="outline"
           size="sm"
-          className="hidden h-9 max-w-[220px] gap-2 md:inline-flex"
+          className={cn(
+            "inline-flex h-11 max-w-[10rem] gap-2 sm:max-w-[14rem] md:max-w-[220px]",
+            className,
+          )}
           disabled={pending}
         >
           <Building2 className="h-4 w-4 shrink-0" />
@@ -96,7 +178,7 @@ export function CompanySwitcher({
           <DropdownMenuItem
             key={membership.companyId}
             onSelect={() => onSelect(membership.companyId)}
-            className="flex items-start justify-between gap-2"
+            className="flex min-h-11 items-start justify-between gap-2"
           >
             <div className="min-w-0">
               <p className="truncate text-sm font-medium">

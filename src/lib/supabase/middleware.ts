@@ -18,10 +18,10 @@ function isAuthRoute(pathname: string) {
 
 function isPublicAsset(pathname: string) {
   return (
-    pathname === "/sw.js" ||
     pathname === "/manifest.webmanifest" ||
     pathname === "/robots.txt" ||
-    pathname === "/favicon.ico"
+    pathname === "/favicon.ico" ||
+    pathname === "/favicon.svg"
   );
 }
 

@@ -50,7 +50,10 @@ export function DataTableShell({
         )
       ) : (
         <div className="overflow-hidden rounded-lg border border-border">
-          <div className="overflow-x-auto">
+          <p className="border-b border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground md:hidden">
+            Swipe sideways to see more columns.
+          </p>
+          <div className="overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead className="border-b border-border bg-muted/40">
                 <tr>

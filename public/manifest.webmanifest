@@ -1,0 +1,17 @@
+{
+  "name": "Proven",
+  "short_name": "Proven",
+  "description": "Competency management for construction — verify practical skills, exams, apprenticeships, observations, and certifications.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

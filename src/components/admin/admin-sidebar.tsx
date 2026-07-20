@@ -69,7 +69,7 @@ export function AdminSidebar({ onNavigate, className }: AdminSidebarProps) {
                         href={item.href}
                         onClick={onNavigate}
                         className={cn(
-                          "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition-colors",
+                          "flex min-h-11 items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition-colors",
                           isActive
                             ? "bg-sidebar-accent text-sidebar-accent-foreground"
                             : "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",

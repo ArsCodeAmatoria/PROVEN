@@ -20,20 +20,27 @@ export function AppHeader({
 }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="flex h-14 items-center gap-2 px-4 md:gap-3 md:px-6">
-        <MobileNav role={profile.role} />
-
-        <CompanySwitcher
+      <div className="flex h-14 items-center gap-2 px-3 sm:px-4 md:gap-3 md:px-6">
+        <MobileNav
+          role={profile.role}
           companyId={profile.companyId}
           companyName={profile.company?.name ?? null}
           memberships={profile.memberships}
         />
 
+        <div className="hidden min-w-0 md:block">
+          <CompanySwitcher
+            companyId={profile.companyId}
+            companyName={profile.company?.name ?? null}
+            memberships={profile.memberships}
+          />
+        </div>
+
         <div className="hidden flex-1 md:block md:max-w-md lg:max-w-lg">
           <GlobalSearch />
         </div>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
           <div className="md:hidden">
             <GlobalSearch compact />
           </div>
