@@ -40,15 +40,18 @@ export default async function ComplianceAuditSessionPage({ params }: PageProps) 
   const profile = await requireAuth();
   const { companyId } = await requireCompanyId();
   const { sessionId } = await params;
-  const result = await getAuditSessionDetail(companyId, sessionId);
+
+  const [result, progress, gate] = await Promise.all([
+    getAuditSessionDetail(companyId, sessionId),
+    getAuditProgress(companyId, sessionId),
+    getExternalAuditGate(companyId, sessionId),
+  ]);
 
   if (!result.data) {
     notFound();
   }
 
   const { session, questions } = result.data;
-  const progress = await getAuditProgress(companyId, sessionId);
-  const gate = await getExternalAuditGate(companyId, sessionId);
   const write = canWrite(profile.role);
 
   return (

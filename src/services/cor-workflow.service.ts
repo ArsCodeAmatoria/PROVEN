@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cache } from "react";
+
 import type {
   CorrectiveActionPriority,
   CorrectiveActionStatus,
@@ -404,10 +406,10 @@ export type AuditProgressView = {
   freezeDocumentCount: number;
 };
 
-export async function getAuditProgress(
+export const getAuditProgress = cache(async (
   companyId: string,
   sessionId: string,
-): Promise<ServiceResult<AuditProgressView>> {
+): Promise<ServiceResult<AuditProgressView>> => {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -482,7 +484,7 @@ export async function getAuditProgress(
   } catch (error) {
     return failure(error);
   }
-}
+});
 
 export type CapDashView = {
   openFindings: number;
@@ -631,10 +633,10 @@ export type ExternalAuditGate = {
   blockers: string[];
 };
 
-export async function getExternalAuditGate(
+export const getExternalAuditGate = cache(async (
   companyId: string,
   sessionId?: string | null,
-): Promise<ServiceResult<ExternalAuditGate>> {
+): Promise<ServiceResult<ExternalAuditGate>> => {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -729,11 +731,11 @@ export async function getExternalAuditGate(
   } catch (error) {
     return failure(error);
   }
-}
+});
 
-export async function getAuditReadinessBreakdown(
+export const getAuditReadinessBreakdown = cache(async (
   companyId: string,
-): Promise<ServiceResult<ReadinessBreakdown>> {
+): Promise<ServiceResult<ReadinessBreakdown>> => {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -747,6 +749,7 @@ export async function getAuditReadinessBreakdown(
     const session = await prisma.corAuditSession.findFirst({
       where: { companyId, type: "INTERNAL", ...notDeleted },
       orderBy: { updatedAt: "desc" },
+      select: { id: true },
     });
 
     const progress = session
@@ -812,13 +815,6 @@ export async function getAuditReadinessBreakdown(
           ? "needs_improvement"
           : "not_ready";
 
-    if (session) {
-      await prisma.corAuditSession.update({
-        where: { id: session.id },
-        data: { readinessPct },
-      });
-    }
-
     return success({
       readinessPct,
       band,
@@ -837,7 +833,7 @@ export async function getAuditReadinessBreakdown(
   } catch (error) {
     return failure(error);
   }
-}
+});
 
 export async function markCorrectiveActionComplete(
   companyId: string,

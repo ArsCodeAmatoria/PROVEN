@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 import type {
   Company,
@@ -162,7 +163,7 @@ function sessionFromAdminAccess(
   };
 }
 
-export async function getAuthUser() {
+export const getAuthUser = cache(async () => {
   const supabase = await tryCreateClient();
   if (!supabase) return null;
 
@@ -176,9 +177,9 @@ export async function getAuthUser() {
   }
 
   return user;
-}
+});
 
-export async function getCurrentProfile(): Promise<SessionProfile | null> {
+export const getCurrentProfile = cache(async (): Promise<SessionProfile | null> => {
   const authUser = await getAuthUser();
   if (!authUser) return null;
 
@@ -210,9 +211,9 @@ export async function getCurrentProfile(): Promise<SessionProfile | null> {
   const access = await resolveProvenAccessViaAdmin(authUser.id);
   if (!access) return null;
   return sessionFromAdminAccess(access);
-}
+});
 
-export async function requireAuth(): Promise<SessionProfile> {
+export const requireAuth = cache(async (): Promise<SessionProfile> => {
   if (!hasSupabaseConfig()) {
     redirect("/login?error=config");
   }
@@ -236,7 +237,7 @@ export async function requireAuth(): Promise<SessionProfile> {
   }
 
   return profile;
-}
+});
 
 export async function requirePermission(
   permission: Permission,
