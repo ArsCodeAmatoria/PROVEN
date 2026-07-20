@@ -157,8 +157,8 @@ export function CorEvidencePanel({
           />
           <Button
             type="button"
-            size="sm"
             variant="outline"
+            className="h-11"
             disabled={pending}
             onClick={() => cameraRef.current?.click()}
           >
@@ -167,8 +167,8 @@ export function CorEvidencePanel({
           </Button>
           <Button
             type="button"
-            size="sm"
             variant="outline"
+            className="h-11"
             disabled={pending}
             onClick={() => photoRef.current?.click()}
           >
@@ -177,8 +177,8 @@ export function CorEvidencePanel({
           </Button>
           <Button
             type="button"
-            size="sm"
             variant="outline"
+            className="h-11"
             disabled={pending}
             onClick={() => fileRef.current?.click()}
           >
