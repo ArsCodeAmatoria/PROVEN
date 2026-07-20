@@ -432,7 +432,8 @@ export async function getAssessmentById(
       assessedAt: item.assessedAt,
     }));
 
-    const { results: _results, ...rest } = assessment;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- omit relation payload
+    const { results, ...rest } = assessment;
 
     return success({
       ...rest,

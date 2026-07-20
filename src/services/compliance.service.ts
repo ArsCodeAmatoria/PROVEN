@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cache } from "react";
+
 import type { Prisma } from "@/generated/prisma/client";
 import bank from "@/lib/cor/bccsa-question-bank.json";
 import {
@@ -15,6 +17,11 @@ import { notDeleted } from "@/types";
 import { failure, getDatabaseConfigError, success, unavailable } from "./base";
 
 const PLATFORM_COR_CODE = bank.programCode;
+const EXPECTED_ELEMENT_COUNT = bank.elements.length;
+const EXPECTED_QUESTION_COUNT = bank.elements.reduce(
+  (total, element) => total + element.questions.length,
+  0,
+);
 
 const auditSessionListInclude = {
   program: { select: { id: true, title: true, code: true } },
@@ -154,10 +161,12 @@ export type CorEvidenceItem = {
 
 /**
  * Idempotent platform COR program from official BCCSA question bank.
+ * Short-circuits when version + live element/question counts already match the bank.
+ * Request-scoped via React cache so compliance hot paths share one check.
  */
-export async function ensurePlatformCorProgram(): Promise<
+export const ensurePlatformCorProgram = cache(async (): Promise<
   ServiceResult<{ programId: string }>
-> {
+> => {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
@@ -165,6 +174,27 @@ export async function ensurePlatformCorProgram(): Promise<
     let program = await prisma.corProgram.findFirst({
       where: { companyId: null, code: PLATFORM_COR_CODE, ...notDeleted },
     });
+
+    if (program && program.version === bank.programVersion) {
+      const [elementCount, questionCount] = await Promise.all([
+        prisma.corElement.count({
+          where: { programId: program.id, ...notDeleted },
+        }),
+        prisma.corQuestion.count({
+          where: {
+            ...notDeleted,
+            element: { programId: program.id, ...notDeleted },
+          },
+        }),
+      ]);
+
+      if (
+        elementCount === EXPECTED_ELEMENT_COUNT &&
+        questionCount === EXPECTED_QUESTION_COUNT
+      ) {
+        return success({ programId: program.id });
+      }
+    }
 
     if (!program) {
       program = await prisma.corProgram.create({
@@ -294,7 +324,7 @@ export async function ensurePlatformCorProgram(): Promise<
   } catch (error) {
     return failure(error);
   }
-}
+});
 
 export async function getComplianceDashboard(
   companyId: string,

@@ -1,7 +1,9 @@
+import { Suspense } from "react";
+
 import { AppShell } from "@/components/layout/app-shell";
+import { DashboardNotifications } from "@/components/layout/dashboard-notifications";
+import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { requireAuth } from "@/lib/auth/session";
-import type { DashboardNotificationItem } from "@/services/dashboard.service";
-import { listNotificationsForEmployee } from "@/services/notifications.service";
 
 export default async function DashboardLayout({
   children,
@@ -10,14 +12,14 @@ export default async function DashboardLayout({
 }) {
   const profile = await requireAuth();
 
-  const notificationsResult = profile.employeeId
-    ? await listNotificationsForEmployee(profile.employeeId)
-    : { data: [] as DashboardNotificationItem[], error: null };
-
   return (
     <AppShell
       profile={profile}
-      notifications={notificationsResult.data ?? []}
+      notificationsSlot={
+        <Suspense fallback={<NotificationsMenu items={[]} />}>
+          <DashboardNotifications employeeId={profile.employeeId} />
+        </Suspense>
+      }
     >
       {children}
     </AppShell>

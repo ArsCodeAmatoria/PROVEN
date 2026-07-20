@@ -6,12 +6,14 @@ import type { DashboardNotificationItem } from "@/services/dashboard.service";
 interface AppShellProps {
   profile: SessionProfile;
   notifications?: DashboardNotificationItem[];
+  notificationsSlot?: React.ReactNode;
   children: React.ReactNode;
 }
 
 export function AppShell({
   profile,
   notifications = [],
+  notificationsSlot,
   children,
 }: AppShellProps) {
   return (
@@ -20,7 +22,11 @@ export function AppShell({
         <SidebarNav role={profile.role} />
       </div>
       <div className="flex min-h-screen flex-1 flex-col lg:pl-64">
-        <AppHeader profile={profile} notifications={notifications} />
+        <AppHeader
+          profile={profile}
+          notifications={notifications}
+          notificationsSlot={notificationsSlot}
+        />
         <main className="flex-1 px-4 py-6 md:px-6 md:py-8">{children}</main>
       </div>
     </div>

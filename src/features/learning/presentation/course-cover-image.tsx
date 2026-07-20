@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-  EDGE_PROTECTION_IMAGE_ALT,
   FLAT_TOP_COVER_ALT,
   FLAT_TOP_COVER_IMAGE,
 } from "@/features/learning/lib/course-images";

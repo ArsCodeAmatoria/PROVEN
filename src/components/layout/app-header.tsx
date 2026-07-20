@@ -10,11 +10,13 @@ import type { DashboardNotificationItem } from "@/services/dashboard.service";
 interface AppHeaderProps {
   profile: SessionProfile;
   notifications?: DashboardNotificationItem[];
+  notificationsSlot?: React.ReactNode;
 }
 
 export function AppHeader({
   profile,
   notifications = [],
+  notificationsSlot,
 }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-md">
@@ -35,7 +37,7 @@ export function AppHeader({
           <div className="md:hidden">
             <GlobalSearch compact />
           </div>
-          <NotificationsMenu items={notifications} />
+          {notificationsSlot ?? <NotificationsMenu items={notifications} />}
           <ThemeToggle />
           <UserMenu
             firstName={profile.firstName}

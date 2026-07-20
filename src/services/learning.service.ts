@@ -73,7 +73,7 @@ export async function ensureRiggerCompetencyCurriculum(
       },
     });
 
-    const module = await prisma.curriculumModule.upsert({
+    const curriculumModule = await prisma.curriculumModule.upsert({
       where: {
         curriculumId_code: {
           curriculumId: curriculum.id,
@@ -99,12 +99,12 @@ export async function ensureRiggerCompetencyCurriculum(
       await prisma.curriculumLesson.upsert({
         where: {
           moduleId_contentKey: {
-            moduleId: module.id,
+            moduleId: curriculumModule.id,
             contentKey,
           },
         },
         create: {
-          moduleId: module.id,
+          moduleId: curriculumModule.id,
           contentKey,
           title: unit.label,
           sortOrder: index,
@@ -119,7 +119,10 @@ export async function ensureRiggerCompetencyCurriculum(
       });
     }
 
-    return success({ curriculumId: curriculum.id, moduleId: module.id });
+    return success({
+      curriculumId: curriculum.id,
+      moduleId: curriculumModule.id,
+    });
   } catch (error) {
     return failure(error);
   }
@@ -141,7 +144,7 @@ export async function getLearningHubForEmployee(
     const { curriculumId, moduleId } = ensured.data;
     const course = getSlideCourse(DEFAULT_TRACK);
 
-    const [curriculum, module, enrolment, lessons] = await Promise.all([
+    const [curriculum, curriculumModule, enrolment, lessons] = await Promise.all([
       prisma.curriculum.findFirstOrThrow({
         where: { id: curriculumId, deletedAt: null },
       }),
@@ -206,8 +209,8 @@ export async function getLearningHubForEmployee(
     return success({
       curriculumId: curriculum.id,
       curriculumTitle: curriculum.title,
-      moduleId: module.id,
-      moduleTitle: module.title || course.title,
+      moduleId: curriculumModule.id,
+      moduleTitle: curriculumModule.title || course.title,
       enrolmentId: activeEnrolment.id,
       lessons: lessonViews,
       completedCount: lessonViews.filter(
