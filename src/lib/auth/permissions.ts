@@ -24,6 +24,9 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 /** Permission keys used for nav + route guards. */
 export type Permission =
   | "dashboard"
+  | "learning"
+  | "compliance"
+  | "files"
   | "competencies"
   | "assessments"
   | "demonstrations"
@@ -39,11 +42,15 @@ export type Permission =
   | "people"
   | "company"
   | "profile"
-  | "settings";
+  | "settings"
+  | "platform";
 
 const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   SUPER_ADMIN: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -60,9 +67,13 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     "company",
     "profile",
     "settings",
+    "platform",
   ],
   COMPANY_ADMIN: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -82,6 +93,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   INSTRUCTOR: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -99,6 +113,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   SUPERVISOR: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -115,6 +132,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   ASSESSOR: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -131,6 +151,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   APPRENTICE: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "assessments",
     "demonstrations",
     "experience-log",
@@ -143,6 +166,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   STUDENT: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "assessments",
     "demonstrations",
     "experience-log",
@@ -155,6 +181,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   OPERATOR: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -170,6 +199,9 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   ],
   READ_ONLY: [
     "dashboard",
+    "learning",
+    "compliance",
+    "files",
     "competencies",
     "assessments",
     "demonstrations",
@@ -188,7 +220,12 @@ const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
 };
 
 export const ROUTE_PERMISSIONS: { prefix: string; permission: Permission }[] = [
+  { prefix: "/admin", permission: "platform" },
   { prefix: "/people", permission: "people" },
+  { prefix: "/learning", permission: "learning" },
+  { prefix: "/compliance", permission: "compliance" },
+  { prefix: "/files", permission: "files" },
+  { prefix: "/slides", permission: "learning" },
   { prefix: "/competencies", permission: "competencies" },
   { prefix: "/demonstrations", permission: "demonstrations" },
   { prefix: "/training-matrix", permission: "training-matrix" },
@@ -258,8 +295,13 @@ export function getPermissionForPath(pathname: string): Permission | null {
 }
 
 export function getDefaultRouteForRole(role: UserRole): string {
+  if (hasPermission(role, "platform")) return "/admin";
   if (hasPermission(role, "dashboard")) return "/";
   return "/profile";
+}
+
+export function isPlatformAdmin(role: UserRole): boolean {
+  return role === "SUPER_ADMIN";
 }
 
 export function getNavPermissions(role: UserRole): readonly Permission[] {

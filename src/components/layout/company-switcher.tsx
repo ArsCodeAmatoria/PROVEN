@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { switchCompanyAction } from "@/lib/auth/actions";
 import { ROLE_LABELS } from "@/lib/auth/permissions";
 import type { CompanyMembership } from "@/lib/auth/session";
@@ -30,6 +31,7 @@ export function CompanySwitcher({
   memberships,
 }: CompanySwitcherProps) {
   const router = useRouter();
+  const hydrated = useHydrated();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -54,6 +56,22 @@ export function CompanySwitcher({
           {companyName ?? "No company"}
         </span>
       </div>
+    );
+  }
+
+  if (!hydrated) {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        className="hidden h-9 max-w-[220px] gap-2 md:inline-flex"
+        type="button"
+        disabled
+      >
+        <Building2 className="h-4 w-4 shrink-0" />
+        <span className="truncate">{companyName ?? "Select company"}</span>
+        <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 opacity-50" />
+      </Button>
     );
   }
 

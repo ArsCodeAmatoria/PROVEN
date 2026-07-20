@@ -12,15 +12,38 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useHydrated } from "@/hooks/use-hydrated";
 import type { DashboardNotificationItem } from "@/services/dashboard.service";
-import { formatRelative } from "@/utils/format";
+import { formatDate, formatRelative } from "@/utils/format";
 
 interface NotificationsMenuProps {
   items: DashboardNotificationItem[];
 }
 
 export function NotificationsMenu({ items }: NotificationsMenuProps) {
+  const hydrated = useHydrated();
   const unread = items.filter((item) => !item.isRead).length;
+
+  // Avoid Radix Popover id hydration mismatch in the header cluster.
+  if (!hydrated) {
+    return (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="relative"
+        aria-label="Notifications"
+        type="button"
+        disabled
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 ? (
+          <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-destructive-foreground">
+            {unread > 9 ? "9+" : unread}
+          </span>
+        ) : null}
+      </Button>
+    );
+  }
 
   return (
     <Popover>
@@ -82,6 +105,7 @@ export function NotificationsMenu({ items }: NotificationsMenuProps) {
 }
 
 function NotificationRow({ item }: { item: DashboardNotificationItem }) {
+  const hydrated = useHydrated();
   return (
     <div className="space-y-1">
       <div className="flex items-start justify-between gap-2">
@@ -92,7 +116,9 @@ function NotificationRow({ item }: { item: DashboardNotificationItem }) {
       </div>
       <p className="line-clamp-2 text-xs text-muted-foreground">{item.body}</p>
       <p className="text-[11px] text-muted-foreground">
-        {formatRelative(item.createdAt)}
+        {hydrated
+          ? formatRelative(item.createdAt)
+          : formatDate(item.createdAt, "MMM d, yyyy")}
       </p>
     </div>
   );

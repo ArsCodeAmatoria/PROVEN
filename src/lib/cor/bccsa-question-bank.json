@@ -1,0 +1,1185 @@
+{
+  "programCode": "BCCSA-COR",
+  "programTitle": "BCCSA COR OHS Audit",
+  "programVersion": "V2-R13-2026Jan01",
+  "templateFile": "templates/bccsa-cor/official-workbook.xlsm",
+  "templateHash": "dc34eddb5bdc9e21",
+  "sourceFile": "BCCSACOROHSAuditV2-01Jan2026R13_2026Jan01.xlsm",
+  "elements": [
+    {
+      "code": "1",
+      "title": "HEALTH AND SAFETY POLICY",
+      "description": "ELEMENT 1:  HEALTH AND SAFETY POLICY",
+      "sheet": "E1",
+      "sortOrder": 1,
+      "elementCommentsCell": "A52",
+      "questions": [
+        {
+          "number": "1.1",
+          "description": "Is signed by the president, CEO or local senior management?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "1.2",
+          "description": "Includes management's commitment to provide a safe and healthy work environment?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "1.3",
+          "description": "Recognizes the right of workers to work in a safe and healthy work environment?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "1.4",
+          "description": "Is current and dated?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "1.5",
+          "description": "Is reviewed annually by management?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 5
+        },
+        {
+          "number": "1.6",
+          "description": "Is prominently posted or made available to the worker?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 6
+        },
+        {
+          "number": "1.7",
+          "description": "Addresses accountability and responsibility for health and safety for all workplace parties?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 7
+        },
+        {
+          "number": "1.8",
+          "description": "Expresses a commitment to work in a spirit of consultation and cooperation with the workers?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 8
+        },
+        {
+          "number": "1.9",
+          "description": "Is understood by personnel?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 9
+        }
+      ]
+    },
+    {
+      "code": "2",
+      "title": "WORKPLACE HAZARD ASSESSMENT AND CONTROL",
+      "description": "                                               ELEMENT 2: WORKPLACE HAZARD ASSESSMENT AND CONTROL",
+      "sheet": "E2",
+      "sortOrder": 2,
+      "elementCommentsCell": "A65",
+      "questions": [
+        {
+          "number": "2.1",
+          "description": "Are written hazard assessments conducted as required?",
+          "weight": 5,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 1
+        },
+        {
+          "number": "2.2",
+          "description": "Does the employer use an ongoing hazard assessment process?",
+          "weight": 5,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "2.3",
+          "description": "Are appropriate personnel involved in the hazard assessment process?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "2.4",
+          "description": "Are the hazards identified?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "2.5",
+          "description": "Are the hazards prioritized?",
+          "weight": 5,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 5
+        },
+        {
+          "number": "2.6",
+          "description": "Is there a list of identified critical tasks?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "2.7",
+          "description": "Are controls developed for identified hazards?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 7
+        },
+        {
+          "number": "2.8",
+          "description": "Are controls implemented in a timely manner?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 8
+        },
+        {
+          "number": "2.9",
+          "description": "Are appropriate personnel involved in or informed of the control strategies?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 9
+        },
+        {
+          "number": "2.10",
+          "description": "Does the company have a process for evaluating and monitoring subcontractors?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 10
+        },
+        {
+          "number": "2.11",
+          "description": "Does management support the ongoing application of the hazard assessment process?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 11
+        }
+      ]
+    },
+    {
+      "code": "3",
+      "title": "SAFE WORK PRACTICES",
+      "description": "                                               ELEMENT 3: SAFE WORK PRACTICES",
+      "sheet": "E3",
+      "sortOrder": 3,
+      "elementCommentsCell": "A45",
+      "questions": [
+        {
+          "number": "3.1",
+          "description": "Do the safe work practices accurately reflect the company's activities?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "3.2",
+          "description": "Have applicable safe work practices been written?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "3.3",
+          "description": "Are they understood by workers?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "3.4",
+          "description": "Are they readily available?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 4
+        },
+        {
+          "number": "3.5",
+          "description": "Are they followed by workers on a regular basis?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "3.6",
+          "description": "Have both management/supervisors and workers participated in the development and/or review of safe work practices?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 6
+        }
+      ]
+    },
+    {
+      "code": "4",
+      "title": "SAFE JOB PROCEDURES",
+      "description": "                                               ELEMENT 4: SAFE JOB PROCEDURES",
+      "sheet": "E4",
+      "sortOrder": 4,
+      "elementCommentsCell": "A45",
+      "questions": [
+        {
+          "number": "4.1",
+          "description": "Do the safe job procedures accurately reflect the employer's activities?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 1
+        },
+        {
+          "number": "4.2",
+          "description": "Have all critical safe job procedures been written?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "4.3",
+          "description": "Are they understood by workers?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "4.4",
+          "description": "Are safe job procedures followed on a regular basis?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 4
+        },
+        {
+          "number": "4.5",
+          "description": "Are these procedures available and easily accessible to workers?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "4.6",
+          "description": "Have both management/supervisors and workers participated in the development and/or review of these procedures?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 6
+        }
+      ]
+    },
+    {
+      "code": "5",
+      "title": "COMPANY RULES",
+      "description": "                                               ELEMENT 5: COMPANY RULES",
+      "sheet": "E5 ",
+      "sortOrder": 5,
+      "elementCommentsCell": "A34",
+      "questions": [
+        {
+          "number": "5.1",
+          "description": "Are the rules clearly stated in writing?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "5.2",
+          "description": "Are the rules prominently posted or provided to each worker?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "5.3",
+          "description": "Do workers understand company and site specific rules?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "5.4",
+          "description": "Does the program address non-conformance and progressive disciplinary actions?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "5.5",
+          "description": "Are the rules applied and enforced consistently with all employees?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        }
+      ]
+    },
+    {
+      "code": "6",
+      "title": "PERSONAL PROTECTIVE EQUIPMENT (PPE)",
+      "description": "                                               ELEMENT 6: PERSONAL PROTECTIVE EQUIPMENT (PPE)",
+      "sheet": "E6",
+      "sortOrder": 6,
+      "elementCommentsCell": "A57",
+      "questions": [
+        {
+          "number": "6.1",
+          "description": "Is there a written policy for PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "6.2",
+          "description": "Are workers made aware of the requirements for PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "6.3",
+          "description": "Do all employees have access to basic PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "6.4",
+          "description": "Is specialized PPE available to workers when required?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 4
+        },
+        {
+          "number": "6.5",
+          "description": "Is the correct PPE used by all employees when required?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 5
+        },
+        {
+          "number": "6.6",
+          "description": "Are there written procedures for the proper fitting, care and use of specialized PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "6.7",
+          "description": "Are employees given instruction or training in the use of PPE as required?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 7
+        },
+        {
+          "number": "6.8",
+          "description": "Are there criteria used to select PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 8
+        },
+        {
+          "number": "6.9",
+          "description": "Is there a system in place to regularly inspect and maintain basic and specialized PPE?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 9
+        }
+      ]
+    },
+    {
+      "code": "7",
+      "title": "PREVENTATIVE MAINTENANCE",
+      "description": "                                            ELEMENT 7: PREVENTATIVE MAINTENANCE",
+      "sheet": "E7",
+      "sortOrder": 7,
+      "elementCommentsCell": "A47",
+      "questions": [
+        {
+          "number": "7.1",
+          "description": "An inventory of items to be maintained?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "7.2",
+          "description": "Maintenance meeting regulatory and manufacturers' standards?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "7.3",
+          "description": "The use and completion of schedules and checklists as required?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "7.4",
+          "description": "Records with a description of corrective actions taken?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "7.5",
+          "description": "Is there a system to effectively remove defective tools, equipment and vehicles from service?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "7.6",
+          "description": "Is this system followed?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 6
+        },
+        {
+          "number": "7.7",
+          "description": "Does a qualified and competent person perform the inspections and maintenance?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 7
+        }
+      ]
+    },
+    {
+      "code": "8",
+      "title": "TRAINING AND COMMUNICATION",
+      "description": "                                               ELEMENT 8: TRAINING AND COMMUNICATION",
+      "sheet": "E8",
+      "sortOrder": 8,
+      "elementCommentsCell": "A84",
+      "questions": [
+        {
+          "number": "8.1",
+          "description": "Does the employer have a formal orientation program?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "8.2",
+          "description": "Is orientation mandatory for all new employees before starting work?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "8.3",
+          "description": "Is there a standardized written orientation form?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "8.4",
+          "description": "Does the form provide for signatures of workers and the person conducting the orientation?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "8.5",
+          "description": "Are mandatory training requirements verified or training provided before starting work?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "8.6",
+          "description": "Are training records maintained?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "8.7",
+          "description": "Is job specific training provided and documented as required?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 7
+        },
+        {
+          "number": "8.8",
+          "description": "Does a competent person conduct job specific training?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 8
+        },
+        {
+          "number": "8.9",
+          "description": "Have supervisors received training in workplace inspections and health and safety responsibilities?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 9
+        },
+        {
+          "number": "8.10",
+          "description": "Is a system in place to measure knowledge and competency?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 10
+        },
+        {
+          "number": "8.11",
+          "description": "Does the employer hold scheduled health and safety meetings?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 11
+        },
+        {
+          "number": "8.12",
+          "description": "Does senior management attend and participate in health and safety meetings?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 12
+        },
+        {
+          "number": "8.13",
+          "description": "Is a prepared agenda followed and are minutes and attendance of the meeting kept?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 13
+        },
+        {
+          "number": "8.14",
+          "description": "Does two-way communication exist during these meetings?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 14
+        },
+        {
+          "number": "8.15",
+          "description": "Are tailgate or toolbox meetings held regularly and documented as per policy?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 15
+        }
+      ]
+    },
+    {
+      "code": "9",
+      "title": "INSPECTIONS",
+      "description": "                                               ELEMENT 9: INSPECTIONS",
+      "sheet": "E9",
+      "sortOrder": 9,
+      "elementCommentsCell": "A59",
+      "questions": [
+        {
+          "number": "9.1",
+          "description": "Is there a written policy for inspections?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "9.2",
+          "description": "Does the policy include frequency of inspections?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "9.3",
+          "description": "Is the required frequency being met?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "9.4",
+          "description": "Is there a form or checklist used for inspections?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "9.5",
+          "description": "Are supervisors performing inspections as required?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "9.6",
+          "description": "Are workers involved in the inspection process?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 6
+        },
+        {
+          "number": "9.7",
+          "description": "Are all areas inspected as required?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 7
+        },
+        {
+          "number": "9.8",
+          "description": "Are identified deficiencies corrected in a timely manner?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 8
+        },
+        {
+          "number": "9.9",
+          "description": "Does senior management review or participate in the inspection process?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 9
+        },
+        {
+          "number": "9.10",
+          "description": "Are inspection reports posted or communicated to appropriate employees?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 10
+        }
+      ]
+    },
+    {
+      "code": "10",
+      "title": "INVESTIGATIONS AND REPORTING",
+      "description": "                                               ELEMENT 10: INVESTIGATIONS AND REPORTING",
+      "sheet": "E10",
+      "sortOrder": 10,
+      "elementCommentsCell": "A58",
+      "questions": [
+        {
+          "number": "10.1",
+          "description": "Is there a written investigation policy and reporting procedure?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "10.2",
+          "description": "Is the policy being followed?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "10.3",
+          "description": "Are standardized forms readily available and used?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "10.4",
+          "description": "Do workers know the reporting process?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 4
+        },
+        {
+          "number": "10.5",
+          "description": "Have supervisors been trained in investigation and reporting procedures?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        },
+        {
+          "number": "10.6",
+          "description": "Are appropriate employees involved in investigations?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "10.7",
+          "description": "Are no-loss incidents (close calls) being reported?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 7
+        },
+        {
+          "number": "10.8",
+          "description": "Are recommendations for prevention or remedial action implemented in a timely manner?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 8
+        },
+        {
+          "number": "10.9",
+          "description": "Are corrective actions communicated to workers?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 9
+        },
+        {
+          "number": "10.10",
+          "description": "Are investigation reports reviewed by management?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 10
+        }
+      ]
+    },
+    {
+      "code": "11",
+      "title": "EMERGENCY PREPAREDNESS",
+      "description": "                                               ELEMENT 11: EMERGENCY PREPAREDNESS",
+      "sheet": "E11",
+      "sortOrder": 11,
+      "elementCommentsCell": "A65",
+      "questions": [
+        {
+          "number": "11.1",
+          "description": "Are the emergency preparedness plans appropriate to work activities?",
+          "weight": 6,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "11.2",
+          "description": "Does the plan include a requirement for training in emergency procedures, roles, and responsibilities?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "11.3",
+          "description": "Has the emergency response plan been tested for deficiencies and corrective action taken?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "11.4",
+          "description": "Does the employer have a written fire response plan?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "11.5",
+          "description": "Are the correct class and size of extinguishers available, marked, and visible?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 5
+        },
+        {
+          "number": "11.6",
+          "description": "Are extinguishers regularly inspected and maintained?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "11.7",
+          "description": "Is an appropriate emergency communication system available?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 7
+        },
+        {
+          "number": "11.8",
+          "description": "Are there adequate first aid supplies and facilities?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": true,
+          "sortOrder": 8
+        },
+        {
+          "number": "11.9",
+          "description": "Are the required number of qualified first aid personnel on-site?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 9
+        },
+        {
+          "number": "11.10",
+          "description": "Is there a means to transport an injured employee to a medical facility?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 10
+        }
+      ]
+    },
+    {
+      "code": "12",
+      "title": "RECORDS AND STATISTICS",
+      "description": "                                               ELEMENT 12: RECORDS AND STATISTICS",
+      "sheet": "E12",
+      "sortOrder": 12,
+      "elementCommentsCell": "A42",
+      "questions": [
+        {
+          "number": "12.1",
+          "description": "Is there a process to organize and manage program documentation?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 1
+        },
+        {
+          "number": "12.2",
+          "description": "Are adequate health and safety activity summaries developed and maintained?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "12.3",
+          "description": "Are health and safety statistical reports generated on an ongoing basis and readily available?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "12.4",
+          "description": "Does the company compare health and safety performance year to year?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 4
+        },
+        {
+          "number": "12.5",
+          "description": "Are the annual statistics analyzed and needs or trends identified?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 5
+        },
+        {
+          "number": "12.6",
+          "description": "Are adequate first aid treatment records kept?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 6
+        },
+        {
+          "number": "12.7",
+          "description": "Was an action plan developed based on the most recent audit?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 7
+        },
+        {
+          "number": "12.8",
+          "description": "Was an action plan communicated and implemented?",
+          "weight": 1,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 8
+        }
+      ]
+    },
+    {
+      "code": "13",
+      "title": "LEGISLATION",
+      "description": "                                               ELEMENT 13: LEGISLATION",
+      "sheet": "E13",
+      "sortOrder": 13,
+      "elementCommentsCell": "A30",
+      "questions": [
+        {
+          "number": "13.1",
+          "description": "Are copies of relevant legislation posted or available at each workplace?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": false,
+          "requiresInterview": false,
+          "sortOrder": 1
+        },
+        {
+          "number": "13.2",
+          "description": "Does management/supervision regularly refer to relevant legislation during job planning?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 2
+        },
+        {
+          "number": "13.3",
+          "description": "Are employees aware of their rights and responsibilities and how to exercise them?",
+          "weight": 5,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 3
+        },
+        {
+          "number": "13.4",
+          "description": "Does the employer's injury and incident reporting meet the legislated requirement?",
+          "weight": 2,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 4
+        }
+      ]
+    },
+    {
+      "code": "14",
+      "title": "JOINT HEALTH AND SAFETY",
+      "description": " ELEMENT 14: JOINT HEALTH AND SAFETY",
+      "sheet": "E14",
+      "sortOrder": 14,
+      "elementCommentsCell": "A35",
+      "questions": [
+        {
+          "number": "14.1",
+          "description": "Is there communication between the employees and worker health and safety representative(s)?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 1
+        },
+        {
+          "number": "14.2",
+          "description": "Has a Terms of Reference (TOR) been established for the JOHS Committee or Worker Representative(s)?",
+          "weight": 3,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 2
+        },
+        {
+          "number": "14.3",
+          "description": "Have committee members or worker representative(s) received training to carry out their duties, functions, and responsibilities?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": true,
+          "sortOrder": 3
+        },
+        {
+          "number": "14.4",
+          "description": "Are committee members or the worker representative(s) following the duties outlined in the Terms of Reference?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 4
+        },
+        {
+          "number": "14.5",
+          "description": "Are members of the JOHS Committee or Worker Representative(s) involved in inspections, incident investigations, or the resolution of safety issues?",
+          "weight": 4,
+          "requiresDocumentation": true,
+          "requiresObservation": true,
+          "requiresInterview": false,
+          "sortOrder": 5
+        }
+      ]
+    }
+  ]
+}

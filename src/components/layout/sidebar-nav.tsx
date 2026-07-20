@@ -3,18 +3,22 @@
 import {
   Award,
   BadgeCheck,
+  BookOpen,
   ChartColumn,
   ClipboardCheck,
   Clock3,
   Eye,
   FileBarChart,
   FileText,
+  FolderOpen,
   Forklift,
   GraduationCap,
   Grid3x3,
   Hammer,
   LayoutDashboard,
   Settings,
+  Shield,
+  ShieldCheck,
   UserRound,
   Users,
   type LucideIcon,
@@ -37,6 +41,7 @@ import { Logo } from "./logo";
 const ICONS: Record<string, LucideIcon> = {
   LayoutDashboard,
   BadgeCheck,
+  BookOpen,
   ClipboardCheck,
   Hammer,
   Grid3x3,
@@ -44,6 +49,7 @@ const ICONS: Record<string, LucideIcon> = {
   ChartColumn,
   Clock3,
   FileText,
+  FolderOpen,
   Forklift,
   GraduationCap,
   Eye,
@@ -51,6 +57,8 @@ const ICONS: Record<string, LucideIcon> = {
   Users,
   Settings,
   UserRound,
+  Shield,
+  ShieldCheck,
 };
 
 interface SidebarNavProps {

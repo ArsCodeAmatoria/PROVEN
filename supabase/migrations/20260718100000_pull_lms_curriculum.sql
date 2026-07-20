@@ -1,4 +1,4 @@
--- Pull LMS shared platform: roles, app access, curriculum, progress, exam extras
+-- Learning platform: roles, curriculum, progress, exam extras
 
 do $$ begin
   alter type "UserRole" add value if not exists 'ASSESSOR';
@@ -11,20 +11,9 @@ exception when duplicate_object then null;
 end $$;
 
 do $$ begin
-  create type "AppAccess" as enum ('PULL', 'PROVEN', 'BOTH');
-exception when duplicate_object then null;
-end $$;
-
-do $$ begin
   create type "LessonProgressStatus" as enum ('NOT_STARTED', 'IN_PROGRESS', 'COMPLETED');
 exception when duplicate_object then null;
 end $$;
-
-alter table employees
-  add column if not exists app_access "AppAccess" not null default 'BOTH';
-
-create index if not exists employees_company_id_app_access_idx
-  on employees (company_id, app_access);
 
 alter table exam_results
   add column if not exists duration_seconds integer,

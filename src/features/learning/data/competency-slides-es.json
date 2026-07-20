@@ -1,0 +1,2718 @@
+{
+  "slug": "rigger-competency",
+  "title": "Curso de diapositivas de competencia de aparejador",
+  "description": "Curso de diapositivas en el aula para competencia de aparejador — regulaciones, WLL/factor de diseño, inspección, matemáticas de aparejo, bajo el gancho y planificación de izajes. Alineado con BC Crane Safety y OHSR Parte 15 de WorkSafeBC.",
+  "sourceUrl": "https://bccranesafety.ca/rigger-competency-a-critical-safety-standard-under-ohsr-part-15/",
+  "totalDurationMin": 200,
+  "slideCount": 37,
+  "units": [
+    {
+      "id": "intro",
+      "label": "Introducción",
+      "durationMin": 55,
+      "slideStart": 1,
+      "slideEnd": 11
+    },
+    {
+      "id": "regulations",
+      "label": "Regulaciones y normas",
+      "durationMin": 60,
+      "slideStart": 12,
+      "slideEnd": 31
+    },
+    {
+      "id": "bth",
+      "label": "Bajo el gancho",
+      "durationMin": 35,
+      "slideStart": 32,
+      "slideEnd": 35
+    },
+    {
+      "id": "ratings",
+      "label": "WLL, factor de diseño y resistencia",
+      "durationMin": 50,
+      "slideStart": 36,
+      "slideEnd": 37
+    }
+  ],
+  "slides": [
+    {
+      "id": 1,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Competencia de aparejador",
+      "summary": "Reglas, estadísticas de aparejo, bordes afilados, ángulos de eslinga, matemáticas del seno, L ÷ H y por qué los suavizadores.",
+      "bullets": [
+        "Reglas de BC y contexto de accidentes",
+        "Bordes afilados · fuerzas de compresión · ángulos de pierna",
+        "Seno, L ÷ H y dos cuestionarios de calculadora"
+      ],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": null,
+      "formula": null,
+      "diagram": null,
+      "image": "/images/luffer.png",
+      "secondaryImage": null,
+      "cover": true,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "cover",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Información básica de aparejo en el curso",
+      "focusCallout": null,
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 2,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Las reglas",
+      "summary": "La ley primero — luego las normas adoptadas y los límites del fabricante.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "WorkSafeBC OHSR · BC Crane Safety",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-1",
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": true,
+      "critical": false,
+      "focus": false,
+      "sections": [
+        {
+          "heading": "Regulación de BC",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "WorkSafeBC OHSR Parte 14 — grúas y manipulación de materiales",
+              "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-14",
+              "logo": "worksafebc",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "WorkSafeBC OHSR Parte 15 — aparejo y trabajadores calificados",
+              "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15",
+              "logo": "worksafebc",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "BC Crane Safety (BCCSA) — orientación sobre competencia",
+              "href": "https://bccranesafety.ca/rigger-competency-a-critical-safety-standard-under-ohsr-part-15/",
+              "logo": "bccsa"
+            }
+          ]
+        },
+        {
+          "heading": "CSA torre, móvil y aparejo",
+          "items": [
+            {
+              "label": "CSA Z248 — grúas torre (montaje, operación, inspección)",
+              "href": "https://www.csagroup.org/store/product/Z248-26/",
+              "logo": "csa"
+            },
+            {
+              "label": "CSA Z150 — código de seguridad para grúas móviles",
+              "href": "https://www.csagroup.org/store/product/Z150-20/",
+              "logo": "csa"
+            },
+            {
+              "label": "Criterios de aparejo — eslingas, accesorios, WLL (OHSR Parte 15)",
+              "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15",
+              "logo": "worksafebc",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "ANSI / ASME B30",
+          "items": [
+            {
+              "label": "ANSI — normas nacionales de EE. UU. (volúmenes B30 de aparejo)",
+              "href": "https://www.ansi.org/standards",
+              "logo": "ansi"
+            },
+            {
+              "label": "B30.3 torre · B30.5 grúas móviles",
+              "href": "https://www.asme.org/codes-standards/find-codes-standards/b30-safety-standards-cableways-cranes-derricks-hoists-hooks-jacks-and-slings",
+              "logo": "asme"
+            },
+            {
+              "label": "B30.9 eslingas · B30.26 accesorios de aparejo",
+              "href": "https://www.asme.org/codes-standards/b30-9-slings",
+              "logo": "asme"
+            },
+            {
+              "label": "B30.10 ganchos · B30.20 bajo el gancho",
+              "href": "https://www.asme.org/codes-standards/b30-20-below-the-hook-lifting-devices",
+              "logo": "asme"
+            }
+          ]
+        },
+        {
+          "heading": "Internacional y otros",
+          "items": [
+            {
+              "label": "EN 13155 — accesorios de izaje de carga",
+              "href": "https://www.en-standard.eu/din-en-13155-cranes-safety-non-fixed-load-lifting-attachments/",
+              "logo": "en"
+            },
+            {
+              "label": "FEM — normas europeas de grúas y polipastos",
+              "href": "https://www.fem-eur.com/",
+              "logo": "fem"
+            },
+            {
+              "label": "El procedimiento del empleador y el WLL del fabricante rigen",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": null,
+      "focusCallout": null,
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 3,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Estadísticas de accidentes de aparejo",
+      "summary": "Canadá y BC — por qué importa la capacitación en competencia.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "BC Gov · WorkSafeBC · AWCBC · estudio Wiethorn sobre grúas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-25",
+      "formula": null,
+      "diagram": "canada-rigging-stats",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": true,
+      "critical": false,
+      "focus": false,
+      "sections": [
+        {
+          "heading": "Registro documentado",
+          "items": [
+            {
+              "label": "Kelowna 2021 — cinco trabajadores fallecidos",
+              "emphasis": "red",
+              "href": "https://www.worksafebc.com/en/about-us/news-events/news-releases/2024/March/worksafebc-bringing-industry-labour-stakeholders-together-discuss-crane-safety"
+            },
+            {
+              "label": "WS 2025-01 — boletín sobre falla de aparejo",
+              "href": "https://www.worksafebc.com/en/resources/health-safety/bulletins/preventing-crane-rigging-failures"
+            },
+            {
+              "label": "56,7 % de fallas de aparejo — sin suavizadores",
+              "emphasis": "red",
+              "href": "https://ccra-aclg.ca/wp-content/uploads/2024/02/JimWiethorn-CraneAccidentReport.pdf"
+            }
+          ]
+        }
+      ],
+      "panelBg": "bc",
+      "heroStats": [
+        {
+          "value": "7",
+          "label": "Muertes en BC\n(5 años)",
+          "emphasis": "red",
+          "href": "https://news.gov.bc.ca/releases/2026LBR0004-000211"
+        },
+        {
+          "value": "22",
+          "label": "incidentes con torre",
+          "emphasis": "yellow",
+          "href": "https://www.worksafebc.com/en/about-us/news-events/news-releases/2024/March/worksafebc-bringing-industry-labour-stakeholders-together-discuss-crane-safety"
+        },
+        {
+          "value": "6%",
+          "label": "participación del aparejo",
+          "emphasis": "yellow",
+          "href": "https://ccra-aclg.ca/wp-content/uploads/2024/02/JimWiethorn-CraneAccidentReport.pdf"
+        }
+      ],
+      "sourceLinks": [
+        {
+          "label": "BC Gov",
+          "href": "https://news.gov.bc.ca/releases/2026LBR0004-000211"
+        },
+        {
+          "label": "WorkSafeBC incidents",
+          "href": "https://www.worksafebc.com/en/about-us/news-events/news-releases/2024/March/worksafebc-bringing-industry-labour-stakeholders-together-discuss-crane-safety"
+        },
+        {
+          "label": "WS 2025-01",
+          "href": "https://www.worksafebc.com/en/resources/health-safety/bulletins/preventing-crane-rigging-failures"
+        },
+        {
+          "label": "AWCBC fatalities",
+          "href": "https://awcbc.org/data-and-statistics/national-work-injury-disease-statistics-program"
+        },
+        {
+          "label": "Wiethorn study",
+          "href": "https://ccra-aclg.ca/wp-content/uploads/2024/02/JimWiethorn-CraneAccidentReport.pdf"
+        }
+      ],
+      "focusKicker": null,
+      "focusCallout": null,
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 4,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Bordes afilados — proteger la eslinga",
+      "summary": "OHSR Parte 15 — las esquinas afiladas cortan eslingas sintéticas y cable de acero; acolchar el punto de contacto de la eslinga.",
+      "bullets": [],
+      "ohrsRef": "15.39",
+      "source": "WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-5",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/edge-protection.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "OHSR 15.39",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Proteger las eslingas de bordes y esquinas afiladas en la carga",
+              "emphasis": "yellow",
+              "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+            },
+            {
+              "label": "No el borde — proteger la eslinga donde apoya en la esquina",
+              "emphasis": "red"
+            },
+            {
+              "label": "Almohadillas, fundas, madera o protección diseñada en el punto de contacto",
+              "emphasis": null
+            }
+          ]
+        },
+        {
+          "heading": "En obra",
+          "items": [
+            {
+              "label": "Revisar los suavizadores tras los primeros centímetros de izaje — pueden desplazarse",
+              "emphasis": null
+            },
+            {
+              "label": "Fibras de eslinga cortadas o aplastadas — retirar del servicio de inmediato",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "warm",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": null,
+      "focusCallout": "Proteger la eslinga — no el borde",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 5,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Fuerzas de compresión — ángulos de eslinga",
+      "summary": "Brida poco inclinada — compresión sobre la carga y sobrecarga en cada pierna.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": null,
+      "formula": null,
+      "diagram": "bucket-compression",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Compresión",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Cada pierna empuja hacia adentro sobre la carga",
+            {
+              "label": "Ángulo bajo = alta compresión",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Tensión de eslinga",
+          "items": [
+            "Un ángulo poco inclinado multiplica la tensión en cada pierna",
+            "Una brida más inclinada reduce ambos problemas"
+          ]
+        }
+      ],
+      "panelBg": "compress",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Geometría de eslingas",
+      "focusCallout": "Ángulo bajo → compresión + alta tensión en pierna",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 6,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Ángulos — 60°, 45° y 30°",
+      "summary": "Piernas inclinadas sostienen más. Piernas planas sostienen menos.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": null,
+      "formula": null,
+      "diagram": "sling-angle-slopes",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Piernas inclinadas",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "60° — ~87 % de capacidad",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "45° — ~71 % de capacidad",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Piernas planas",
+          "items": [
+            {
+              "label": "30° — 50 % de capacidad · doble tracción",
+              "emphasis": "red"
+            },
+            "Mayor tracción → menor capacidad"
+          ]
+        }
+      ],
+      "panelBg": "angle",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Geometría de eslingas",
+      "focusCallout": "Mayor tracción → menor capacidad",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 7,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Tensión de eslinga — seno",
+      "summary": "Más inclinado = más fácil. Más plano = más difícil. Más difícil = sostener menos.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": "/lessons/appendix-b",
+      "formula": null,
+      "diagram": "sling-tension-sine",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "La idea",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Eslingas planas = mayor tracción en cada pierna",
+            "Mayor tracción = menor carga segura"
+          ]
+        },
+        {
+          "heading": "Ejemplo a 45°",
+          "items": [
+            {
+              "label": "≈ 7 de 10 libras seguras",
+              "emphasis": "red"
+            },
+            "Inclinado es fuerte · plano es débil"
+          ]
+        }
+      ],
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Matemáticas simples de aparejo",
+      "focusCallout": "Ángulo plano = tirar más fuerte = izar menos",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 8,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Verificación con calculadora — seno",
+      "summary": "Cuatro problemas rápidos en modo DEG. Ingrese cada uno en su calculadora antes de revelar las respuestas.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": null,
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Cuestionario rápido",
+      "focusCallout": null,
+      "quiz": true,
+      "quizQuestions": [
+        {
+          "id": "sin-60",
+          "prompt": "Con una calculadora científica en Grados (DEG), ingrese Sin(60). ¿Qué número obtiene?",
+          "options": [
+            {
+              "id": "a",
+              "text": "0.866"
+            },
+            {
+              "id": "b",
+              "text": "0.707"
+            },
+            {
+              "id": "c",
+              "text": "0.500"
+            },
+            {
+              "id": "d",
+              "text": "1.000"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "sin 60° ≈ 0,866 — se usa al verificar la tensión de pierna de eslinga a un ángulo de pierna de 60°."
+        },
+        {
+          "id": "sin-45",
+          "prompt": "Aún en modo DEG, ingrese Sin(45). ¿Qué número obtiene?",
+          "options": [
+            {
+              "id": "a",
+              "text": "0.500"
+            },
+            {
+              "id": "b",
+              "text": "0.707"
+            },
+            {
+              "id": "c",
+              "text": "0.866"
+            },
+            {
+              "id": "d",
+              "text": "0.577"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "sin 45° ≈ 0,707 — coincide con el ejemplo de carga segura ≈7/10 de la diapositiva anterior."
+        },
+        {
+          "id": "sin-30",
+          "prompt": "En modo DEG, ingrese Sin(30). ¿Qué número obtiene?",
+          "options": [
+            {
+              "id": "a",
+              "text": "0.259"
+            },
+            {
+              "id": "b",
+              "text": "0.500"
+            },
+            {
+              "id": "c",
+              "text": "0.707"
+            },
+            {
+              "id": "d",
+              "text": "0.866"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "sin 30° = 0,500 — un ángulo de pierna de 30° duplica la tensión por pierna (T = W)."
+        },
+        {
+          "id": "inv-sin-60",
+          "prompt": "¿Cuánto es 1 dividido por 0,866?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.155"
+            },
+            {
+              "id": "b",
+              "text": "1.000"
+            },
+            {
+              "id": "c",
+              "text": "0.866"
+            },
+            {
+              "id": "d",
+              "text": "1.414"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "1 ÷ sin 60° ≈ 1,155 — el multiplicador de tensión por pierna a un ángulo de 60°."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Longitud ÷ altura — 45°",
+      "summary": "A un ángulo de pierna de 45°, compare la longitud de eslinga (L) con la altura vertical (H).",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": "/lessons/appendix-b",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/l-w.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Ejemplo a 45°",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Altura vertical H = 10 pies · longitud de pierna de eslinga L ≈ 14,1 pies",
+            "Ambas piernas a 45° desde la horizontal — brida simétrica"
+          ]
+        },
+        {
+          "heading": "Tensión",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Longitud ÷ altura → L ÷ H",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "14,1 ÷ 10 = 1,41 factor de tensión por pierna",
+              "emphasis": "red"
+            },
+            "Tirar más fuerte que la mitad de la carga — multiplicar el peso por ~1,41"
+          ]
+        },
+        {
+          "heading": "Reducción",
+          "items": [
+            {
+              "label": "Altura ÷ longitud → H ÷ L",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "10 ÷ 14,1 = 0,71 (~7/10 de carga segura)",
+              "emphasis": "red"
+            },
+            "Ángulo más plano — menos de su WLL está disponible"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · L y H",
+      "focusCallout": "L ÷ H = tensión · H ÷ L = reducción",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 10,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "Cuestionario L ÷ H — 60°, 45°, 30°",
+      "summary": "Longitud ÷ altura da tensión. Altura ÷ longitud da reducción. Resuelva cada una antes de revelar las respuestas.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": null,
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Cuestionario L y H",
+      "focusCallout": null,
+      "quiz": true,
+      "quizQuestions": [
+        {
+          "id": "lh-60",
+          "prompt": "H = 10 pies, L = 11,55 pies (ángulo de pierna 60°). ¿Cuánto es L ÷ H?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.155"
+            },
+            {
+              "id": "b",
+              "text": "1.414"
+            },
+            {
+              "id": "c",
+              "text": "2.000"
+            },
+            {
+              "id": "d",
+              "text": "0.866"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "11,55 ÷ 10 = 1,155 — factor de tensión por pierna a 60°."
+        },
+        {
+          "id": "lh-45",
+          "prompt": "H = 10 pies, L = 14,1 pies (ángulo de pierna 45°). ¿Cuánto es L ÷ H?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.155"
+            },
+            {
+              "id": "b",
+              "text": "1.414"
+            },
+            {
+              "id": "c",
+              "text": "2.000"
+            },
+            {
+              "id": "d",
+              "text": "0.707"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "14,1 ÷ 10 = 1,41 — factor de tensión por pierna a 45°."
+        },
+        {
+          "id": "lh-30",
+          "prompt": "H = 10 pies, L = 20 pies (ángulo de pierna 30°). ¿Cuánto es L ÷ H?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.155"
+            },
+            {
+              "id": "b",
+              "text": "1.414"
+            },
+            {
+              "id": "c",
+              "text": "2.000"
+            },
+            {
+              "id": "d",
+              "text": "0.500"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "20 ÷ 10 = 2,000 — factor de tensión por pierna a 30°."
+        },
+        {
+          "id": "hl-45",
+          "prompt": "H = 10 pies, L = 14,1 pies (ángulo de pierna 45°). ¿Cuánto es H ÷ L?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.414"
+            },
+            {
+              "id": "b",
+              "text": "0.866"
+            },
+            {
+              "id": "c",
+              "text": "0.707"
+            },
+            {
+              "id": "d",
+              "text": "0.500"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "10 ÷ 14,1 = 0,71 — factor de reducción (~7/10 de carga segura) a 45°."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "unit": "intro",
+      "unitLabel": "Introducción",
+      "title": "¿Por qué suavizadores?",
+      "summary": "Cierre de la introducción — conecte ángulos, seno y L ÷ H con la protección de la eslinga en esquinas afiladas.",
+      "bullets": [],
+      "ohrsRef": "15.39",
+      "source": null,
+      "chartHref": null,
+      "lessonHref": "/lessons/module-5",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/softner.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Aprendió",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Reglas, ángulos, seno y L ÷ H",
+            "Piernas más empinadas → menor tensión → más capacidad"
+          ]
+        },
+        {
+          "heading": "Por qué suavizadores",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Los bordes afilados cortan eslinga sintética y cable — acolche la eslinga",
+              "emphasis": "red"
+            },
+            {
+              "label": "OHSR 15.39 — proteja las eslingas en el punto de contacto",
+              "emphasis": "yellow"
+            },
+            "Almohadillas, mangas y protección diseñada antes del izaje"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Introducción · Cierre",
+      "focusCallout": "Proteja la eslinga — no solo la esquina",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 12,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Criterios de retiro del aparejo",
+      "summary": "",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/block.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Criterios de retiro",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Aparejo desgastado, dañado o alterado — retirar del servicio",
+            "Alambres rotos, ganchos agrietados, etiquetas faltantes, accesorios defectuosos"
+          ]
+        },
+        {
+          "heading": "Antes del izaje",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "OHSR 15.31 — inspeccionar antes de cada uso",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Si hay duda — etiquetar y no usar",
+              "emphasis": "red"
+            },
+            "Hardware sin marca o improvisado nunca empieza seguro"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Lección 1",
+      "focusCallout": "Nada dura para siempre — algunas cosas ni siquiera empiezan seguras.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 13,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Lo que todo el aparejo debe tener",
+      "summary": "",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "WorkSafeBC OHSR 15.5",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-2",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/pile-shackle.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Todo accesorio debe mostrar",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Nombre del fabricante o marca de identificación",
+            "Identificador del producto — tamaño, grado o número de parte",
+            {
+              "label": "Límite de carga de trabajo (WLL) — o información suficiente para consultarlo",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "OHSR y normas",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "OHSR 15.5 — ID del fabricante, ID del producto y WLL",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "ASME B30.26 — marcas de identificación en accesorios de aparejo",
+              "emphasis": "yellow"
+            },
+            "B30.9 eslingas — etiquetas de capacidad; catálogo en sitio si el WLL no está marcado",
+            {
+              "label": "Equipo sin marca — calificarlo o retirar del servicio",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Lección 1",
+      "focusCallout": "Si no puedes leerlo, no puedes clasificarlo.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 14,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Criterios de retiro",
+      "summary": "Retire el gancho del servicio de inmediato si se encuentra cualquiera de lo siguiente:",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.10 — Ganchos (edición vigente)",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/hooks.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Retirar de inmediato",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Grietas, fracturas o reparaciones de soldadura no autorizadas",
+            "Apertura de garganta aumentada más del 5% (máx. 6 mm / ¼ in. salvo que el fabricante indique otra cosa)",
+            "Más del 10% de desgaste de la sección transversal original",
+            "Cualquier curvatura o torsión visible respecto al plano original del gancho",
+            "Corrosión excesiva, picaduras u otro daño que afecte la resistencia",
+            {
+              "label": "Seguro de seguridad dañado, faltante o que no funciona (cuando se requiera)",
+              "emphasis": "red"
+            },
+            {
+              "label": "Marcas del fabricante o WLL faltantes o ilegibles",
+              "emphasis": "yellow"
+            },
+            "Cualquier condición que el fabricante identifique como motivo de retiro"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Ganchos",
+      "focusCallout": "Si hay duda, etiquételo y retírelo. Nunca intente enderezar, calentar, soldar o reparar un gancho salvo que el fabricante y las normas aplicables lo permitan expresamente.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 15,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Criterios de retiro",
+      "summary": "Retire la eslinga de cadena del servicio de inmediato si se encuentra cualquiera de lo siguiente:",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas · ASME B30.26 — Accesorios de aparejo · criterios de inspección del fabricante",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/chain.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Retirar de inmediato",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Eslabones agrietados, rotos, doblados, torcidos o estirados",
+            "Muescas, cortes o desgaste excesivo en cualquier eslabón",
+            "Desgaste superior al 10% del diámetro original del eslabón",
+            "Elongación o deformación más allá de los límites permitidos por el fabricante",
+            "Evidencia de daño por calor — decoloración, salpicaduras de soldadura, arcos eléctricos o exposición a altas temperaturas",
+            {
+              "label": "Corrosión severa o picaduras que reduzcan la resistencia de la cadena",
+              "emphasis": "red"
+            },
+            {
+              "label": "Etiqueta de identificación dañada o faltante — grado, tamaño, WLL o número de serie",
+              "emphasis": "yellow"
+            },
+            "Ganchos, eslabones maestros, eslabones de acoplamiento u otros componentes de la eslinga dañados",
+            "Cualquier condición que el fabricante identifique como motivo de retiro"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Cadena de izaje",
+      "focusCallout": "Nunca suelde, caliente, enderece ni repare cadena de aleación para izaje salvo que lo realice el fabricante o un taller de reparación calificado autorizado por el fabricante.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 16,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Grado mínimo de cadena",
+      "summary": "Grado mínimo para izaje aéreo",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas y requisitos del fabricante",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Aceptable para izaje",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Grado 80 o superior",
+            "Cadena de aleación grado 80",
+            "Cadena de aleación grado 100",
+            "Cadena de aleación grado 120",
+            "Cualquier cadena de aleación de grado superior específicamente clasificada y marcada para izaje aéreo"
+          ]
+        },
+        {
+          "heading": "No aceptable para izaje aéreo",
+          "headingEmphasis": "red",
+          "items": [
+            "Cadena grado 30 proof coil",
+            "Cadena grado 43 high test",
+            "Cadena grado 70 de transporte",
+            {
+              "label": "Cualquier cadena sin la marca del grado y WLL adecuados",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "chain",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Cadena de izaje",
+      "focusCallout": "El grado 80 es el mínimo de cadena de aleación para izaje aéreo. La cadena de transporte grado 70 es para sujeción de carga, no para izaje.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 17,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Etiqueta de identificación requerida",
+      "summary": "Según ASME B30.9 y los requisitos habituales del fabricante, una eslinga bridle de cadena debe tener una etiqueta de identificación permanente y duradera.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "La etiqueta debe mostrar",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Nombre o marca del fabricante",
+            "Código o número de stock del fabricante",
+            "Grado de la cadena (p. ej., Grado 80, 100 o 120)",
+            "Tamaño de la cadena (diámetro nominal)",
+            "Número de patas de la eslinga",
+            "Alcance (longitud)",
+            {
+              "label": "Límite de carga de trabajo (WLL) para el(los) enganche(s) y ángulo(s) de eslinga aplicables",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Retirar del servicio si",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "La etiqueta falta o es ilegible",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "chain",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Eslinga bridle de cadena",
+      "focusCallout": "Este es uno de los pocos tipos de eslinga en los que el alcance (longitud) y el número de patas se exigen específicamente en la identificación, porque afectan directamente la capacidad nominal de la eslinga.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 18,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Capacidad de eslingas bridle",
+      "summary": "",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "Reglamento de SST de WorkSafeBC 15.33; ASME B30.9 — Eslingas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/bridle.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Capacidad",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Las eslingas bridle pueden tener 2, 3 o 4 patas",
+            {
+              "label": "La carga no siempre se reparte por igual entre todas las patas",
+              "emphasis": "yellow"
+            },
+            "El ángulo de la eslinga afecta de forma significativa la tensión en cada pata y la capacidad total",
+            {
+              "label": "Para cálculos de WLL, un bridle de 4 patas se clasifica como uno de 3 patas",
+              "emphasis": "red"
+            },
+            "La WLL del conjunto de eslinga está limitada por el componente de menor capacidad",
+            "Cada pata, accesorio y eslabón maestro debe tener capacidad adecuada para el izaje"
+          ]
+        }
+      ],
+      "panelBg": "chain",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Eslingas bridle",
+      "focusCallout": "Nunca asuma que las cuatro patas llevan la carga por igual. Calcule siempre el izaje con el ángulo de eslinga aplicable y la capacidad nominal de un bridle de tres patas.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 19,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Cálculos básicos de carga",
+      "summary": "Calcule siempre la distribución de carga, el multiplicador de tensión y la tensión real de la pata — luego verifique que la WLL de la pata supere la tensión calculada.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": "/lessons/appendix-b",
+      "formula": null,
+      "diagram": "bridle-math-lh",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "1. Distribución de carga",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Carga por pata = Carga total ÷ Número de patas cargadas",
+            "Ejemplo: 6,000 lb ÷ 2 = 3,000 lb por pata (antes de considerar el ángulo de eslinga)"
+          ]
+        },
+        {
+          "heading": "2. Multiplicador de tensión (derating)",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Tensión de pata = Carga por pata × Multiplicador de tensión",
+            "Multiplicador de tensión = L ÷ H",
+            "o Multiplicador de tensión = 1 ÷ sin(θ)",
+            "L = Longitud de eslinga · H = Altura vertical · θ = Ángulo de eslinga (desde la horizontal)"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            "Distribución de carga",
+            "Multiplicador de tensión",
+            "Tensión real de la pata",
+            "Verificar que la WLL de la pata supere la tensión calculada"
+          ]
+        }
+      ],
+      "panelBg": "chalk",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Matemáticas de eslinga bridle",
+      "focusCallout": "A medida que disminuye el ángulo de la eslinga, aumenta la tensión en la pata. Un ángulo menor = mayor derating y fuerzas más altas en cada pata.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 20,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Ángulos comunes de eslinga",
+      "summary": "Tensión de pata = (Carga ÷ Número de patas cargadas) × Multiplicador de tensión",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "WorkSafeBC OHSR Tabla 15-3 · ASME B30.9 — Eslingas",
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": "/lessons/appendix-b",
+      "formula": null,
+      "diagram": "tension-multiplier-chart",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Tabla de ángulos",
+          "headingEmphasis": "yellow",
+          "items": [
+            "90° · 1.00",
+            "75° · 1.04",
+            "60° · 1.15",
+            "45° · 1.41",
+            "30° · 2.00"
+          ]
+        },
+        {
+          "heading": "Fundamento",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Regulación BC — Usa derating según el ángulo desde la vertical (Tabla 15-3)",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Buena práctica de la industria (ASME B30.9) — No use ángulos de eslinga menores de 30° desde la horizontal salvo aprobación del fabricante o de una persona calificada",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "chalk",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Multiplicadores de tensión",
+      "focusCallout": "Ángulo menor = mayor tensión en la pata.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 21,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Verificación con calculadora — tensión",
+      "summary": "Cuatro problemas rápidos. Use la tabla de multiplicadores de tensión. Resuelva cada uno antes de revelar las respuestas.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": null,
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Matemáticas de eslinga bridle · Cuestionario rápido",
+      "focusCallout": null,
+      "quiz": true,
+      "quizQuestions": [
+        {
+          "id": "tm-45",
+          "prompt": "¿Cuál es el multiplicador de tensión para un ángulo de eslinga de 45° (desde la horizontal)?",
+          "options": [
+            {
+              "id": "a",
+              "text": "1.15"
+            },
+            {
+              "id": "b",
+              "text": "1.41"
+            },
+            {
+              "id": "c",
+              "text": "2.00"
+            },
+            {
+              "id": "d",
+              "text": "1.00"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "A 45° desde la horizontal, el multiplicador de tensión es 1,41 (L ÷ H o 1 ÷ sin 45°)."
+        },
+        {
+          "id": "load-share-2",
+          "prompt": "Una carga de 6,000 lb está en un bridle de 2 patas. ¿Cuál es la distribución de carga por pata antes de considerar el ángulo de eslinga?",
+          "options": [
+            {
+              "id": "a",
+              "text": "6,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "4,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "3,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "1,500 lb"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "Carga por pata = Carga total ÷ Número de patas cargadas → 6,000 ÷ 2 = 3,000 lb."
+        },
+        {
+          "id": "leg-t-45",
+          "prompt": "Carga 6,000 lb · bridle de 2 patas · ángulo de eslinga 45°. ¿Cuál es la tensión en cada pata de eslinga?",
+          "options": [
+            {
+              "id": "a",
+              "text": "3,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "4,230 lb"
+            },
+            {
+              "id": "c",
+              "text": "6,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "8,460 lb"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "Tensión de pata = (6,000 ÷ 2) × 1,41 = 3,000 × 1,41 = 4,230 lb."
+        },
+        {
+          "id": "leg-t-30",
+          "prompt": "Carga 8,000 lb · bridle de 2 patas · ángulo de eslinga 30°. ¿Cuál es la tensión en cada pata de eslinga?",
+          "options": [
+            {
+              "id": "a",
+              "text": "4,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "5,640 lb"
+            },
+            {
+              "id": "c",
+              "text": "8,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "2,000 lb"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "Tensión de pata = (8,000 ÷ 2) × 2,00 = 4,000 × 2,00 = 8,000 lb — a 30° cada pata lleva el peso completo de la carga."
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Inspección y criterios de retiro",
+      "summary": "Retire una eslinga de cable de acero del servicio si se encuentra cualquiera de lo siguiente:",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas; WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/wirerope.png",
+      "secondaryImage": "/images/rigging/wirecut.png",
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Retire del servicio",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "10 o más alambres rotos distribuidos al azar en un paso de cable, o",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "5 o más alambres rotos en un cordón dentro de un paso de cable",
+              "emphasis": "yellow"
+            },
+            "Torceduras, jaula de pájaro, aplastamiento o protrusión del alma",
+            "Daño por calor, golpes de arco o salpicaduras de soldadura",
+            {
+              "label": "Corrosión severa o picaduras",
+              "emphasis": "red"
+            },
+            "Accesorios extremos agrietados, deformados, flojos o dañados",
+            "Cualquier reducción del diámetro del cable más allá de los límites del fabricante",
+            {
+              "label": "Etiqueta de identificación faltante o ilegible",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Etiqueta de identificación de la eslinga",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Nombre o marca del fabricante",
+            "Código o número de stock del fabricante",
+            {
+              "label": "Límite de carga de trabajo nominal (WLL) para el(los) enganche(s) aplicable(s)",
+              "emphasis": "yellow"
+            },
+            "Diámetro del cable",
+            "Número de patas (si es de varias patas)",
+            "Alcance (longitud) (conjuntos de varias patas)",
+            "Etiqueta de identificación legible"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            "Inspeccione antes de cada uso",
+            {
+              "label": "Nunca use una eslinga con etiqueta faltante o ilegible",
+              "emphasis": "red"
+            },
+            "Siga los criterios de retiro del fabricante cuando sean más restrictivos"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Eslingas de cable de acero",
+      "focusCallout": "En caso de duda, etiquétela y retírela.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 23,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Criterios de retiro",
+      "summary": "Retire del servicio si se encuentra cualquiera de lo siguiente:",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas · WSTDA WS-1 — Eslingas de cinta sintética · WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/websling.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Retire del servicio",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Etiqueta de identificación faltante o ilegible",
+              "emphasis": "yellow"
+            },
+            "Quemaduras por ácido o cáusticos",
+            "Derretimiento, carbonización o daño por calor",
+            {
+              "label": "Agujeros, rasgaduras, cortes, perforaciones o enganches",
+              "emphasis": "red"
+            },
+            "Costuras rotas o desgastadas en empalmes que soportan carga",
+            "Desgaste abrasivo excesivo",
+            {
+              "label": "Nudos en cualquier parte de la eslinga",
+              "emphasis": "red"
+            },
+            "Decoloración, fibras quebradizas o degradación por UV/ambiental que afecte la resistencia",
+            "Accesorios dañados (doblados, agrietados, desgastados o corroídos)",
+            "Se cumple cualquier criterio de retiro del fabricante"
+          ]
+        },
+        {
+          "heading": "Etiqueta de identificación requerida",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Nombre o marca del fabricante",
+            "Código o número de stock del fabricante",
+            {
+              "label": "Límite de carga de trabajo nominal (WLL) para el(los) enganche(s) aplicable(s)",
+              "emphasis": "yellow"
+            },
+            "Material de la eslinga (nailon o poliéster)",
+            "Número de patas (si es de varias patas)"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Sin etiqueta = Sin izaje",
+              "emphasis": "red"
+            },
+            "Nunca ate nudos para acortar una eslinga",
+            "Proteja las eslingas de cinta de bordes afilados con protección adecuada"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Eslingas de cinta sintética",
+      "focusCallout": "Sin etiqueta = Sin izaje.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 24,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Criterios de retiro",
+      "summary": "Retire del servicio si se encuentra cualquiera de lo siguiente:",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas · WSTDA RS-1 — Eslingas redondas sintéticas · WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/roundsling.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Retire del servicio",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Etiqueta de identificación faltante o ilegible",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Cortes, rasgaduras, perforaciones o enganches en la cubierta",
+              "emphasis": "red"
+            },
+            {
+              "label": "Hilos del núcleo expuestos",
+              "emphasis": "red"
+            },
+            "Daño por calor, derretimiento, carbonización o salpicaduras de soldadura",
+            "Quemaduras por ácido o cáusticos",
+            "Degradación por UV, decoloración o fibras quebradizas",
+            {
+              "label": "Nudos en la eslinga",
+              "emphasis": "red"
+            },
+            "Accesorios dañados (si tiene)",
+            "Se cumple cualquier criterio de retiro del fabricante"
+          ]
+        },
+        {
+          "heading": "Etiqueta de identificación requerida",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Nombre o marca del fabricante",
+            "Código o número de stock del fabricante",
+            {
+              "label": "Límite de carga de trabajo nominal (WLL) para el(los) enganche(s) aplicable(s)",
+              "emphasis": "yellow"
+            },
+            "Material del núcleo (cuando lo exija el fabricante)",
+            "Número de patas (si es de varias patas)"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Sin etiqueta = Sin izaje",
+              "emphasis": "red"
+            },
+            {
+              "label": "Si la cubierta protectora está dañada y el núcleo que soporta la carga está expuesto, retire la eslinga del servicio de inmediato",
+              "emphasis": "red"
+            },
+            "Proteja las eslingas redondas de bordes afilados con protección adecuada"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Eslingas redondas sintéticas",
+      "focusCallout": "Sin etiqueta = Sin izaje.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 25,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Capacidades nominales por enganche",
+      "summary": "*Cuando la etiqueta del fabricante no especifique lo contrario.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Sección 9-2 (Eslingas de cinta sintética) y Sección 9-6 (Eslingas redondas de poliéster)",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/webslingtag.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Capacidades por enganche",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Vertical · 100%",
+              "emphasis": "yellow"
+            },
+            "Choker – Eslinga de cinta · 75%",
+            "Choker – Eslinga redonda de poliéster · 80%",
+            {
+              "label": "Canasta · 200% (patas verticales y carga equilibrada)",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Importante",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Use siempre el WLL indicado en la etiqueta de la eslinga",
+              "emphasis": "red"
+            },
+            {
+              "label": "Si la etiqueta no indica capacidad en choker: Eslingas de cinta sintética = 75% de la capacidad vertical; Eslingas redondas de poliéster = 80% de la capacidad vertical",
+              "emphasis": "yellow"
+            },
+            "Para ángulos de choker menores de 120°, se requiere derating adicional usando las tablas de ángulo de choker de ASME B30.9 o las instrucciones del fabricante"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas",
+      "focusCallout": "Use siempre el WLL indicado en la etiqueta de la eslinga.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 26,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Configuraciones comunes de enganche",
+      "summary": "*Capacidad nominal típica cuando la etiqueta del fabricante no especifique lo contrario.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas · WSTDA WS-1 — Eslingas de cinta sintética · WSTDA RS-1 — Eslingas redondas sintéticas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-3",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/hitch.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Configuraciones",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Enganche vertical · 100%",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Enganche de canasta · 200%",
+              "emphasis": "yellow"
+            },
+            "Enganche de canasta (patas inclinadas) · Aplicar derating por ángulo de eslinga",
+            "Enganche choker simple · 75% (cinta) / 80% (redonda)",
+            "Enganche choker de dos patas · 150% (cinta) / 160% (redonda)",
+            {
+              "label": "Enganche de doble vuelta · Use el WLL del fabricante",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Puntos clave",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Enganche vertical – Una pata de eslinga sostiene la carga",
+            "Enganche de canasta – Hasta 200% de capacidad cuando ambas patas están verticales y la carga está equilibrada",
+            "Enganche de canasta (patas inclinadas) – La capacidad disminuye al disminuir el ángulo de eslinga",
+            "Enganche choker simple – Reduce la capacidad por la acción de estrangulamiento alrededor de la carga",
+            {
+              "label": "Enganche choker de dos patas – El doble de la capacidad del choker simple (150% cinta / 160% redonda)",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Enganche de doble vuelta – Aumenta el agarre; no aumenta la capacidad nominal salvo que el fabricante lo califique específicamente",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Use siempre la etiqueta del fabricante para determinar el límite de carga de trabajo (WLL)",
+              "emphasis": "red"
+            },
+            "Considere el tipo de enganche y el ángulo de eslinga al calcular la capacidad",
+            "Proteja las eslingas sintéticas de bordes afilados"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas",
+      "focusCallout": "Use siempre la etiqueta del fabricante para determinar el WLL.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 27,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Patas verticales vs inclinadas en canasta",
+      "summary": "Las patas verticales pueden usar la capacidad completa de canasta. Las patas inclinadas requieren derating por ángulo de eslinga.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 · WSTDA WS-1 / RS-1 · WorkSafeBC OHSR Parte 15 · BC Crane Safety",
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": "/lessons/appendix-b",
+      "formula": null,
+      "diagram": "basket-vertical-vs-inclined",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "1. Patas verticales",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Capacidad de canasta = hasta 200% del WLL del enganche vertical",
+            "Ambas patas a plomo y la carga equilibrada"
+          ]
+        },
+        {
+          "heading": "2. Patas inclinadas",
+          "headingEmphasis": "yellow",
+          "items": [
+            "No use la capacidad completa de canasta del 200%",
+            "Capacidad efectiva = WLL de canasta ÷ (L ÷ H)  o  × sin(θ)"
+          ]
+        },
+        {
+          "heading": "Buenas prácticas",
+          "headingEmphasis": "red",
+          "items": [
+            "Mantenga las patas de canasta lo más verticales posible",
+            "Use un separador o mayor alcance cuando el ángulo sería poco profundo",
+            "Verifique el tipo de enganche y el ángulo contra el WLL de la etiqueta"
+          ]
+        }
+      ],
+      "panelBg": "chalk",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas",
+      "focusCallout": "Patas inclinadas ≠ 200%. Aplique derating por ángulo de eslinga antes de izar.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 28,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Cuestionario de matemáticas de choker y canasta",
+      "summary": "Use las capacidades de enganche de la etiqueta. Resuelva cada uno antes de revelar. WLL vertical = 10,000 lb salvo indicación.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": "/learning/rigging-charts?chart=sine-angle",
+      "lessonHref": null,
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas · Cuestionario rápido",
+      "focusCallout": null,
+      "quiz": true,
+      "quizQuestions": [
+        {
+          "id": "basket-200",
+          "prompt": "WLL vertical = 10,000 lb. Enganche de canasta con ambas patas verticales y la carga equilibrada. ¿Cuál es la capacidad nominal?",
+          "options": [
+            {
+              "id": "a",
+              "text": "7,500 lb"
+            },
+            {
+              "id": "b",
+              "text": "10,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "15,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "20,000 lb"
+            }
+          ],
+          "correctAnswer": "d",
+          "explanation": "Capacidad de canasta vertical = 200% del WLL vertical → 10,000 × 2,00 = 20,000 lb."
+        },
+        {
+          "id": "choker-web-75",
+          "prompt": "WLL vertical = 10,000 lb. Enganche choker simple en eslinga de cinta sintética (ángulo de choke ≥ 120°). ¿Cuál es la capacidad nominal?",
+          "options": [
+            {
+              "id": "a",
+              "text": "5,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "7,500 lb"
+            },
+            {
+              "id": "c",
+              "text": "8,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "10,000 lb"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "Choker simple de cinta ≈ 75% del vertical → 10,000 × 0,75 = 7,500 lb (salvo que la etiqueta diga otra cosa)."
+        },
+        {
+          "id": "choker-round-80",
+          "prompt": "WLL vertical = 10,000 lb. Enganche choker simple en eslinga redonda de poliéster (ángulo de choke ≥ 120°). ¿Cuál es la capacidad nominal?",
+          "options": [
+            {
+              "id": "a",
+              "text": "7,500 lb"
+            },
+            {
+              "id": "b",
+              "text": "8,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "10,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "16,000 lb"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "Choker simple de eslinga redonda de poliéster ≈ 80% del vertical → 10,000 × 0,80 = 8,000 lb."
+        },
+        {
+          "id": "double-leg-choke",
+          "prompt": "Una eslinga de cinta en enganche choker de dos patas (una eslinga, dos patas). WLL vertical = 10,000 lb. ¿Cuál es la capacidad nominal?",
+          "options": [
+            {
+              "id": "a",
+              "text": "7,500 lb"
+            },
+            {
+              "id": "b",
+              "text": "10,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "15,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "20,000 lb"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "Choker de una eslinga / dos patas = 2 × choker simple. Cinta: 2 × 75% = 150% → 10,000 × 1,50 = 15,000 lb. (Redonda: 2 × 80% = 160%.)"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Doble vuelta y doble choke",
+      "summary": "Cargas de 2 o más piezas de más de 3 m (10 ft) de largo deben ir con doble vuelta y choke — OHSR 15.40.",
+      "bullets": [],
+      "ohrsRef": "15.40",
+      "source": "WorkSafeBC OHSR 15.40 — Eslingado de cargas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-5",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/hitch.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Cuándo aplica",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "2 o más piezas de material",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Cada pieza de más de 3 m (10 ft) de largo",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Método requerido",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Use un arreglo de eslinga de 2 patas",
+              "emphasis": "red"
+            },
+            "Coloque las eslingas para mantener la carga horizontal durante el izaje",
+            {
+              "label": "Cada eslinga debe ir en choke alrededor de la carga con doble vuelta",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Doble vuelta + choke = agarre que resiste el deslizamiento y el movimiento del paquete",
+              "emphasis": "red"
+            },
+            "Seleccione y use la eslinga para evitar deslizamiento o sobrecarga (OHSR 15.40(1))",
+            "Proteja las eslingas sintéticas de bordes afilados"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": "OHSR Parte 15 · Eslingado de cargas",
+      "focusCallout": "2+ piezas · más de 3 m (10 ft) · doble vuelta · choke en cada eslinga",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 30,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Nunca golpee un choke",
+      "summary": "Nunca fuerce el ojo del choke hacia abajo por la eslinga. Golpear crea un ángulo de choke agudo, daña la eslinga y reduce la capacidad por debajo del WLL de choker etiquetado.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 · WSTDA WS-1 / RS-1 / RS-2 · instrucciones del fabricante · WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-5",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/hammerchoke.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Reducción por ángulo de choke",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "120°–180° · × 1.00 (capacidad completa de choker)",
+              "emphasis": "yellow"
+            },
+            "105°–<120° · × 0.82",
+            "90°–<105° · × 0.71",
+            "60°–<90° · × 0.58",
+            {
+              "label": "0°–<60° · × 0.50",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Por qué nunca golpear",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Fuerza un ángulo de choke agudo muy por debajo de 120°",
+              "emphasis": "red"
+            },
+            "Daña las fibras del cuerpo de la eslinga en el punto de choke",
+            "Crea una condición no calificada — la capacidad puede ser menor que cualquier tabla",
+            "Deje que el choke se asiente de forma natural al izar la carga"
+          ]
+        },
+        {
+          "heading": "Normas y práctica",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "ASME B30.9 — ángulos de choke menores de 120° requieren calificación del fabricante o de una persona calificada",
+              "emphasis": "yellow"
+            },
+            "WSTDA WS-1 / RS-1 / RS-2 — multiplique el WLL de choker por el factor de reducción del ángulo",
+            "Instrucciones del fabricante — no golpee, martille ni fuerce un choke",
+            "OHSR Parte 15 — seleccione y use eslingas para evitar deslizamiento o sobrecarga"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas",
+      "focusCallout": "Deje que el choke se asiente de forma natural — nunca lo golpee hacia abajo.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 31,
+      "unit": "regulations",
+      "unitLabel": "Regulaciones y normas",
+      "title": "Chokes opuestos",
+      "summary": "Dos enganches choker colocados en direcciones opuestas mejoran la estabilidad de la carga y ayudan a evitar que ruede o se deslice en cargas cilíndricas.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 – Eslingas; WSTDA WS-1 – Eslingas de cinta sintética; WSTDA RS-1 – Eslingas redondas sintéticas",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-5",
+      "formula": null,
+      "diagram": "opposing-chokes",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Cuándo usar chokes opuestos",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Dos enganches choker se colocan en direcciones opuestas alrededor de la carga",
+              "emphasis": "yellow"
+            },
+            "Se usan para mejorar la estabilidad y ayudar a evitar que la carga ruede o se deslice",
+            "Comunes en tubería, postes, troncos, acero estructural y otras cargas cilíndricas",
+            "Coloque los chokes con espaciado uniforme para que la carga permanezca equilibrada",
+            "Asegúrese de que ambas patas de la eslinga compartan la carga lo más equitativamente posible"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            "Use protección de bordes adecuada cuando se requiera",
+            "Mantenga ángulos de eslinga adecuados",
+            "El WLL está limitado por el componente de menor capacidad y la calificación del enganche del fabricante",
+            {
+              "label": "Los chokes opuestos mejoran la estabilidad, no la capacidad nominal de la eslinga",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "oppose",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Enganches de eslingas sintéticas",
+      "focusCallout": "Los chokes opuestos mejoran la estabilidad — no la capacidad nominal de la eslinga.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 32,
+      "unit": "bth",
+      "unitLabel": "Bajo el gancho",
+      "title": "Accesorios bajo el gancho",
+      "summary": "Dispositivos suspendidos del gancho de la grúa para izar o manejar una carga específica — diseñados, calificados, inspeccionados y usados dentro del WLL.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.20 – Dispositivos de izaje bajo el gancho; ASME BTH-1; WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-12",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/selfdump.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "¿Qué son los accesorios bajo el gancho?",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Dispositivos suspendidos del gancho de la grúa para izar o manejar una carga específica",
+              "emphasis": "yellow"
+            },
+            "Deben estar diseñados para la aplicación prevista y calificados para la carga",
+            "Inspeccione antes del uso — retire del servicio si están dañados o defectuosos",
+            {
+              "label": "Nunca exceda el límite de carga de trabajo (WLL)",
+              "emphasis": "red"
+            },
+            "Use solo con aparejos y gancho de grúa compatibles"
+          ]
+        },
+        {
+          "heading": "Marcajes requeridos · ASME B30.20",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Carga nominal — legible en la estructura principal o en una etiqueta adjunta",
+              "emphasis": "yellow"
+            },
+            "Nombre y datos de contacto del fabricante",
+            "Número de serie (identificador único)",
+            "Peso del elevador si supera 100 lb (45 kg)",
+            "Categoría de diseño y clase de servicio ASME BTH-1",
+            "Datos eléctricos cuando apliquen (voltaje / corriente en frío)",
+            {
+              "label": "Marcajes faltantes o ilegibles — retire del servicio",
+              "emphasis": "red"
+            }
+          ]
+        },
+        {
+          "heading": "Accesorios bajo el gancho comunes",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Cubos de concreto",
+            "Vigas de izaje y vigas separadoras",
+            "Abrazaderas para placas",
+            "Agarres y pinzas para tubería",
+            "Elevadores de bobinas",
+            "Imanes",
+            "Elevadores de vacío"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "ASME B30.20",
+          "href": "https://www.asme.org/codes-standards/b30-20-below-the-hook-lifting-devices"
+        },
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": "Bajo el gancho · ASME B30.20",
+      "focusCallout": "Sin etiqueta / marcajes ilegibles = no usar.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 33,
+      "unit": "bth",
+      "unitLabel": "Bajo el gancho",
+      "title": "Cubos de concreto",
+      "summary": "",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.5 – Grúas móviles y locomotivas; ASME B30.20 – Dispositivos de izaje bajo el gancho; manuales de operación del fabricante",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-12",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/concretebucket.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Deflexión de la pluma/jib durante un vertido",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Inspeccione el cubo, el aro, las bisagras, el pestillo y la compuerta de descarga antes de cada uso",
+            {
+              "label": "Nunca exceda el límite de carga de trabajo (WLL) del cubo",
+              "emphasis": "red"
+            },
+            {
+              "label": "Al descargar el concreto, la carga baja — la pluma/jib rebota hacia arriba",
+              "emphasis": "yellow"
+            },
+            "El gancho y el cubo suben durante el vertido — mantenga holgura respecto a encofrados, varillas y personal",
+            "Abra la compuerta de descarga de forma suave; evite movimientos bruscos de la grúa"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "ASME B30.5",
+          "href": "https://www.asme.org/codes-standards/b30-5-mobile-and-locomotive-cranes"
+        },
+        {
+          "label": "ASME B30.20",
+          "href": "https://www.asme.org/codes-standards/b30-20-below-the-hook-lifting-devices"
+        }
+      ],
+      "focusKicker": "Bajo el gancho · Vertidos de concreto",
+      "focusCallout": "A medida que el cubo se aligera, la pluma o el jib sube — anticipe que el gancho se eleva durante el vertido.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 34,
+      "unit": "bth",
+      "unitLabel": "Bajo el gancho",
+      "title": "Canastas de personal y DEP",
+      "summary": "Las plataformas de personal deben estar diseñadas y certificadas por un ingeniero profesional, marcadas de forma permanente y soportadas por aparejos con un factor de diseño mínimo de 10:1.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "WorkSafeBC OHSR Parte 14 / Parte 15 · ASME B30.23 — Sistemas de izaje de personal · instrucciones del fabricante",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-12",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/DEP.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Requisitos de diseño",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Diseñada y certificada por un ingeniero profesional",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Todo el aparejo de soporte — factor de diseño mínimo 10:1 (resistencia a la rotura ÷ WLL)",
+              "emphasis": "red"
+            },
+            "Patas del bridle conectadas a un eslabón maestro o grillete para repartir la carga entre las patas",
+            "Inspeccione la plataforma y todo el aparejo antes de cada izaje"
+          ]
+        },
+        {
+          "heading": "La plataforma debe estar marcada permanentemente con",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Límite de carga de trabajo (WLL)",
+              "emphasis": "yellow"
+            },
+            "Ocupantes máximos",
+            "Peso vacío",
+            "Peso total (All-Up Weight)",
+            "Identificación de la plataforma"
+          ]
+        }
+      ],
+      "panelBg": "white",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "OHSR Part 14",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-14"
+        },
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": "Bajo el gancho · Izaje de personal",
+      "focusCallout": "El izaje de personal requiere un factor de diseño de 10:1 para todo el aparejo de soporte.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 35,
+      "unit": "bth",
+      "unitLabel": "Bajo el gancho",
+      "title": "Canastas de personal y DEP",
+      "summary": "Al izar personal, mantenga la grúa al 50% o menos de su capacidad nominal e incluya cada componente suspendido en el peso total (all-up).",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "WorkSafeBC OHSR Parte 14 / Parte 15 · ASME B30.23 — Sistemas de izaje de personal · instrucciones del fabricante",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-12",
+      "formula": null,
+      "diagram": null,
+      "image": "/images/rigging/manbasket.png",
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Capacidad de la grúa y peso total (All-Up)",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "No cargue la grúa más allá del 50% de su capacidad nominal al izar una plataforma de personal",
+              "emphasis": "red"
+            },
+            "Calcule la capacidad usando la carga total suspendida — no solo los ocupantes",
+            "Ice al personal de forma suave con comunicación continua"
+          ]
+        },
+        {
+          "heading": "El peso total (All-Up) incluye",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Plataforma",
+            "Personal",
+            "Herramientas y equipo",
+            "Bloque del gancho",
+            "Eslingas, grilletes, eslabones maestros y todo el aparejo"
+          ]
+        },
+        {
+          "heading": "Concepto clave",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Factor de diseño 10:1 — aplica al aparejo de la plataforma (eslingas, grilletes, eslabones maestros). La resistencia mínima a la rotura debe ser al menos 10 × el peso total",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "50% de capacidad de la grúa — límite separado de WorkSafeBC sobre cuánta capacidad nominal de la grúa puede usarse al izar personal",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "personnel",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "OHSR Part 14",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-14"
+        },
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": "Bajo el gancho · Izaje de personal",
+      "focusCallout": "Factor de diseño 10:1 ≠ 50% de capacidad de la grúa",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 36,
+      "unit": "ratings",
+      "unitLabel": "WLL, factor de diseño y resistencia",
+      "title": "Factor de diseño vs resistencia a la rotura vs WLL",
+      "summary": "",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": "ASME B30.9 — Eslingas; WorkSafeBC OHSR Parte 15",
+      "chartHref": null,
+      "lessonHref": "/lessons/module-2",
+      "formula": null,
+      "diagram": "sling-design-factors",
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": true,
+      "focus": true,
+      "sections": [
+        {
+          "heading": "Definiciones clave",
+          "headingEmphasis": "yellow",
+          "items": [
+            {
+              "label": "Resistencia a la rotura — carga a la que se espera que falle la eslinga o el componente",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "Factor de diseño — Resistencia a la rotura ÷ WLL",
+              "emphasis": "yellow"
+            },
+            {
+              "label": "WLL — carga máxima permitida en servicio normal",
+              "emphasis": "yellow"
+            }
+          ]
+        },
+        {
+          "heading": "Ejemplo",
+          "headingEmphasis": "yellow",
+          "items": [
+            "Cable: 25,000 lb ÷ 5 = 5,000 lb WLL",
+            "Cadena de aleación Grado 80: 20,000 lb ÷ 4 = 5,000 lb WLL"
+          ]
+        },
+        {
+          "heading": "Recuerde",
+          "headingEmphasis": "red",
+          "items": [
+            {
+              "label": "Use siempre la etiqueta del fabricante — nunca estime la resistencia a la rotura",
+              "emphasis": "red"
+            },
+            {
+              "label": "Las plataformas de personal requieren aparejo de soporte 10:1 según WorkSafeBC (no 4:1 / 5:1)",
+              "emphasis": "red"
+            }
+          ]
+        }
+      ],
+      "panelBg": "strength",
+      "heroStats": null,
+      "sourceLinks": [
+        {
+          "label": "ASME B30.9",
+          "href": "https://www.asme.org/codes-standards/b30-9-slings"
+        },
+        {
+          "label": "OHSR Part 15",
+          "href": "https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation-part-15"
+        }
+      ],
+      "focusKicker": "Capacidades · ASME B30.9",
+      "focusCallout": "Nunca calcule el WLL a partir de una resistencia a la rotura estimada — use la etiqueta del fabricante.",
+      "quiz": false,
+      "quizQuestions": null
+    },
+    {
+      "id": 37,
+      "unit": "ratings",
+      "unitLabel": "WLL, factor de diseño y resistencia",
+      "title": "Comprobación con calculadora — resistencia y WLL",
+      "summary": "Cuatro problemas rápidos. Use WLL = Resistencia a la rotura ÷ Factor de diseño. Resuelva cada uno antes de revelar las respuestas.",
+      "bullets": [],
+      "ohrsRef": null,
+      "source": null,
+      "chartHref": null,
+      "lessonHref": "/lessons/module-2",
+      "formula": null,
+      "diagram": null,
+      "image": null,
+      "secondaryImage": null,
+      "cover": false,
+      "hero": false,
+      "critical": false,
+      "focus": false,
+      "sections": null,
+      "panelBg": "sine",
+      "heroStats": null,
+      "sourceLinks": null,
+      "focusKicker": "Capacidades · Cuestionario rápido",
+      "focusCallout": null,
+      "quiz": true,
+      "quizQuestions": [
+        {
+          "id": "wll-wire-5",
+          "prompt": "Una eslinga de cable tiene una resistencia mínima a la rotura de 25,000 lb. Factor de diseño = 5. ¿Cuál es el WLL?",
+          "options": [
+            {
+              "id": "a",
+              "text": "2,500 lb"
+            },
+            {
+              "id": "b",
+              "text": "5,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "12,500 lb"
+            },
+            {
+              "id": "d",
+              "text": "20,000 lb"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "WLL = Resistencia a la rotura ÷ Factor de diseño → 25,000 ÷ 5 = 5,000 lb."
+        },
+        {
+          "id": "wll-chain-4",
+          "prompt": "Una eslinga de cadena de aleación Grado 80 tiene una resistencia mínima a la rotura de 20,000 lb. Factor de diseño = 4. ¿Cuál es el WLL?",
+          "options": [
+            {
+              "id": "a",
+              "text": "4,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "5,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "8,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "16,000 lb"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "WLL = Resistencia a la rotura ÷ Factor de diseño → 20,000 ÷ 4 = 5,000 lb."
+        },
+        {
+          "id": "mbs-wire-5",
+          "prompt": "Una eslinga de cable está etiquetada para 8,000 lb WLL. Factor de diseño = 5. ¿Qué resistencia mínima a la rotura se requiere?",
+          "options": [
+            {
+              "id": "a",
+              "text": "8,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "16,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "32,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "40,000 lb"
+            }
+          ],
+          "correctAnswer": "d",
+          "explanation": "Resistencia a la rotura = WLL × Factor de diseño → 8,000 × 5 = 40,000 lb."
+        },
+        {
+          "id": "mbs-chain-4",
+          "prompt": "Una eslinga de cadena de aleación está etiquetada para 6,000 lb WLL. Factor de diseño = 4. ¿Qué resistencia mínima a la rotura se requiere?",
+          "options": [
+            {
+              "id": "a",
+              "text": "12,000 lb"
+            },
+            {
+              "id": "b",
+              "text": "18,000 lb"
+            },
+            {
+              "id": "c",
+              "text": "24,000 lb"
+            },
+            {
+              "id": "d",
+              "text": "30,000 lb"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "Resistencia a la rotura = WLL × Factor de diseño → 6,000 × 4 = 24,000 lb."
+        }
+      ]
+    }
+  ]
+}

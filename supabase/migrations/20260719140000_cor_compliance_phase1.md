@@ -1,0 +1,12 @@
+-- COR / Compliance Phase 1 foundation
+-- Prefer: DATABASE_URL="$DIRECT_URL" npx prisma db push
+-- Applied via Prisma against shared Proven DB (2026-07-19).
+
+-- Tables created (additive):
+--   cor_programs, cor_elements, cor_questions, cor_evidence_requirements
+--   cor_audit_sessions, cor_question_responses, cor_evidence_links
+--   cor_interviews, cor_observation_notes, cor_score_rollups
+--   corrective_actions, corrective_action_events
+--   external_auditor_invites
+-- MediaEntityType extended with INCIDENT, INSPECTION, TOOLBOX_TALK,
+-- CORRECTIVE_ACTION, COR_AUDIT, COR_EVIDENCE

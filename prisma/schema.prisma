@@ -23,12 +23,6 @@ enum UserRole {
   READ_ONLY
 }
 
-enum AppAccess {
-  PULL
-  PROVEN
-  BOTH
-}
-
 enum LessonProgressStatus {
   NOT_STARTED
   IN_PROGRESS
@@ -175,6 +169,12 @@ enum MediaEntityType {
   CERTIFICATE
   EQUIPMENT
   TRAINING_MATRIX
+  INCIDENT
+  INSPECTION
+  TOOLBOX_TALK
+  CORRECTIVE_ACTION
+  COR_AUDIT
+  COR_EVIDENCE
   OTHER
 }
 
@@ -203,6 +203,93 @@ enum NotificationType {
   EXAM
   CERTIFICATE
   SYSTEM
+}
+
+
+enum CorAuditType {
+  INTERNAL
+  EXTERNAL
+}
+
+enum CorAuditStatus {
+  DRAFT
+  IN_PROGRESS
+  SUBMITTED
+  COMPLETED
+  ARCHIVED
+}
+
+enum CorQuestionStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  ADEQUATE
+  NEEDS_IMPROVEMENT
+  FAIL
+  NOT_APPLICABLE
+}
+
+enum CorEvidenceKind {
+  DOCUMENTATION
+  OBSERVATION
+  INTERVIEW
+}
+
+enum CorEvidenceSourceType {
+  ASSESSMENT_RESULT
+  EXAM_RESULT
+  CERTIFICATE
+  LESSON_PROGRESS
+  TRAINING_MATRIX_ENTRY
+  DOCUMENT
+  PHOTO
+  VIDEO
+  OBSERVATION
+  EQUIPMENT_QUALIFICATION
+  EXPERIENCE_LOG
+  INSPECTION
+  INCIDENT
+  TOOLBOX_TALK
+  POLICY_ACK
+  OTHER
+}
+
+enum CorrectiveActionPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum CorrectiveActionStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  PENDING_EVIDENCE
+  PENDING_VERIFICATION
+  COMPLETED
+  VERIFIED
+  CANCELLED
+}
+
+enum FindingRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum FindingStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  PENDING_VERIFICATION
+  CLOSED
+}
+
+enum ManagementReviewStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
 }
 
 enum AuditAction {
@@ -258,18 +345,20 @@ enum ExperienceMilestoneKind {
 
 /// Tenant / employer organization.
 model Company {
-  id          String    @id @default(uuid()) @db.Uuid
-  name        String
-  slug        String    @unique
-  logoUrl     String?   @map("logo_url")
-  website     String?
-  phone       String?
-  address     String?
-  isActive    Boolean   @default(true) @map("is_active")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById String?   @map("created_by") @db.Uuid
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id             String    @id @default(uuid()) @db.Uuid
+  name           String
+  slug           String    @unique
+  logoUrl        String?   @map("logo_url")
+  website        String?
+  phone          String?
+  address        String?
+  primaryColor   String?   @map("primary_color")
+  secondaryColor String?   @map("secondary_color")
+  isActive       Boolean   @default(true) @map("is_active")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById    String?   @map("created_by") @db.Uuid
+  deletedAt      DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   employees              Employee[]
   projects               Project[]
@@ -288,12 +377,20 @@ model Company {
   photos                 Photo[]
   videos                 Video[]
   documents              Document[]
+  companyFolders         CompanyFolder[]
   trainingMatrices       TrainingMatrix[]
   notifications          Notification[]
   auditLogs              AuditLog[]
   invites                CompanyInvite[]
   curricula              Curriculum[]
   curriculumEnrolments   CurriculumEnrolment[]
+  corPrograms            CorProgram[]
+  corAuditSessions       CorAuditSession[]
+  correctiveActions      CorrectiveAction[]
+  externalAuditorInvites ExternalAuditorInvite[]
+  safetyProgramVersions  SafetyProgramVersion[]
+  corFindings            CorFinding[]
+  managementReviews      CorManagementReview[]
 
   @@index([deletedAt])
   @@index([isActive])
@@ -334,7 +431,6 @@ model Employee {
   companyId               String         @map("company_id") @db.Uuid
   supervisorId            String?        @map("supervisor_id") @db.Uuid
   role                    UserRole       @default(READ_ONLY)
-  appAccess               AppAccess      @default(BOTH) @map("app_access")
   status                  EmployeeStatus @default(ACTIVE)
   employeeNumber          String?        @map("employee_number")
   title                   String?
@@ -380,13 +476,20 @@ model Employee {
   equipmentQualificationsGiven EquipmentQualification[] @relation("EquipmentQualificationAssessor")
   curriculumEnrolments    CurriculumEnrolment[]
   examResultsInstructed   ExamResult[]              @relation("ExamResultInstructor")
+  corInterviews           CorInterview[]            @relation("CorInterviewSubject")
+  correctiveActionsOwned  CorrectiveAction[]        @relation("CorrectiveActionOwner")
+  correctiveActionsVerified CorrectiveAction[]      @relation("CorrectiveActionVerifier")
+  corAuditSessionsLed     CorAuditSession[]         @relation("CorAuditLead")
+  corAuditsSignedOff      CorAuditSession[]         @relation("CorAuditSignOff")
+  safetyProgramVersionsFrozen SafetyProgramVersion[] @relation("SafetyProgramFrozenBy")
+  managementReviewsAttended CorManagementReviewAttendee[]
+  findingsOwned           CorFinding[]              @relation("FindingOwner")
 
   @@unique([companyId, userId])
   @@unique([companyId, employeeNumber])
   @@index([companyId, role])
   @@index([companyId, status])
   @@index([companyId, trade])
-  @@index([companyId, appAccess])
   @@index([supervisorId])
   @@index([userId])
   @@index([deletedAt])
@@ -718,6 +821,7 @@ model Observation {
   competency Competency?         @relation(fields: [competencyId], references: [id], onDelete: SetNull)
   employee   Employee            @relation("ObservationSubject", fields: [employeeId], references: [id], onDelete: Cascade)
   observer   Employee            @relation("ObservationObserver", fields: [observerId], references: [id], onDelete: Restrict)
+  formalCorrectiveActions CorrectiveAction[]
 
   @@index([companyId, observedAt])
   @@index([companyId, observationType])
@@ -1133,29 +1237,59 @@ model Video {
 }
 
 model Document {
-  id           String          @id @default(uuid()) @db.Uuid
-  companyId    String          @map("company_id") @db.Uuid
-  uploadedById String?         @map("uploaded_by_id") @db.Uuid
-  entityType   MediaEntityType @map("entity_type")
-  entityId     String          @map("entity_id") @db.Uuid
-  storagePath  String          @map("storage_path")
-  url          String
-  title        String
-  description  String?
-  mimeType     String?         @map("mime_type")
-  sizeBytes    Int?            @map("size_bytes")
-  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
-  createdById  String?         @map("created_by") @db.Uuid
-  deletedAt    DateTime?       @map("deleted_at") @db.Timestamptz(6)
+  id             String          @id @default(uuid()) @db.Uuid
+  companyId      String          @map("company_id") @db.Uuid
+  folderId       String?         @map("folder_id") @db.Uuid
+  uploadedById   String?         @map("uploaded_by_id") @db.Uuid
+  entityType     MediaEntityType @map("entity_type")
+  entityId       String          @map("entity_id") @db.Uuid
+  storagePath    String          @map("storage_path")
+  url            String
+  title          String
+  description    String?
+  mimeType       String?         @map("mime_type")
+  sizeBytes      Int?            @map("size_bytes")
+  versionNumber  Int             @default(1) @map("version_number")
+  rootDocumentId String?         @map("root_document_id") @db.Uuid
+  supersededAt   DateTime?       @map("superseded_at") @db.Timestamptz(6)
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById    String?         @map("created_by") @db.Uuid
+  deletedAt      DateTime?       @map("deleted_at") @db.Timestamptz(6)
 
-  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  uploadedBy Employee? @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  company                Company                   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  folder                 CompanyFolder?            @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  uploadedBy             Employee?                 @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  rootDocument           Document?                 @relation("DocumentVersions", fields: [rootDocumentId], references: [id], onDelete: SetNull)
+  versions               Document[]                @relation("DocumentVersions")
+  safetyProgramSnapshots SafetyProgramVersionDoc[]
 
   @@index([companyId, entityType, entityId])
+  @@index([companyId, folderId])
+  @@index([rootDocumentId])
   @@index([uploadedById])
   @@index([deletedAt])
   @@map("documents")
+}
+
+model CompanyFolder {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String    @map("company_id") @db.Uuid
+  parentId    String?   @map("parent_id") @db.Uuid
+  name        String
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company   Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent    CompanyFolder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children  CompanyFolder[] @relation("FolderTree")
+  documents Document[]
+
+  @@index([companyId, parentId])
+  @@index([deletedAt])
+  @@map("company_folders")
 }
 
 // =============================================================================
@@ -1266,7 +1400,7 @@ model AuditLog {
 }
 
 // =============================================================================
-// Pull LMS — Curriculum, enrolments, lesson progress
+// Learning — Curriculum, enrolments, lesson progress
 // =============================================================================
 
 model Curriculum {
@@ -1418,3 +1552,475 @@ model LessonProgress {
   @@index([deletedAt])
   @@map("lesson_progress")
 }
+
+// =============================================================================
+// Compliance / COR — BCCSA-shaped audit structure (stub bank; full bank later)
+// =============================================================================
+
+model CorProgram {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String?   @map("company_id") @db.Uuid
+  code        String
+  title       String
+  description String?
+  version     String    @default("1.0")
+  isActive    Boolean   @default(true) @map("is_active")
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company  Company?          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  elements CorElement[]
+  sessions CorAuditSession[]
+
+  @@unique([companyId, code])
+  @@index([isActive])
+  @@index([deletedAt])
+  @@map("cor_programs")
+}
+
+model CorElement {
+  id          String    @id @default(uuid()) @db.Uuid
+  programId   String    @map("program_id") @db.Uuid
+  code        String
+  title       String
+  description String?
+  weight      Float     @default(1)
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  program  CorProgram       @relation(fields: [programId], references: [id], onDelete: Cascade)
+  questions CorQuestion[]
+  rollups  CorScoreRollup[]
+
+  @@unique([programId, code])
+  @@index([programId, sortOrder])
+  @@index([deletedAt])
+  @@map("cor_elements")
+}
+
+model CorQuestion {
+  id                     String    @id @default(uuid()) @db.Uuid
+  elementId              String    @map("element_id") @db.Uuid
+  number                 String
+  reference              String?
+  description            String
+  weight                 Float     @default(1)
+  requiresDocumentation  Boolean   @default(false) @map("requires_documentation")
+  requiresObservation    Boolean   @default(false) @map("requires_observation")
+  requiresInterview      Boolean   @default(false) @map("requires_interview")
+  sortOrder              Int       @default(0) @map("sort_order")
+  createdAt              DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById            String?   @map("created_by") @db.Uuid
+  deletedAt              DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  element              CorElement               @relation(fields: [elementId], references: [id], onDelete: Cascade)
+  requirements         CorEvidenceRequirement[]
+  responses            CorQuestionResponse[]
+  evidenceLinks        CorEvidenceLink[]
+  interviews           CorInterview[]
+  observationNotes     CorObservationNote[]
+  correctiveActions    CorrectiveAction[]
+  findings             CorFinding[]
+
+  @@unique([elementId, number])
+  @@index([elementId, sortOrder])
+  @@index([deletedAt])
+  @@map("cor_questions")
+}
+
+model CorEvidenceRequirement {
+  id          String          @id @default(uuid()) @db.Uuid
+  questionId  String          @map("question_id") @db.Uuid
+  kind        CorEvidenceKind
+  description String?
+  sortOrder   Int             @default(0) @map("sort_order")
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?         @map("created_by") @db.Uuid
+  deletedAt   DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  question CorQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+  @@index([deletedAt])
+  @@map("cor_evidence_requirements")
+}
+
+model CorAuditSession {
+  id                      String         @id @default(uuid()) @db.Uuid
+  companyId               String         @map("company_id") @db.Uuid
+  programId               String         @map("program_id") @db.Uuid
+  safetyProgramVersionId  String?        @map("safety_program_version_id") @db.Uuid
+  type                    CorAuditType   @default(INTERNAL)
+  status                  CorAuditStatus @default(DRAFT)
+  title                   String
+  scheduledAt             DateTime?      @map("scheduled_at") @db.Timestamptz(6)
+  startedAt               DateTime?      @map("started_at") @db.Timestamptz(6)
+  completedAt             DateTime?      @map("completed_at") @db.Timestamptz(6)
+  leadEmployeeId          String?        @map("lead_employee_id") @db.Uuid
+  predictedScore          Float?         @map("predicted_score")
+  overallScore            Float?         @map("overall_score")
+  readinessPct            Float?         @map("readiness_pct")
+  notes                   String?
+  signedOffAt             DateTime?      @map("signed_off_at") @db.Timestamptz(6)
+  signedOffById           String?        @map("signed_off_by_id") @db.Uuid
+  externalReadyAt         DateTime?      @map("external_ready_at") @db.Timestamptz(6)
+  createdAt               DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById             String?        @map("created_by") @db.Uuid
+  deletedAt               DateTime?      @map("deleted_at") @db.Timestamptz(6)
+
+  company               Company                 @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  program               CorProgram              @relation(fields: [programId], references: [id], onDelete: Restrict)
+  safetyProgramVersion  SafetyProgramVersion?   @relation(fields: [safetyProgramVersionId], references: [id], onDelete: SetNull)
+  leadEmployee          Employee?               @relation("CorAuditLead", fields: [leadEmployeeId], references: [id], onDelete: SetNull)
+  signedOffBy           Employee?               @relation("CorAuditSignOff", fields: [signedOffById], references: [id], onDelete: SetNull)
+  responses             CorQuestionResponse[]
+  interviews            CorInterview[]
+  observationNotes      CorObservationNote[]
+  evidenceLinks         CorEvidenceLink[]
+  rollups               CorScoreRollup[]
+  correctiveActions     CorrectiveAction[]
+  findings              CorFinding[]
+  externalInvites       ExternalAuditorInvite[]
+  managementReview      CorManagementReview?
+
+  @@index([companyId, status])
+  @@index([programId])
+  @@index([safetyProgramVersionId])
+  @@index([deletedAt])
+  @@map("cor_audit_sessions")
+}
+
+model CorQuestionResponse {
+  id               String            @id @default(uuid()) @db.Uuid
+  sessionId        String            @map("session_id") @db.Uuid
+  questionId       String            @map("question_id") @db.Uuid
+  status           CorQuestionStatus @default(NOT_STARTED)
+  score            Float?
+  comments         String?
+  observationNotes String?           @map("observation_notes")
+  interviewNotes   String?           @map("interview_notes")
+  aiConfidence     Float?            @map("ai_confidence")
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById      String?           @map("created_by") @db.Uuid
+  deletedAt        DateTime?         @map("deleted_at") @db.Timestamptz(6)
+
+  session  CorAuditSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question CorQuestion     @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, questionId])
+  @@index([questionId, status])
+  @@index([deletedAt])
+  @@map("cor_question_responses")
+}
+
+model CorEvidenceLink {
+  id          String                @id @default(uuid()) @db.Uuid
+  sessionId   String?               @map("session_id") @db.Uuid
+  questionId  String                @map("question_id") @db.Uuid
+  kind        CorEvidenceKind?      @map("kind")
+  sourceType  CorEvidenceSourceType @map("source_type")
+  sourceId    String                @map("source_id") @db.Uuid
+  notes       String?
+  createdAt   DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?               @map("created_by") @db.Uuid
+  deletedAt   DateTime?             @map("deleted_at") @db.Timestamptz(6)
+
+  session  CorAuditSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question CorQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId, sourceType])
+  @@index([questionId, kind])
+  @@index([sessionId])
+  @@index([sourceType, sourceId])
+  @@index([deletedAt])
+  @@map("cor_evidence_links")
+}
+
+model CorInterview {
+  id                String    @id @default(uuid()) @db.Uuid
+  sessionId         String    @map("session_id") @db.Uuid
+  questionId        String?   @map("question_id") @db.Uuid
+  subjectEmployeeId String?   @map("subject_employee_id") @db.Uuid
+  summary           String?
+  conductedAt       DateTime? @map("conducted_at") @db.Timestamptz(6)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById       String?   @map("created_by") @db.Uuid
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  session  CorAuditSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question CorQuestion?    @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  subject  Employee?       @relation("CorInterviewSubject", fields: [subjectEmployeeId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId])
+  @@index([deletedAt])
+  @@map("cor_interviews")
+}
+
+model CorObservationNote {
+  id          String    @id @default(uuid()) @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  questionId  String?   @map("question_id") @db.Uuid
+  notes       String
+  observedAt  DateTime? @map("observed_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  session  CorAuditSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question CorQuestion?    @relation(fields: [questionId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId])
+  @@index([deletedAt])
+  @@map("cor_observation_notes")
+}
+
+model CorScoreRollup {
+  id          String    @id @default(uuid()) @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  elementId   String    @map("element_id") @db.Uuid
+  scorePct    Float?    @map("score_pct")
+  maxPoints   Float?    @map("max_points")
+  earnedPoints Float?   @map("earned_points")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  session CorAuditSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  element CorElement      @relation(fields: [elementId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, elementId])
+  @@index([deletedAt])
+  @@map("cor_score_rollups")
+}
+
+model CorrectiveAction {
+  id                    String                   @id @default(uuid()) @db.Uuid
+  companyId             String                   @map("company_id") @db.Uuid
+  sessionId             String?                  @map("session_id") @db.Uuid
+  questionId            String?                  @map("question_id") @db.Uuid
+  findingId             String?                  @unique @map("finding_id") @db.Uuid
+  observationId         String?                  @map("observation_id") @db.Uuid
+  title                 String
+  description           String?
+  department            String?
+  priority              CorrectiveActionPriority @default(MEDIUM)
+  status                CorrectiveActionStatus   @default(OPEN)
+  ownerEmployeeId       String?                  @map("owner_employee_id") @db.Uuid
+  dueAt                 DateTime?                @map("due_at") @db.Timestamptz(6)
+  completedAt           DateTime?                @map("completed_at") @db.Timestamptz(6)
+  evidenceRequired      String?                  @map("evidence_required")
+  costAmount            Float?                   @map("cost_amount")
+  completionPct         Int                      @default(0) @map("completion_pct")
+  evidenceReviewed      Boolean                  @default(false) @map("evidence_reviewed")
+  deficiencyCorrected   Boolean                  @default(false) @map("deficiency_corrected")
+  workersInformed       Boolean                  @default(false) @map("workers_informed")
+  trainingCompleted     Boolean                  @default(false) @map("training_completed")
+  documentsUpdated      Boolean                  @default(false) @map("documents_updated")
+  siteInspected         Boolean                  @default(false) @map("site_inspected")
+  verificationNotes     String?                  @map("verification_notes")
+  verifiedAt            DateTime?                @map("verified_at") @db.Timestamptz(6)
+  verifiedById          String?                  @map("verified_by_id") @db.Uuid
+  createdAt             DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById           String?                  @map("created_by") @db.Uuid
+  deletedAt             DateTime?                @map("deleted_at") @db.Timestamptz(6)
+
+  company     Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  session     CorAuditSession?       @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  question    CorQuestion?           @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  finding     CorFinding?            @relation(fields: [findingId], references: [id], onDelete: SetNull)
+  observation Observation?           @relation(fields: [observationId], references: [id], onDelete: SetNull)
+  owner       Employee?              @relation("CorrectiveActionOwner", fields: [ownerEmployeeId], references: [id], onDelete: SetNull)
+  verifiedBy  Employee?              @relation("CorrectiveActionVerifier", fields: [verifiedById], references: [id], onDelete: SetNull)
+  events      CorrectiveActionEvent[]
+
+  @@index([companyId, status])
+  @@index([dueAt])
+  @@index([deletedAt])
+  @@map("corrective_actions")
+}
+
+model CorrectiveActionEvent {
+  id                 String    @id @default(uuid()) @db.Uuid
+  correctiveActionId String    @map("corrective_action_id") @db.Uuid
+  message            String
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdById        String?   @map("created_by") @db.Uuid
+
+  correctiveAction CorrectiveAction @relation(fields: [correctiveActionId], references: [id], onDelete: Cascade)
+
+  @@index([correctiveActionId, createdAt])
+  @@map("corrective_action_events")
+}
+
+/// Frozen company Safety Program snapshot tied to an internal audit.
+model SafetyProgramVersion {
+  id            String    @id @default(uuid()) @db.Uuid
+  companyId     String    @map("company_id") @db.Uuid
+  label         String
+  notes         String?
+  documentCount Int       @default(0) @map("document_count")
+  frozenAt      DateTime  @default(now()) @map("frozen_at") @db.Timestamptz(6)
+  frozenById    String?   @map("frozen_by_id") @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById   String?   @map("created_by") @db.Uuid
+  deletedAt     DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company   Company                    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  frozenBy  Employee?                  @relation("SafetyProgramFrozenBy", fields: [frozenById], references: [id], onDelete: SetNull)
+  documents SafetyProgramVersionDoc[]
+  sessions  CorAuditSession[]
+
+  @@index([companyId, frozenAt])
+  @@index([deletedAt])
+  @@map("safety_program_versions")
+}
+
+model SafetyProgramVersionDoc {
+  id          String    @id @default(uuid()) @db.Uuid
+  versionId   String    @map("version_id") @db.Uuid
+  documentId  String?   @map("document_id") @db.Uuid
+  title       String
+  storagePath String    @map("storage_path")
+  url         String
+  mimeType    String?   @map("mime_type")
+  relativePath String?  @map("relative_path")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  version  SafetyProgramVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  document Document?            @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@index([versionId])
+  @@index([documentId])
+  @@map("safety_program_version_docs")
+}
+
+model CorFinding {
+  id              String          @id @default(uuid()) @db.Uuid
+  companyId       String          @map("company_id") @db.Uuid
+  sessionId       String          @map("session_id") @db.Uuid
+  questionId      String          @map("question_id") @db.Uuid
+  findingNumber   String          @map("finding_number")
+  elementCode     String          @map("element_code")
+  questionNumber  String          @map("question_number")
+  description     String
+  riskLevel       FindingRiskLevel @default(MEDIUM) @map("risk_level")
+  rootCause       String?         @map("root_cause")
+  recommendation  String?
+  auditorNotes    String?         @map("auditor_notes")
+  status          FindingStatus   @default(OPEN)
+  ownerEmployeeId String?         @map("owner_employee_id") @db.Uuid
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById     String?         @map("created_by") @db.Uuid
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  company           Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  session           CorAuditSession   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question          CorQuestion       @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  owner             Employee?         @relation("FindingOwner", fields: [ownerEmployeeId], references: [id], onDelete: SetNull)
+  correctiveAction  CorrectiveAction?
+
+  @@unique([sessionId, questionId])
+  @@index([companyId, status])
+  @@index([sessionId, riskLevel])
+  @@index([deletedAt])
+  @@map("cor_findings")
+}
+
+model CorManagementReview {
+  id               String                 @id @default(uuid()) @db.Uuid
+  companyId        String                 @map("company_id") @db.Uuid
+  sessionId        String                 @unique @map("session_id") @db.Uuid
+  status           ManagementReviewStatus @default(DRAFT)
+  agendaNotes      String?                @map("agenda_notes")
+  scoreSummary     String?                @map("score_summary")
+  findingsSummary  String?                @map("findings_summary")
+  decisions        String?
+  resourcesNotes   String?                @map("resources_notes")
+  completedAt      DateTime?              @map("completed_at") @db.Timestamptz(6)
+  createdAt        DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById      String?                @map("created_by") @db.Uuid
+  deletedAt        DateTime?              @map("deleted_at") @db.Timestamptz(6)
+
+  company     Company                         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  session     CorAuditSession                 @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  attendees   CorManagementReviewAttendee[]
+  actionItems CorManagementReviewActionItem[]
+
+  @@index([companyId, status])
+  @@index([deletedAt])
+  @@map("cor_management_reviews")
+}
+
+model CorManagementReviewAttendee {
+  id          String    @id @default(uuid()) @db.Uuid
+  reviewId    String    @map("review_id") @db.Uuid
+  employeeId  String    @map("employee_id") @db.Uuid
+  roleLabel   String?   @map("role_label")
+  attended    Boolean   @default(true)
+  signedAt    DateTime? @map("signed_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  review   CorManagementReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  employee Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, employeeId])
+  @@map("cor_management_review_attendees")
+}
+
+model CorManagementReviewActionItem {
+  id          String    @id @default(uuid()) @db.Uuid
+  reviewId    String    @map("review_id") @db.Uuid
+  title       String
+  description String?
+  ownerName   String?   @map("owner_name")
+  dueAt       DateTime? @map("due_at") @db.Timestamptz(6)
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  review CorManagementReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+  @@map("cor_management_review_action_items")
+}
+
+model ExternalAuditorInvite {
+  id          String    @id @default(uuid()) @db.Uuid
+  companyId   String    @map("company_id") @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  email       String
+  tokenHash   String    @unique @map("token_hash")
+  expiresAt   DateTime  @map("expires_at") @db.Timestamptz(6)
+  acceptedAt  DateTime? @map("accepted_at") @db.Timestamptz(6)
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdById String?   @map("created_by") @db.Uuid
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  company Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  session CorAuditSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, email])
+  @@index([sessionId])
+  @@index([deletedAt])
+  @@map("external_auditor_invites")
+}
+
