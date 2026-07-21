@@ -1,6 +1,6 @@
 import type { Locale } from "@/features/learning/i18n/config";
+import type { CompetencyCourse } from "@/features/learning/lib/competency-course-types";
 import type { TrackSlug } from "@/features/learning/lib/tracks";
-import { getSlideCourse } from "@/features/learning/lib/competency-course";
 
 const ES_RIGGER = {
   competencies: [
@@ -45,9 +45,11 @@ const PRO_COMPETENCIES_EN = [
   "Combining devices and critical lift planning",
 ];
 
-export function getLocalizedCompetencyCourse(locale: Locale, track: TrackSlug = "rigger-competency") {
-  const course = getSlideCourse(track, locale);
-
+export function getLocalizedCompetencyCourse(
+  locale: Locale,
+  track: TrackSlug,
+  course: CompetencyCourse,
+) {
   if (locale === "es") {
     const es = track === "intermediate" ? ES_PRO : ES_RIGGER;
     return {
@@ -58,12 +60,12 @@ export function getLocalizedCompetencyCourse(locale: Locale, track: TrackSlug = 
     };
   }
 
-  const enCourse = getSlideCourse(track, "en");
   return {
-    title: enCourse.title,
-    description: enCourse.description,
-    units: enCourse.units,
-    competencies: track === "intermediate" ? PRO_COMPETENCIES_EN : RIGGER_COMPETENCIES_EN,
+    title: course.title,
+    description: course.description,
+    units: course.units,
+    competencies:
+      track === "intermediate" ? PRO_COMPETENCIES_EN : RIGGER_COMPETENCIES_EN,
   };
 }
 

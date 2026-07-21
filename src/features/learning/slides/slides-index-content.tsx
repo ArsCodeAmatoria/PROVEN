@@ -2,12 +2,18 @@
 
 import Link from "next/link";
 import { ArrowRight, ExternalLink, Presentation, Table2, Triangle } from "lucide-react";
+import { useEffect, useState } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageShell } from "@/features/learning/slides/page-shell";
 import { useTranslations } from "@/features/learning/i18n/locale-context";
-import { formatDurationLocalized, getLocalizedCompetencyCourse } from "@/features/learning/lib/competency-i18n";
-import { getSlideCourse } from "@/features/learning/lib/competency-course";
+import {
+  formatDurationLocalized,
+  getLocalizedCompetencyCourse,
+} from "@/features/learning/lib/competency-i18n";
+import type { CompetencyCourse } from "@/features/learning/lib/competency-course-types";
+import { loadSlideCourse } from "@/features/learning/lib/load-slide-course";
 import type { TrackSlug } from "@/features/learning/lib/tracks";
 import { isTrackAvailable, slidesPresentHref } from "@/features/learning/lib/tracks";
 import { TrackComingSoon } from "@/features/learning/slides/track-coming-soon";
@@ -18,13 +24,31 @@ type Props = {
 
 export function SlidesIndexContent({ track }: Props) {
   const { t, locale } = useTranslations();
+  const [courseData, setCourseData] = useState<CompetencyCourse | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadSlideCourse(track, locale).then((next) => {
+      if (!cancelled) setCourseData(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [track, locale]);
 
   if (!isTrackAvailable(track)) {
     return <TrackComingSoon track={track} />;
   }
 
-  const courseData = getSlideCourse(track, locale);
-  const course = getLocalizedCompetencyCourse(locale, track);
+  if (!courseData) {
+    return (
+      <PageShell className="py-8 lg:py-12">
+        <div className="h-48 animate-pulse rounded-md bg-muted" aria-busy="true" />
+      </PageShell>
+    );
+  }
+
+  const course = getLocalizedCompetencyCourse(locale, track, courseData);
   const totalDuration = courseData.totalDurationMin;
   const isIntermediate = track === "intermediate";
 

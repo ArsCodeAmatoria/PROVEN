@@ -40,12 +40,14 @@ export default async function SlidesPresentPage({ searchParams }: PageProps) {
     redirect("/learning");
   }
 
-  const initialSlideIndex = slideIndexFromQuery(track, sp);
+  const course = getSlideCourse(track);
+  const initialSlideIndex = slideIndexFromQuery(course, sp);
 
   return (
     <CompetencySlideDeck
       key={`present-${track}-${initialSlideIndex}`}
       courseSlug={track}
+      course={course}
       initialSlideIndex={initialSlideIndex}
     />
   );

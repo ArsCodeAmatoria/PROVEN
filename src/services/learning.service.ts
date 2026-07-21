@@ -1,7 +1,10 @@
 import "server-only";
 
+import { cache } from "react";
+
 import { LessonProgressStatus, type Prisma } from "@/generated/prisma/client";
 import { getSlideCourse } from "@/features/learning/lib/competency-course";
+import { RIGGER_COMPETENCY_UNIT_IDS } from "@/features/learning/lib/competency-course-types";
 import { DEFAULT_TRACK } from "@/features/learning/lib/tracks";
 import { prisma } from "@/lib/prisma";
 import type { ServiceResult } from "@/types";
@@ -10,6 +13,7 @@ import { failure, getDatabaseConfigError, success, unavailable } from "./base";
 
 const CURRICULUM_CODE = "TOWER-CRANE-RIGGER";
 const MODULE_CODE = "RIGGER-COMPETENCY";
+const EXPECTED_LESSON_COUNT = RIGGER_COMPETENCY_UNIT_IDS.length;
 
 export type LessonStatusView = {
   lessonId: string;
@@ -42,15 +46,48 @@ function unitContentKey(unitId: string) {
 
 /**
  * Idempotently mirror Pull slide units into Proven curriculum tables.
- * Does not alter slide JSON or the viewer — only catalog + progress rows.
+ * Short-circuits when live lesson keys already match the rigger unit list.
  */
-export async function ensureRiggerCompetencyCurriculum(
+export const ensureRiggerCompetencyCurriculum = cache(async (
   companyId: string,
-): Promise<ServiceResult<{ curriculumId: string; moduleId: string }>> {
+): Promise<ServiceResult<{ curriculumId: string; moduleId: string }>> => {
   const configError = getDatabaseConfigError();
   if (configError) return unavailable(configError);
 
   try {
+    const existing = await prisma.curriculum.findFirst({
+      where: { companyId, code: CURRICULUM_CODE, deletedAt: null },
+      select: {
+        id: true,
+        modules: {
+          where: { code: MODULE_CODE, deletedAt: null },
+          take: 1,
+          select: {
+            id: true,
+            lessons: {
+              where: { deletedAt: null },
+              select: { contentKey: true },
+            },
+          },
+        },
+      },
+    });
+
+    const existingModule = existing?.modules[0];
+    if (existing && existingModule) {
+      const keys = new Set(existingModule.lessons.map((l) => l.contentKey));
+      const expectedKeys = RIGGER_COMPETENCY_UNIT_IDS.map(unitContentKey);
+      const synced =
+        existingModule.lessons.length === EXPECTED_LESSON_COUNT &&
+        expectedKeys.every((key) => keys.has(key));
+      if (synced) {
+        return success({
+          curriculumId: existing.id,
+          moduleId: existingModule.id,
+        });
+      }
+    }
+
     const course = getSlideCourse(DEFAULT_TRACK);
 
     const curriculum = await prisma.curriculum.upsert({
@@ -126,7 +163,7 @@ export async function ensureRiggerCompetencyCurriculum(
   } catch (error) {
     return failure(error);
   }
-}
+});
 
 export async function getLearningHubForEmployee(
   companyId: string,
@@ -142,7 +179,6 @@ export async function getLearningHubForEmployee(
     }
 
     const { curriculumId, moduleId } = ensured.data;
-    const course = getSlideCourse(DEFAULT_TRACK);
 
     const [curriculum, curriculumModule, enrolment, lessons] = await Promise.all([
       prisma.curriculum.findFirstOrThrow({
@@ -210,7 +246,7 @@ export async function getLearningHubForEmployee(
       curriculumId: curriculum.id,
       curriculumTitle: curriculum.title,
       moduleId: curriculumModule.id,
-      moduleTitle: curriculumModule.title || course.title,
+      moduleTitle: curriculumModule.title,
       enrolmentId: activeEnrolment.id,
       lessons: lessonViews,
       completedCount: lessonViews.filter(

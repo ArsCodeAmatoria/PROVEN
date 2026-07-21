@@ -33,10 +33,13 @@ export default async function SlidesCastPage({ searchParams }: PageProps) {
     redirect("/learning");
   }
 
+  const course = getSlideCourse(track);
+
   return (
     <CompetencySlideDeck
       castRole="audience"
       courseSlug={track}
+      course={course}
       initialSlideIndex={0}
     />
   );

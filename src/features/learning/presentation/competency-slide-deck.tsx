@@ -19,7 +19,7 @@ import { coverImageAlt, EDGE_PROTECTION_IMAGE_ALT, LW_RATIO_IMAGE_ALT, SOFTENER_
 import { StandardLogo } from "@/features/learning/standards/standard-logo";
 import { isRiggingDiagramId, RiggingDiagram, type RiggingDiagramId } from "@/features/learning/diagrams";
 import {
-  getSlideCourse,
+  type CompetencyCourse,
   type CompetencySlide,
   type CompetencySlideSection,
   type CompetencySlideSectionItem,
@@ -28,7 +28,8 @@ import {
   type SlidePanelBg,
   type SlideQuizQuestion,
   type SlideSourceLink,
-} from "@/features/learning/lib/competency-course";
+} from "@/features/learning/lib/competency-course-types";
+import { loadSlideCourse } from "@/features/learning/lib/load-slide-course";
 import type { TrackSlug } from "@/features/learning/lib/tracks";
 import { slidesCastHref, slidesExitHref } from "@/features/learning/lib/tracks";
 import { STANDARD_URLS, type StandardLogoId } from "@/features/learning/lib/standards-links";
@@ -43,6 +44,8 @@ type Props = {
   readonly castRole?: "presenter" | "audience";
   readonly initialSlideIndex: number;
   readonly courseSlug: TrackSlug;
+  /** Server-loaded course for the default locale — avoids shipping all track JSON in the client graph. */
+  readonly course: CompetencyCourse;
 };
 
 function fsSupported() {
@@ -1792,11 +1795,16 @@ function SlidePanel({ slide }: { slide: CompetencySlide }) {
   );
 }
 
-export function CompetencySlideDeck({ castRole = "presenter", initialSlideIndex, courseSlug }: Props) {
+export function CompetencySlideDeck({
+  castRole = "presenter",
+  initialSlideIndex,
+  courseSlug,
+  course: initialCourse,
+}: Props) {
   const router = useRouter();
   const { locale } = useTranslations();
   const isAudience = castRole === "audience";
-  const course = getSlideCourse(courseSlug, locale);
+  const [course, setCourse] = useState(initialCourse);
   const slides = course.slides;
   const total = slides.length;
 
@@ -1812,6 +1820,26 @@ export function CompetencySlideDeck({ castRole = "presenter", initialSlideIndex,
   const touchStartX = useRef<number | null>(null);
 
   const slide = slides[index];
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadSlideCourse(courseSlug, locale).then((next) => {
+      if (!cancelled) setCourse(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [courseSlug, locale]);
+
+  useEffect(() => {
+    setCourse(initialCourse);
+  }, [initialCourse]);
+
+  useEffect(() => {
+    if (total > 0) {
+      setIndex((i) => Math.min(i, total - 1));
+    }
+  }, [total]);
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
