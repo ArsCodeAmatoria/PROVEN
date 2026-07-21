@@ -13,6 +13,9 @@ const SUBNAV = [
   { href: "/compliance/audits/external", label: "External Audits" },
   { href: "/compliance/audits/history", label: "Audit History" },
   { href: "/compliance/corrective-actions", label: "Corrective Actions" },
+  { href: "/compliance/site-sampling", label: "Site Sampling" },
+  { href: "/compliance/interviews", label: "Interviews" },
+  { href: "/compliance/observations", label: "Worksite Observations" },
   { href: "/compliance/evidence", label: "Evidence Library" },
   { href: "/compliance/reports", label: "Reports" },
 ] as const;
